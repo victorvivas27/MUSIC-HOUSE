@@ -6,7 +6,7 @@ WORKDIR /app
 # Copiamos archivos desde la carpeta del frontend (visto desde la raíz del repo)
 COPY music-house-frontend/package.json .
 COPY music-house-frontend/package-lock.json ./
-COPY music-house-frontend/.env.production .env.production
+#COPY music-house-frontend/.env.production .env.production
 
 RUN npm install
 
