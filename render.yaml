@@ -1,0 +1,67 @@
+services:
+  - type: web
+    name: music-house-backend
+    env: docker
+    plan: free
+    region: oregon
+    branch: main
+    dockerfilePath: music-house-backend/Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    envVars:
+      - key: DB_HOST
+        value: mysql
+      - key: DB_PORT
+        value: 3306
+      - key: DB_NAME
+        value: musichouse2
+      - key: DB_USER
+        value: root
+      - key: DB_PASSWORD
+        value: tu_password
+      - key: EMAIL_USERNAME
+        value: tu_email
+      - key: EMAIL_PASSWORD
+        value: tu_password_email
+      - key: TELEGRAM_BOT_USERNAME
+        value: tu_bot
+      - key: TELEGRAM_BOT_TOKEN
+        value: token_xxx
+      - key: BUCKET_NAME
+        value: tu_bucket
+      - key: ACCESS_KEY
+        value: tu_access
+      - key: SECRET_KEY
+        value: tu_secret
+      - key: REGION
+        value: us-west
+      - key: PORT_BACK
+        value: 8080
+
+  - type: web
+    name: music-house-frontend
+    env: docker
+    plan: free
+    region: oregon
+    branch: main
+    dockerfilePath: music-house-frontend/Dockerfile
+    buildCommand: ""
+    startCommand: ""
+    envVars:
+      - key: PORT_FROM
+        value: 80
+
+  - type: pserv
+    name: music-house-db
+    env: docker
+    plan: free
+    region: oregon
+    branch: main
+    dockerfilePath: mysql/Dockerfile  # Solo si estás usando tu propia imagen. Si no, omití este bloque.
+    envVars:
+      - key: MYSQL_ROOT_PASSWORD
+        value: tu_password
+      - key: MYSQL_DATABASE
+        value: musichouse2
+      - key: MYSQL_PASSWORD
+        value: tu_password
