@@ -16,7 +16,7 @@ public class MusicHouseApplication {
     public static void main(String[] args) {
         SpringApplication.run(MusicHouseApplication.class, args);
         LOGGER.info("🎹 Let's hit the keys and start the musical journey with MusicHouseApplication! 🎵🌟" +
-                " http://localhost:9090 || http://llocalhost:3000");
+                " http://localhost:9090 || http://localhost:3000");
 
 
     }
