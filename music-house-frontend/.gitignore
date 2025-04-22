@@ -22,4 +22,6 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+# ignorar todos los .env excepto producción
 .env*
+!.env.production
