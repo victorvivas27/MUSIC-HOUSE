@@ -1,7 +1,7 @@
 import axios from 'axios';
 import { handleApiError } from './handleApiError';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
-
+console.log("🔥 BASE_URL desde env:", BASE_URL);
 
 export const UsersApi = {
 
