@@ -130,31 +130,38 @@ export const Header = () => {
               color="inherit"
             >
               {authGlobal ? (
-               <Avatar
-               sx={{
-                 height: '3.2rem',
-                 width: '3.2rem',
-                 fontSize: '1.1rem',
-                 fontWeight: 600,
-                 textTransform: 'uppercase',
-                 backgroundColor: 'var(--color-secundario)',
-                 color: 'var(--color-primario)',
-                 boxShadow: 'var(--box-shadow)',
-                 border: '2px solid var(--color-primario)',
-                
-               }}
-             >
+                <Avatar
+                  sx={{
+                    height: '3.2rem',
+                    width: '3.2rem',
+                    fontSize: '1.1rem',
+                    fontWeight: 600,
+                    textTransform: 'uppercase',
+                    backgroundColor: 'var(--color-secundario)',
+                    color: 'var(--color-primario)',
+                    boxShadow: 'var(--box-shadow)',
+                    border: '2px solid var(--color-primario)'
+                  }}
+                >
                   {userName && userLastName
                     ? `${userName.charAt(0).toUpperCase()}${userLastName.charAt(0).toUpperCase()}`
                     : ''}
                 </Avatar>
               ) : (
-                <MenuIcon
+                <Box
                   sx={{
-                    color: 'var( --color-primario-active)',
-                    fontSize: '3rem'
+                    width: '3rem',
+                    height: '3rem',
+                    backgroundColor: 'var(--color-primario)',
+                    borderRadius: '0.4rem',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    boxShadow: 'var(--box-shadow)'
                   }}
-                />
+                >
+                  <MenuIcon sx={{ fontSize: '2rem', color: 'white' }} />
+                </Box>
               )}
             </IconButton>
 

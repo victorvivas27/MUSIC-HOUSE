@@ -42,6 +42,7 @@ import { useAppStates } from '@/components/utils/global.context'
 import { actions } from '@/components/utils/actions'
 import SearchNameTheme from '@/components/common/search/SearchNameTheme'
 import { usePaginationControl } from '@/hook/usePaginationControl'
+import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
 
 export const Theme = () => {
   const [order, setOrder] = useState('asc')
@@ -79,7 +80,7 @@ export const Theme = () => {
       setTimeout(() => {
         if (isFirst) setFirstLoad(false)
         dispatch({ type: actions.SET_LOADING, payload: false })
-      }, 500)
+      }, 100)
     }
   }
   const rows = Array.isArray(state.themes.content) ? state.themes.content : []
@@ -207,28 +208,12 @@ export const Theme = () => {
                     </TableCell>
 
                     <TableCell align="left" sx={{ ...flexRowContainer }}>
-                      <Box
-                        sx={{
-                          width: 80
-                        }}
-                      >
-                        <img
-                          src={
-                            row?.imageUrlTheme ||
-                            '/src/assets/instrumento_general_03.jpg'
-                          }
-                          alt="Imagen tematica"
-                          style={{
-                            width: '80px',
-                            height: '80px',
-                            objectFit: 'cover',
-                            borderRadius: '50%',
-                            border: '1px solid #ccc',
-                            boxShadow: 'var(--box-shadow)',
-                            display: 'block'
-                          }}
-                        />
-                      </Box>
+                      <ImageWithLoader
+                        src={row.imageUrlTheme}
+                        variant="circular"
+                        width={80}
+                        height={80}
+                      />
                     </TableCell>
 
                     <TableCell align="left">{row.themeName}</TableCell>
@@ -237,7 +222,7 @@ export const Theme = () => {
                       sx={{
                         whiteSpace: 'normal',
                         wordBreak: 'break-word',
-                        maxWidth: 500
+                        maxWidth: 700
                       }}
                     >
                       {row.description}

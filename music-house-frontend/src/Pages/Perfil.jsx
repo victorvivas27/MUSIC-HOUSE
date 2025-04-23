@@ -11,19 +11,16 @@ import {
   Tooltip,
   IconButton,
   Stack,
-  Skeleton,
-  Grid
+ Grid
 } from '@mui/material'
 import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
 import HomeIcon from '@mui/icons-material/Home'
-
 import AddIcon from '@mui/icons-material/Add'
 import EditIcon from '@mui/icons-material/Edit'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useAuth } from '@/hook/useAuth'
 import useAlert from '@/hook/useAlert'
-import useImageLoader from '@/hook/useImageLoader'
 import { UsersApi } from '@/api/users'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { Loader } from '@/components/common/loader/Loader'
@@ -34,6 +31,7 @@ import ModalNewPhone from '@/components/common/nuevontelefono/ModalNewPhone'
 import ModalUpdateUser from '@/components/common/modificardatosuser/ModalUpdateUser'
 import ModalUpdatePhone from '@/components/common/nuevontelefono/ModalUpdatePhone'
 import ModalUpdateDireccion from '@/components/common/nuevadireccion/ModalUpdateDireccion'
+import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
 
 const Perfil = () => {
   const { idUser } = useAuth()
@@ -50,7 +48,7 @@ const Perfil = () => {
   const [selectedPhone, setSelectedPhone] = useState(null)
   const [selectedDireccion, setSelectedDireccion] = useState(null)
   const { showSuccess, showConfirm } = useAlert()
-  const avatarLoaded = useImageLoader(userData?.picture, 1500)
+ 
 
   const fetchUser = useCallback(async () => {
     if (!idUser) return
@@ -81,19 +79,37 @@ const Perfil = () => {
             spacing={3}
             alignItems="center"
           >
-            {avatarLoaded ? (
-              <Tooltip title="Editar tus datos">
-                <Avatar
-                  src={userData?.picture || undefined}
-                  sx={{ width: 90, height: 90, cursor: 'pointer' }}
-                  onClick={() => setOpenModalUser(true)}
-                >
-                  {!userData?.picture && userData?.name?.[0]}
-                </Avatar>
-              </Tooltip>
-            ) : (
-              <Skeleton variant="circular" width={90} height={90} />
-            )}
+            <Tooltip title="Editar tus datos">
+              <Box
+                onClick={() => setOpenModalUser(true)}
+                sx={{ cursor: 'pointer' }}
+              >
+                <ImageWithLoader
+                  src={userData?.picture}
+                  alt={userData?.name}
+                  width={90}
+                  height={90}
+                  variant="circular"
+                  fallbackSrc={undefined} // para que se vea la letra si no hay imagen
+                />
+                {!userData?.picture && (
+                  <Avatar
+                    sx={{
+                      width: 90,
+                      height: 90,
+                      position: 'absolute',
+                      top: 0,
+                      left: 0,
+                      pointerEvents: 'none',
+                      backgroundColor: '#666',
+                      fontWeight: 'bold'
+                    }}
+                  >
+                    {userData?.name?.[0]}
+                  </Avatar>
+                )}
+              </Box>
+            </Tooltip>
 
             <Box>
               <Typography variant="h5">

@@ -76,7 +76,7 @@ export const Categories = () => {
       setTimeout(() => {
         if (isFirst) setFirstLoad(false)
         dispatch({ type: actions.SET_LOADING, payload: false })
-      }, 500)
+      }, 100)
     }
   }
   const rows = Array.isArray(state.categories.content)

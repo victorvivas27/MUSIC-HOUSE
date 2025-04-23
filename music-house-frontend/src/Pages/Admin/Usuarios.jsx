@@ -11,7 +11,8 @@ import {
   IconButton,
   Tooltip,
   Typography,
-  Box
+  Box,
+  
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
@@ -34,10 +35,14 @@ import {
   flexRowContainer,
   paginationStyles
 } from '@/components/styles/styleglobal'
-import { MainWrapper, TitleResponsive } from '@/components/styles/ResponsiveComponents'
+import {
+  MainWrapper,
+  TitleResponsive
+} from '@/components/styles/ResponsiveComponents'
 import { useAppStates } from '@/components/utils/global.context'
 import { actions } from '@/components/utils/actions'
 import SearchNameUser from '@/components/common/search/SearchNameUser'
+import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
 
 export const Usuarios = () => {
   const [order, setOrder] = useState('asc')
@@ -49,6 +54,7 @@ export const Usuarios = () => {
   const navigate = useNavigate()
   const { showConfirm, showLoading, showSuccess, showError } = useAlert()
   const { state, dispatch } = useAppStates()
+ 
 
   const getAllUsuarios = useCallback(
     async (pageToUse = page, sizeToUse = rowsPerPage, isFirst = false) => {
@@ -67,7 +73,7 @@ export const Usuarios = () => {
         setTimeout(() => {
           if (isFirst) setFirstLoad(false)
           dispatch({ type: actions.SET_LOADING, payload: false })
-        }, 500)
+        }, 100)
       }
     },
     [dispatch, order, orderBy, page, rowsPerPage]
@@ -143,7 +149,7 @@ export const Usuarios = () => {
           numSelected={selected.length}
           handleConfirmDelete={() => handleDelete()}
         />
-<SearchNameUser/>
+        <SearchNameUser />
         <TableContainer>
           <Table
             sx={{ minWidth: 750 }}
@@ -194,27 +200,13 @@ export const Usuarios = () => {
                     </TableCell>
 
                     <TableCell align="left" sx={{ ...flexRowContainer }}>
-                      <Box
-                        sx={{
-                          width: 80,
-                          height: 80
-                        }}
-                      >
-                        <img
-                          src={
-                            row?.picture || '/src/assets/avatar_general_02.png'
-                          }
-                          alt="Instrumento"
-                          style={{
-                            width: '80px',
-                            height: '80px',
-                            objectFit: 'cover',
-                            borderRadius: '50%',
-                            border: '1px solid #ccc',
-                            boxShadow: 'var(--box-shadow)'
-                          }}
-                        />
-                      </Box>
+                      <ImageWithLoader
+                        src={row.picture}
+                        variant="circular"
+                        width={80}
+                        height={80}
+                        fallbackSrc={undefined}
+                      />
                     </TableCell>
 
                     <TableCell align="left">
@@ -265,7 +257,9 @@ export const Usuarios = () => {
               {rows.length === 0 && (
                 <TableRow>
                   <TableCell colSpan={headCellsUser.length + 1} align="center">
-                    <TitleResponsive>No se encontraron usuarios</TitleResponsive>
+                    <TitleResponsive>
+                      No se encontraron usuarios
+                    </TitleResponsive>
                   </TableCell>
                 </TableRow>
               )}

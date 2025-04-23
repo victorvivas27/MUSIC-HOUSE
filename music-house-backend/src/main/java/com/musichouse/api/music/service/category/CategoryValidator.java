@@ -24,7 +24,7 @@ public class CategoryValidator {
         categoryRepository.findByCategoryNameIgnoreCase(dto.getName())
                 .ifPresent(existing -> {
                     throw new DuplicateNameException(
-                            "Ya existe una temática con ese nombre: " + dto.getName());
+                            "Ya existe una categoria con ese nombre: " + dto.getName());
                 });
     }
 
