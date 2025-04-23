@@ -22,7 +22,7 @@
   --color-oscuro-suave: #333;
 
   --texto-primario: #000000;
-  --texto-secundario: #616161;
+  --texto-secundario: #ffffff;
   --texto-inverso-black: #000000;
   --texto-inverso-white: #ffffff;
   --background-color: #232323;
@@ -130,14 +130,7 @@
 
 
 
-@media (prefers-color-scheme: dark) {
-  :root {
-   
-    --texto-primario: var(--texto-primario-dark);
-    --texto-secundario: var(--texto-secundario-dark);
-    --color-primario: var(--color-primario-dark);
-  }
-} 
+
 
 /* ✅ Reseteo y normalización de estilos */
 *,

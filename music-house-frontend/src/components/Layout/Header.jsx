@@ -113,7 +113,10 @@ export const Header = () => {
     <HeaderWrapper
       isHome={isHome}
       backgroundImageUrl={background}
-      sx={{ transition: 'top 1.2s', top: visible ? '0' : '-300px' }}
+      sx={{
+        transition: 'top 1.2s',
+        top: visible ? '0' : '-300px'
+      }}
     >
       <Container maxWidth="xl">
         <UpperStyledToolbar disableGutters>
@@ -127,18 +130,31 @@ export const Header = () => {
               color="inherit"
             >
               {authGlobal ? (
-                <Avatar
-                  sx={{
-                    height: '3rem !important',
-                    width: '3rem !important'
-                  }}
-                >
+               <Avatar
+               sx={{
+                 height: '3.2rem',
+                 width: '3.2rem',
+                 fontSize: '1.1rem',
+                 fontWeight: 600,
+                 textTransform: 'uppercase',
+                 backgroundColor: 'var(--color-secundario)',
+                 color: 'var(--color-primario)',
+                 boxShadow: 'var(--box-shadow)',
+                 border: '2px solid var(--color-primario)',
+                
+               }}
+             >
                   {userName && userLastName
                     ? `${userName.charAt(0).toUpperCase()}${userLastName.charAt(0).toUpperCase()}`
                     : ''}
                 </Avatar>
               ) : (
-                <MenuIcon sx={{ fill: 'white' }} fontSize="large" />
+                <MenuIcon
+                  sx={{
+                    color: 'var( --color-primario-active)',
+                    fontSize: '3rem'
+                  }}
+                />
               )}
             </IconButton>
 
@@ -353,7 +369,8 @@ export const Header = () => {
                             height: '3rem !important',
                             width: '3rem !important',
                             fontSize: '1rem !important',
-                            fontFamily: 'Roboto'
+                            fontFamily: 'Roboto',
+                            boxShadow: 'var(--box-shadow)!important'
                           }}
                         >
                           {userName && userLastName

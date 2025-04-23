@@ -54,7 +54,7 @@ const Login = ({ onSwitch }) => {
               setSubmitting(false)
               setLoading(false)
             })
-          }, 5000)
+          }, 500)
         } else {
           showError(`❌ ${response.message}`)
           setSubmitting(false)
@@ -74,9 +74,7 @@ const Login = ({ onSwitch }) => {
       <ContainerForm>
         <Grid >
           <TitleResponsive>Iniciar Sesión</TitleResponsive>
-          <Grid 
-          
-          >
+          <Grid>
             <FormControl
               fullWidth
               margin="normal"

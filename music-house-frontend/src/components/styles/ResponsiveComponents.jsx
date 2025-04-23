@@ -6,7 +6,7 @@ import background from '@/assets/CrearUsuarioBackGround.png'
 export const CustomButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
-  width: '100%',
+  width: '80%',
   display: 'flex',
   justifyContent: 'space-evenly',
   height: '40px',
@@ -44,13 +44,10 @@ export const CustomButton = styled(Button, {
 }))
 
 export const ContainerBottom = styled(Grid, {
-  shouldForwardProp: (prop) => prop !== 'sx',
-   
+  shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
-  
   ...flexColumnContainer,
-  marginTop:30,
- 
+
   [theme.breakpoints.up('sm')]: {
     width: '100%'
   },
@@ -70,7 +67,14 @@ export const ContainerForm = styled(Grid, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
   ...flexColumnContainer,
-  width: '100vw',
+  width: '99vw',
+  height: '98vh',
+  padding: theme.spacing(1),
+  borderRadius: '16px',
+  backgroundColor: 'rgba(255, 255, 255, 0.13)',
+  backdropFilter: 'blur(4px)',
+  WebkitBackdropFilter: 'blur(4px)',
+  boxShadow: 'var(--box-shadow)',
 
   [theme.breakpoints.up('sm')]: {
     width: '75vw'
@@ -143,13 +147,11 @@ export const ParagraphResponsive = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
   fontWeight: 300,
-  fontSize: '0.7rem',
+  fontSize: '0.9rem',
   fontStyle: 'italic',
-  textShadow: '0 1px 2px var(--color-primario)',
+  textShadow: '0 1px 2px var( --texto-secundario)',
   wordWrap: 'break-word',
   overflowWrap: 'break-word',
-
-  // 💡 Línea clamp (máximo 3 líneas + "...")
   display: '-webkit-box',
   WebkitLineClamp: 3,
   WebkitBoxOrient: 'vertical',
@@ -175,7 +177,6 @@ export const ParagraphResponsive = styled(Typography, {
 export const CreateWrapper = styled(Container, {
   shouldForwardProp: (prop) => prop !== 'isHeaderVisible'
 })(({ theme, isHeaderVisible }) => ({
-  
   [theme.breakpoints.up('lg')]: {
     display: 'flex',
     flexDirection: 'column',
@@ -277,5 +278,3 @@ export const ProductsWrapper = styled(Box)(() => ({
   maxWidth: '99%',
   margin: '0 auto'
 }))
-
-
