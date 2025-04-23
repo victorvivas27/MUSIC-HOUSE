@@ -19,7 +19,7 @@ export const Home = () => {
   const { showError } = useAlert()
   const [page, setPage] = useState(0)
   const [pageSize] = useState(5)
-  const [initialLoading, setInitialLoading] = useState(true)
+
 
   const observer = useRef()
   const lastElementRef = useCallback(
@@ -61,7 +61,7 @@ export const Home = () => {
         showError(`❌ ${getErrorMessage(error)}`)
       } finally {
         dispatch({ type: actions.SET_LOADING, payload: false })
-        if (page === 0) setInitialLoading(false)
+        
       }
     }
 
@@ -70,7 +70,9 @@ export const Home = () => {
 
   const instruments = state.instruments?.content || []
 
-  if (initialLoading) return <Loader title="Un momento por favor..." />
+  if (state.loading && page === 0) {
+    return <Loader title="Un momento por favor..." />
+  }
 
   return (
     <>
