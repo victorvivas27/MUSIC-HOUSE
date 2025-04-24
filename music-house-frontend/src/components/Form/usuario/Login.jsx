@@ -27,6 +27,7 @@ import useAlert from '@/hook/useAlert'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { useAppStates } from '@/components/utils/global.context'
 import { actions } from '@/components/utils/actions'
+import LoadingText from '@/components/common/loadingText/LoadingText'
 
 const Login = ({ onSwitch }) => {
   const navigate = useNavigate()
@@ -141,9 +142,19 @@ const Login = ({ onSwitch }) => {
             </Grid>
 
             <ContainerBottom>
-              <CustomButton type="submit" disabled={state.loading}>
-                
-              </CustomButton>
+            <CustomButton 
+            type="submit"
+             disabled={state.loading}
+             >
+              {state.loading ? (
+                <>
+                  <LoadingText text="Iniciando sesión" />
+                 
+                </>
+              ) : (
+                'Iniciar Sesión'
+              )}
+            </CustomButton>
 
               <Link href="" underline="always" onClick={onSwitch}>
                 <ParagraphResponsive
