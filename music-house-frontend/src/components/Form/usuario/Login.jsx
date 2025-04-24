@@ -4,7 +4,6 @@ import {
   InputAdornment,
   IconButton,
   TextField,
-  CircularProgress
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import { useFormik } from 'formik'
@@ -141,17 +140,7 @@ const Login = ({ onSwitch }) => {
 
             <ContainerBottom>
               <CustomButton type="submit" disabled={state.loading}>
-                {state.loading ? (
-                  <>
-                    Iniciando sesión...
-                    <CircularProgress
-                      size={20}
-                      sx={{ color: 'var(--color-azul)', ml: 1 }}
-                    />
-                  </>
-                ) : (
-                  'Iniciar Sesión'
-                )}
+                
               </CustomButton>
 
               <Link href="" underline="always" onClick={onSwitch}>
