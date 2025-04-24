@@ -1,89 +1,79 @@
 import Card from '@mui/material/Card'
 import CardMedia from '@mui/material/CardMedia'
 import PropTypes from 'prop-types'
-import { Box} from '@mui/material'
+import { Box } from '@mui/material'
 import {
   ParagraphResponsive,
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
 import { flexColumnContainer } from '@/components/styles/styleglobal'
-import useImageLoader from '@/hook/useImageLoader'
-import ImageSkeleton from '../imageSkeleton/ImageSkeleton'
+
+import ImageWithLoader from '../imageWithLoader/ImageWithLoader'
+
 const TematicCard = ({ title, imageUrlTheme, paragraph }) => {
-  const loaded = useImageLoader(imageUrlTheme, 500)
- 
-  
-   
   return (
     <Card
-    
-    sx={{
-      width: {
-        xs: '98%',
-        sm: '99%',
-        md: '99%',
-        lg: '99%'
-      },
-      position: 'relative'
-    }}
-  >
-    {!loaded && (
-     <ImageSkeleton height={{ xs: 350, sm: 400, md: 450, lg: 460 }} />
-    )}
-
-    <CardMedia
-     component="div"
       sx={{
-        height: {
-          xs: 350,
-          sm: 400,
-          md: 450,
-          lg: 460
-        },
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-        backgroundImage: loaded
-          ? `url(${encodeURI(imageUrlTheme)})`
-          : 'none',
-        position: 'relative',
-        color: 'white',
-        textAlign: 'center',
-        ...flexColumnContainer,
-
-        '&::before': {
-          content: '""',
-          position: 'absolute',
-          top: 0,
-          right: 0,
-          bottom: 0,
-          left: 0,
-          backgroundColor: 'rgba(0, 0, 0, 0.5)',
-          zIndex: 1
-        },
-        zIndex: 1
+        width: { xs: '98%', sm: '99%', md: '99%', lg: '99%' },
+        position: 'relative'
       }}
     >
-      {loaded && (
+      <CardMedia
+        component="div"
+        sx={{
+          height: { xs: 350, sm: 400, md: 450, lg: 460 },
+          position: 'relative',
+          textAlign: 'center',
+          ...flexColumnContainer,
+          overflow: 'hidden'
+        }}
+      >
+        {/* Fondo con loader */}
+        <Box sx={{ position: 'absolute', inset: 0, zIndex: 0 }}>
+          <ImageWithLoader
+            src={imageUrlTheme}
+            width="100%"
+            height="100%"
+            variant="rectangular"
+            border="none"
+            borderRadius="0"
+            fallbackSrc="/src/assets/instrumento_general_03.jpg"
+            delay={500}
+            showText={false}
+          />
+        </Box>
+
+        {/* Overlay contenido */}
         <Box
           sx={{
-            border: '1px dotted var(--texto-inverso-white)',
-            width: '90%',
+            border: '1px solid rgba(255, 255, 255, 0.3)',
+            width: '95%',
+            maxWidth: 680,
+            mx: 'auto',
+            px: 3,
+            py: 2,
             position: 'relative',
             zIndex: 2,
-            backgroundColor: 'rgba(0, 0, 0, 0.4)',
-            backdropFilter: 'blur(2px)',
-            borderRadius: '8px',
+            background: 'rgba(255, 255, 255, 0.15)',
+            backdropFilter: 'blur(6px)',
+            borderRadius: '16px',
+            boxShadow: '0 4px 30px rgba(0, 0, 0, 0.1)',
             mt: 'auto',
             mb: 2,
-            mx: 'auto'
+            color: '#fff',
+            textAlign: 'center',
+            transition: 'all 0.3s ease-in-out',
+            '&:hover': {
+              background: 'rgba(255, 255, 255, 0.25)',
+              boxShadow: '0 6px 36px rgba(0, 0, 0, 0.2)'
+            }
           }}
         >
           <TitleResponsive>{title}</TitleResponsive>
           <ParagraphResponsive>{paragraph}</ParagraphResponsive>
         </Box>
-      )}
-    </CardMedia>
-  </Card>
+      </CardMedia>
+    </Card>
   )
 }
 

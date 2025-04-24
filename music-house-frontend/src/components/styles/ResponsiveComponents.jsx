@@ -2,7 +2,6 @@ import { styled } from '@mui/system'
 import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import { flexColumnContainer } from './styleglobal'
 
-
 export const CustomButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
@@ -147,9 +146,8 @@ export const ParagraphResponsive = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
   fontWeight: 300,
-  fontSize: '0.9rem',
+  fontSize: '0.7rem',
   fontStyle: 'italic',
-  textShadow: '0 1px 2px var( --texto-secundario)',
   wordWrap: 'break-word',
   overflowWrap: 'break-word',
   display: '-webkit-box',
@@ -168,7 +166,7 @@ export const ParagraphResponsive = styled(Typography, {
     fontSize: '0.9rem'
   },
   [theme.breakpoints.up('xl')]: {
-    fontSize: '0.9rem'
+    fontSize: '1rem'
   },
 
   ...sx

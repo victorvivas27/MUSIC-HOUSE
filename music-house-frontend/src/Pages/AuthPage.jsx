@@ -7,9 +7,14 @@ import '../components/styles/transitions.css'
 import { Logo } from '@/components/Images/Logo'
 import Login from '@/components/Form/usuario/Login'
 import NewUser from '@/components/Form/usuario/NewUser'
-import { BoxFormUnder, BoxLogoSuperior, ContainerLogo, MainCrearUsuario } from '@/components/styles/ResponsiveComponents'
+import {
+  BoxFormUnder,
+  BoxLogoSuperior,
+  ContainerLogo,
+  MainCrearUsuario
+} from '@/components/styles/ResponsiveComponents'
 import useBackgroundLoader from '@/hook/useBackgroundLoader'
-import { Box, Skeleton } from '@mui/material'
+import { Box, CircularProgress, Typography } from '@mui/material'
 
 const background =
   'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround.avif'
@@ -34,36 +39,44 @@ const AuthPage = () => {
 
   return (
     <MainCrearUsuario container bgLoaded={bgLoaded}>
-     
-      {!bgLoaded && (
-        <Box
+      <Box
+        sx={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100vh',
+          background:
+            'linear-gradient(135deg, rgba(30, 30, 30, 0.44) 0%, rgba(45, 45, 45, 0.38) 100%)',
+          zIndex: 9999,
+          backdropFilter: 'blur(4px)',
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          transition: 'opacity 1s ease-in-out',
+          animation: bgLoaded ? 'fadeOut 1s ease-out forwards' : 'none',
+          '@keyframes fadeOut': {
+            '0%': { opacity: 1 },
+            '100%': { opacity: 0, visibility: 'hidden' }
+          }
+        }}
+      >
+        <Box sx={{ mb: 2 }}>
+          <CircularProgress size={48} thickness={4} color="inherit" />
+        </Box>
+        <Typography
           sx={{
-            position: 'fixed',
-            top: 0,
-            left: 0,
-            width: '100%',
-            height: '100vh',
-            backgroundColor: '#1a1a1a',
-            zIndex: 9999,
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center'
+            color: 'white',
+            fontSize: '1.5rem',
+            letterSpacing: '1px',
+            fontWeight: 300,
+            opacity: 0.6
           }}
         >
-          <Skeleton
-            animation="wave"
-            variant="rectangular"
-            width="100%"
-            height="100%"
-            sx={{
-              backgroundColor: '#1a1a1a',
-              backgroundImage:
-                'linear-gradient(90deg, rgba(60,60,60,0.15) 25%, rgba(90,90,90,0.25) 50%, rgba(60,60,60,0.15) 75%)',
-              backgroundSize: '200% 100%'
-            }}
-          />
-        </Box>
-      )}
+          Cargando...
+        </Typography>
+      </Box>
 
       <BoxLogoSuperior>
         <Link to="/" onClick={() => navigate('/')}>
