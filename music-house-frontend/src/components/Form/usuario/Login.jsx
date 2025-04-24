@@ -15,9 +15,9 @@ import { useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import ContactSupportRoundedIcon from '@mui/icons-material/ContactSupportRounded';
 import { useAuth } from '@/hook/useAuth'
-import useAlert from '@/hook/useAlert'
+
 import { UsersApi } from '@/api/users'
-import { getErrorMessage } from '@/api/getErrorMessage'
+
 import { ContainerBottom, ContainerForm, CustomButton, ParagraphResponsive, TitleResponsive } from '@/components/styles/ResponsiveComponents'
 import { fontSizeResponsi, inputStyles } from '@/components/styles/styleglobal'
 import LoadingText from '@/components/common/loadingText/LoadingText'
@@ -30,7 +30,7 @@ const Login = ({ onSwitch }) => {
   const [showPassword, setShowPassword] = useState(false)
   const handleClickShowPassword = () => setShowPassword((show) => !show)
   const [loading, setLoading] = useState(false)
-  const { showSuccess, showError } = useAlert()
+ 
 
   const formik = useFormik({
     initialValues: {
@@ -50,18 +50,18 @@ const Login = ({ onSwitch }) => {
           setTimeout(() => {
             setLoading(false)
             navigate('/')
-            showSuccess(`✅ ${response.message}`, null, () => {
+           
               setSubmitting(false)
               setLoading(false)
-            })
+          
           }, 500)
         } else {
-          showError(`❌ ${response.message}`)
+         
           setSubmitting(false)
           setLoading(false)
         }
       } catch (error) {
-        showError(`❌ ${getErrorMessage(error)}`)
+       
         setSubmitting(false)
         setLoading(false)
       }
