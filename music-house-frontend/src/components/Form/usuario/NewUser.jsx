@@ -26,66 +26,43 @@ const NewUser = ({ onSwitch }) => {
 
   const { setAuthData } = useAuth()
   const navigate = useNavigate()
-  const { showSuccess, showError } = useAlert()
+  const { showError } = useAlert()
   const { isUserAdmin } = useAuth()
   const { dispatch, state } = useAppStates()
 
   const handleSubmit = async (formData) => {
-    console.log('🔄 Submitting new user...', formData)
-
     dispatch({ type: actions.SET_LOADING, payload: true })
 
     try {
       const formDataToSend = new FormData()
       const { picture, ...userWithoutPicture } = formData
       delete userWithoutPicture.repeatPassword
-
-      console.log('📝 User data without picture:', userWithoutPicture)
-
       formDataToSend.append('user', JSON.stringify(userWithoutPicture))
 
       if (picture instanceof File) {
-        console.log('📸 Picture is a File:', picture.name)
         formDataToSend.append('file', picture)
-      } else {
-        console.warn('⚠️ Picture is NOT a File:', picture)
       }
 
       const response = await UsersApi.registerUser(formDataToSend)
-      console.log('📬 API response:', response)
 
       if (response?.result?.token) {
-        showSuccess(`✅ ${response.message}`)
-
-        try {
-          console.log('🔐 Setting auth data...')
-          setAuthData({ token: response.result.token })
-        } catch (authError) {
-          console.error('❌ Error setting auth data:', authError)
-        }
-
-        console.log('👤 isUserAdmin:', isUserAdmin)
+        //showSuccess(`✅${response.message}`)
 
         setTimeout(() => {
           if (isUserAdmin) {
-            console.log('🔙 Going back...')
             navigate(-1)
           } else {
-            console.log('🏠 Navigating to home...')
+            setAuthData({ token: response.result.token })
             navigate('/')
           }
-        }, 1000)
-      } else {
-        console.warn('❗ Response did not contain token:', response)
-        showError('❌ Error inesperado al crear usuario')
+        }, 100)
       }
     } catch (error) {
-      const msg = getErrorMessage(error)
-      console.error('❌ Error al registrar usuario:', error)
-      showError(`❌ ${msg}`)
+      showError(`❌ ${getErrorMessage(error)}`)
     } finally {
-      console.log('🧹 Finalizando submit, quitando loading...')
-      dispatch({ type: actions.SET_LOADING, payload: false })
+      setTimeout(() => {
+        dispatch({ type: actions.SET_LOADING, payload: false })
+      }, 100)
     }
   }
 
@@ -101,8 +78,8 @@ const NewUser = ({ onSwitch }) => {
   )
 }
 
+export default NewUser
+
 NewUser.propTypes = {
   onSwitch: PropTypes.func
 }
-
-export default NewUser
