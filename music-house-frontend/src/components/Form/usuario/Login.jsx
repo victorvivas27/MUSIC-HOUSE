@@ -3,8 +3,8 @@ import {
   Grid,
   InputAdornment,
   IconButton,
- // CircularProgress,
-  TextField
+  TextField,
+  CircularProgress
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import { useFormik } from 'formik'
@@ -165,9 +165,17 @@ const Login = ({ onSwitch }) => {
             </Grid>
 
             <ContainerBottom>
-              <CustomButton type="submit" disabled={loading}>
-                Iniciar Sesión
-              </CustomButton>
+              <>
+                <CustomButton type="submit" disabled={loading}>
+                  Iniciar Sesión
+                </CustomButton>
+                {loading && (
+                  <CircularProgress
+                    size={20}
+                    sx={{ color: 'var(--color-azul)', mt: 1 }}
+                  />
+                )}
+              </>
               <Link href="" underline="always" onClick={onSwitch}>
                 <ParagraphResponsive
                   sx={{
