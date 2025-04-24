@@ -30,14 +30,17 @@ import { fontSizeResponsi, inputStyles } from '@/components/styles/styleglobal'
 import { loginValidationSchema } from '@/validations/login'
 import useAlert from '@/hook/useAlert'
 import { getErrorMessage } from '@/api/getErrorMessage'
+import { useAppStates } from '@/components/utils/global.context'
+import { actions } from '@/components/utils/actions'
 
 const Login = ({ onSwitch }) => {
   const navigate = useNavigate()
   const { setAuthData } = useAuth()
+  const { dispatch, state } = useAppStates()
   const [showPassword, setShowPassword] = useState(false)
-  const handleClickShowPassword = () => setShowPassword((show) => !show)
-  const [loading, setLoading] = useState(false)
   const { showSuccess, showError } = useAlert()
+
+  const handleClickShowPassword = () => setShowPassword((show) => !show)
 
   const formik = useFormik({
     initialValues: {
@@ -45,32 +48,26 @@ const Login = ({ onSwitch }) => {
       password: ''
     },
     validationSchema: loginValidationSchema,
-    onSubmit: async (values, { setSubmitting }) => {
-      setLoading(true)
+    onSubmit: async (values) => {
+      dispatch({ type: actions.SET_LOADING, payload: true })
 
       try {
         const response = await UsersApi.loginUser(values)
 
         if (response?.result?.token) {
           setAuthData({ token: response.result.token })
-
+          dispatch({ type: actions.SET_LOADING, payload: false })
+          showSuccess(`✅ ${response.message}`)
           setTimeout(() => {
-            setLoading(false)
             navigate('/')
-            showSuccess(`✅ ${response.message}`, null, () => {
-              setSubmitting(false)
-              setLoading(false)
-            })
-          }, 500)
+          }, 1500)
         } else {
           showError(`❌ ${response.message}`)
-          setSubmitting(false)
-          setLoading(false)
+          dispatch({ type: actions.SET_LOADING, payload: false })
         }
       } catch (error) {
         showError(`❌ ${getErrorMessage(error)}`)
-        setSubmitting(false)
-        setLoading(false)
+        dispatch({ type: actions.SET_LOADING, payload: false })
       }
     }
   })
@@ -78,28 +75,16 @@ const Login = ({ onSwitch }) => {
   return (
     <form onSubmit={formik.handleSubmit}>
       <fieldset
-        disabled={loading}
+        disabled={state.loading}
         style={{ border: 'none', padding: 0, margin: 0 }}
       >
         <ContainerForm>
           <Grid>
             <TitleResponsive>Iniciar Sesión</TitleResponsive>
             <Grid>
-              <FormControl
-                fullWidth
-                margin="normal"
-                sx={{
-                  ...inputStyles
-                }}
-              >
+              <FormControl fullWidth margin="normal" sx={{ ...inputStyles }}>
                 <TextField
-                  sx={{
-                    width: {
-                      xs: '90%'
-                    },
-                    marginLeft: 2
-                  }}
-                  id="outlined-multiline-flexible"
+                  sx={{ width: { xs: '90%' }, marginLeft: 2 }}
                   label="📧 Email"
                   name="email"
                   onChange={formik.handleChange}
@@ -112,20 +97,9 @@ const Login = ({ onSwitch }) => {
                 />
               </FormControl>
 
-              <FormControl
-                fullWidth
-                margin="normal"
-                sx={{
-                  ...inputStyles
-                }}
-              >
+              <FormControl fullWidth margin="normal" sx={{ ...inputStyles }}>
                 <TextField
-                  sx={{
-                    width: {
-                      xs: '90%'
-                    },
-                    marginLeft: 2
-                  }}
+                  sx={{ width: { xs: '90%' }, marginLeft: 2 }}
                   label="🔒 Password"
                   name="password"
                   onChange={formik.handleChange}
@@ -171,23 +145,23 @@ const Login = ({ onSwitch }) => {
             </Grid>
 
             <ContainerBottom>
-              <>
-                <CustomButton type="submit" disabled={loading}>
-                  Iniciar Sesión
-                </CustomButton>
-                {loading && (
-                  <CircularProgress
-                    size={20}
-                    sx={{ color: 'var(--color-azul)', mt: 1 }}
-                  />
+              <CustomButton type="submit" disabled={state.loading}>
+                {state.loading ? (
+                  <>
+                    Iniciando sesión...
+                    <CircularProgress
+                      size={20}
+                      sx={{ color: 'var(--color-azul)', ml: 1 }}
+                    />
+                  </>
+                ) : (
+                  'Iniciar Sesión'
                 )}
-              </>
+              </CustomButton>
+
               <Link href="" underline="always" onClick={onSwitch}>
                 <ParagraphResponsive
-                  sx={{
-                    fontWeight: '600',
-                    color: 'var(--color-azul)'
-                  }}
+                  sx={{ fontWeight: '600', color: 'var(--color-azul)' }}
                 >
                   No tienes una cuenta? Regístrate
                   <ContactSupportRoundedIcon />
@@ -200,7 +174,9 @@ const Login = ({ onSwitch }) => {
     </form>
   )
 }
+
 Login.propTypes = {
   onSwitch: PropTypes.func.isRequired
 }
+
 export default Login
