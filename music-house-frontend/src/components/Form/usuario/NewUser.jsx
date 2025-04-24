@@ -31,38 +31,61 @@ const NewUser = ({ onSwitch }) => {
   const { dispatch, state } = useAppStates()
 
   const handleSubmit = async (formData) => {
+    console.log('🔄 Submitting new user...', formData)
+
     dispatch({ type: actions.SET_LOADING, payload: true })
 
     try {
       const formDataToSend = new FormData()
       const { picture, ...userWithoutPicture } = formData
       delete userWithoutPicture.repeatPassword
+
+      console.log('📝 User data without picture:', userWithoutPicture)
+
       formDataToSend.append('user', JSON.stringify(userWithoutPicture))
 
       if (picture instanceof File) {
+        console.log('📸 Picture is a File:', picture.name)
         formDataToSend.append('file', picture)
+      } else {
+        console.warn('⚠️ Picture is NOT a File:', picture)
       }
 
       const response = await UsersApi.registerUser(formDataToSend)
+      console.log('📬 API response:', response)
 
       if (response?.result?.token) {
-        showSuccess(`✅${response.message}`)
+        showSuccess(`✅ ${response.message}`)
+
+        try {
+          console.log('🔐 Setting auth data...')
+          setAuthData({ token: response.result.token })
+        } catch (authError) {
+          console.error('❌ Error setting auth data:', authError)
+        }
+
+        console.log('👤 isUserAdmin:', isUserAdmin)
 
         setTimeout(() => {
           if (isUserAdmin) {
+            console.log('🔙 Going back...')
             navigate(-1)
           } else {
-            setAuthData({ token: response.result.token })
+            console.log('🏠 Navigating to home...')
             navigate('/')
           }
         }, 1000)
+      } else {
+        console.warn('❗ Response did not contain token:', response)
+        showError('❌ Error inesperado al crear usuario')
       }
     } catch (error) {
-      showError(`❌ ${getErrorMessage(error)}`)
+      const msg = getErrorMessage(error)
+      console.error('❌ Error al registrar usuario:', error)
+      showError(`❌ ${msg}`)
     } finally {
-      setTimeout(() => {
-        dispatch({ type: actions.SET_LOADING, payload: false })
-      }, 1000)
+      console.log('🧹 Finalizando submit, quitando loading...')
+      dispatch({ type: actions.SET_LOADING, payload: false })
     }
   }
 
@@ -78,8 +101,8 @@ const NewUser = ({ onSwitch }) => {
   )
 }
 
-export default NewUser
-
 NewUser.propTypes = {
   onSwitch: PropTypes.func
 }
+
+export default NewUser
