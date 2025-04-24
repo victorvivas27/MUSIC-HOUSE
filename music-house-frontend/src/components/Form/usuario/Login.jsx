@@ -53,9 +53,9 @@ const Login = ({ onSwitch }) => {
           setAuthData({ token: response.result.token })
           dispatch({ type: actions.SET_LOADING, payload: false })
           //showSuccess(`✅ ${response.message}`)
-          setTimeout(() => {
+          
             navigate('/')
-          }, 1500)
+         
         } else {
           //showError(`❌ ${response.message}`)
           dispatch({ type: actions.SET_LOADING, payload: false })
