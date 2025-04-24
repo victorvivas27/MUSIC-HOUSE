@@ -21,7 +21,7 @@ import { getErrorMessage } from '@/api/getErrorMessage'
 import { ContainerBottom, ContainerForm, CustomButton, ParagraphResponsive, TitleResponsive } from '@/components/styles/ResponsiveComponents'
 import { fontSizeResponsi, inputStyles } from '@/components/styles/styleglobal'
 import LoadingText from '@/components/common/loadingText/LoadingText'
-import { loginValidationSchema } from '@/validations/login'
+//import { loginValidationSchema } from '@/validations/login'
 
 
 const Login = ({ onSwitch }) => {
@@ -37,7 +37,7 @@ const Login = ({ onSwitch }) => {
       email: '',
       password: ''
     },
-    validationSchema: loginValidationSchema,
+    //validationSchema: loginValidationSchema,
     onSubmit: async (values, { setSubmitting }) => {
       setLoading(true)
 
