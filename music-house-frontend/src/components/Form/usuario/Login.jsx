@@ -3,7 +3,7 @@ import {
   Grid,
   InputAdornment,
   IconButton,
-  TextField,
+  TextField
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import { useFormik } from 'formik'
@@ -27,7 +27,8 @@ import useAlert from '@/hook/useAlert'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { useAppStates } from '@/components/utils/global.context'
 import { actions } from '@/components/utils/actions'
-import LoadingText from '@/components/common/loadingText/LoadingText'
+import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
+
 
 const Login = ({ onSwitch }) => {
   const navigate = useNavigate()
@@ -53,11 +54,10 @@ const Login = ({ onSwitch }) => {
           setAuthData({ token: response.result.token })
           dispatch({ type: actions.SET_LOADING, payload: false })
           showSuccess(`✅ ${response.message}`)
-          
+
           setTimeout(() => {
             navigate('/')
           }, 1500)
-         
         } else {
           //showError(`❌ ${response.message}`)
           dispatch({ type: actions.SET_LOADING, payload: false })
@@ -70,11 +70,13 @@ const Login = ({ onSwitch }) => {
   })
 
   return (
+    <>
     <form onSubmit={formik.handleSubmit}>
       <fieldset
         disabled={state.loading}
         style={{ border: 'none', padding: 0, margin: 0 }}
-      >
+        >
+        
         <ContainerForm>
           <Grid>
             <TitleResponsive>Iniciar Sesión</TitleResponsive>
@@ -142,19 +144,9 @@ const Login = ({ onSwitch }) => {
             </Grid>
 
             <ContainerBottom>
-            <CustomButton 
-            type="submit"
-             disabled={state.loading}
-             >
-              {state.loading ? (
-                <>
-                  <LoadingText text="Iniciando sesión" />
-                 
-                </>
-              ) : (
-                'Iniciar Sesión'
-              )}
-            </CustomButton>
+              <CustomButton type="submit" disabled={state.loading}>
+                Iniciar Sesión
+              </CustomButton>
 
               <Link href="" underline="always" onClick={onSwitch}>
                 <ParagraphResponsive
@@ -169,6 +161,8 @@ const Login = ({ onSwitch }) => {
         </ContainerForm>
       </fieldset>
     </form>
+    {state.loading && <LoaderOverlay />}
+    </>
   )
 }
 
