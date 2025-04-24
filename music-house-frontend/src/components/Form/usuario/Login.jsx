@@ -26,8 +26,10 @@ import {
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
 import { fontSizeResponsi, inputStyles } from '@/components/styles/styleglobal'
-//import LoadingText from '@/components/common/loadingText/LoadingText'
+
 import { loginValidationSchema } from '@/validations/login'
+import useAlert from '@/hook/useAlert'
+import { getErrorMessage } from '@/api/getErrorMessage'
 
 const Login = ({ onSwitch }) => {
   const navigate = useNavigate()
@@ -35,6 +37,7 @@ const Login = ({ onSwitch }) => {
   const [showPassword, setShowPassword] = useState(false)
   const handleClickShowPassword = () => setShowPassword((show) => !show)
   const [loading, setLoading] = useState(false)
+  const { showSuccess, showError } = useAlert()
 
   const formik = useFormik({
     initialValues: {
@@ -54,15 +57,18 @@ const Login = ({ onSwitch }) => {
           setTimeout(() => {
             setLoading(false)
             navigate('/')
-
-            setSubmitting(false)
-            setLoading(false)
+            showSuccess(`✅ ${response.message}`, null, () => {
+              setSubmitting(false)
+              setLoading(false)
+            })
           }, 500)
         } else {
+          showError(`❌ ${response.message}`)
           setSubmitting(false)
           setLoading(false)
         }
       } catch (error) {
+        showError(`❌ ${getErrorMessage(error)}`)
         setSubmitting(false)
         setLoading(false)
       }
