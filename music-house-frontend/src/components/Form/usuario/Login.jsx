@@ -8,16 +8,13 @@ import {
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import { useFormik } from 'formik'
-
 import { useNavigate } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import ContactSupportRoundedIcon from '@mui/icons-material/ContactSupportRounded'
 import { useAuth } from '@/hook/useAuth'
-
 import { UsersApi } from '@/api/users'
-
 import {
   ContainerBottom,
   ContainerForm,
@@ -26,10 +23,9 @@ import {
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
 import { fontSizeResponsi, inputStyles } from '@/components/styles/styleglobal'
-
 import { loginValidationSchema } from '@/validations/login'
-import useAlert from '@/hook/useAlert'
-import { getErrorMessage } from '@/api/getErrorMessage'
+//import useAlert from '@/hook/useAlert'
+//import { getErrorMessage } from '@/api/getErrorMessage'
 import { useAppStates } from '@/components/utils/global.context'
 import { actions } from '@/components/utils/actions'
 
@@ -38,8 +34,7 @@ const Login = ({ onSwitch }) => {
   const { setAuthData } = useAuth()
   const { dispatch, state } = useAppStates()
   const [showPassword, setShowPassword] = useState(false)
-  const { showSuccess, showError } = useAlert()
-
+  //const { showSuccess, showError } = useAlert()
   const handleClickShowPassword = () => setShowPassword((show) => !show)
 
   const formik = useFormik({
@@ -57,16 +52,16 @@ const Login = ({ onSwitch }) => {
         if (response?.result?.token) {
           setAuthData({ token: response.result.token })
           dispatch({ type: actions.SET_LOADING, payload: false })
-          showSuccess(`✅ ${response.message}`)
+          //showSuccess(`✅ ${response.message}`)
           setTimeout(() => {
             navigate('/')
           }, 1500)
         } else {
-          showError(`❌ ${response.message}`)
+          //showError(`❌ ${response.message}`)
           dispatch({ type: actions.SET_LOADING, payload: false })
         }
       } catch (error) {
-        showError(`❌ ${getErrorMessage(error)}`)
+        //showError(`❌ ${getErrorMessage(error)}`)
         dispatch({ type: actions.SET_LOADING, payload: false })
       }
     }
