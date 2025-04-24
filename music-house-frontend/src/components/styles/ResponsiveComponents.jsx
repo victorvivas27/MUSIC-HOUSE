@@ -1,7 +1,7 @@
 import { styled } from '@mui/system'
 import { Box, Button, Container, Grid, Typography } from '@mui/material'
 import { flexColumnContainer } from './styleglobal'
-import background from '@/assets/CrearUsuarioBackGround.png'
+
 
 export const CustomButton = styled(Button, {
   shouldForwardProp: (prop) => prop !== 'sx'
@@ -220,18 +220,23 @@ export const BoxLogoSuperior = styled(Grid)(() => ({
   alignItems: 'flex-end',
   marginTop: 20
 }))
+const background =
+  'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround.avif'
 
-export const MainCrearUsuario = styled(Grid)(() => ({
+export const MainCrearUsuario = styled(Grid, {
+  shouldForwardProp: (prop) => prop !== 'bgLoaded'
+})(({ bgLoaded }) => ({
   display: 'flex',
   flexDirection: 'column',
-  backgroundImage: `url(${background})`,
+  backgroundImage: bgLoaded ? `url(${background})` : 'none',
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'left bottom',
   height: '100%',
   minHeight: '100vh',
   transition: 'background-image 1s ease-in-out',
-  backgroundAttachment: 'fixed'
+  backgroundAttachment: 'fixed',
+  position: 'relative'
 }))
 
 export const MainWrapper = styled(Box)(() => ({

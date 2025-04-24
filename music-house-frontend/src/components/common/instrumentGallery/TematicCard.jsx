@@ -16,6 +16,7 @@ const TematicCard = ({ title, imageUrlTheme, paragraph }) => {
    
   return (
     <Card
+    
     sx={{
       width: {
         xs: '98%',
@@ -31,6 +32,7 @@ const TematicCard = ({ title, imageUrlTheme, paragraph }) => {
     )}
 
     <CardMedia
+     component="div"
       sx={{
         height: {
           xs: 350,

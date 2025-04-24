@@ -8,11 +8,11 @@ const ImageWithLoader = ({
     alt = '',
     width = 80,
     height = 80,
-    variant = 'circular', // 'circular' o 'rectangular'
+    variant = 'circular', 
     border = '1px solid #ccc',
     borderRadius = '50%',
     fallbackSrc = '/src/assets/instrumento_general_03.jpg',
-    delay = 500
+    delay = 500,
   }) => {
     const loaded = useImageLoader(src, delay);
   

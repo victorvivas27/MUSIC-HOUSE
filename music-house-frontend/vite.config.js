@@ -5,12 +5,24 @@ import path from 'path'
 
 
 export default defineConfig(() => {
-  
   return {
     plugins: [react()],
     resolve: {
       alias: {
         '@': path.resolve(__dirname, './src')
+      }
+    },
+    build: {
+      chunkSizeWarningLimit: 1000, // aumenta el límite antes de mostrar warning
+      rollupOptions: {
+        output: {
+          manualChunks: {
+            // separa dependencias grandes para mejorar cache y carga inicial
+            react: ['react', 'react-dom'],
+            mui: ['@mui/material', '@mui/icons-material', '@mui/system'],
+            vendor: ['axios', 'sweetalert2', 'framer-motion']
+          }
+        }
       }
     }
   }

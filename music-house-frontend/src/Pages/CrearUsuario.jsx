@@ -5,8 +5,6 @@ import { useAuth } from "@/hook/useAuth"
 import { Box, Typography } from "@mui/material"
 import { Link } from "react-router-dom"
 
-
-
 export const CrearUsuario = () => {
   const { isUserAdmin } = useAuth()
 

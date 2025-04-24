@@ -32,8 +32,16 @@ const ImageSkeleton = ({
   };
   
   ImageSkeleton.propTypes = {
-    height: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
-    width: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    height: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.object // ✅ permite { xs: 300, md: 450 }
+    ]),
+    width: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.number,
+      PropTypes.object
+    ]),
     variant: PropTypes.oneOf(['rectangular', 'circular']),
     borderRadius: PropTypes.string,
     sx: PropTypes.object
