@@ -6,10 +6,11 @@ import path from 'path'
 
 export default defineConfig(() => {
   return {
+    base: './', 
     plugins: [react()],
     resolve: {
       alias: {
-        '@': path.resolve(__dirname, './src')
+        '@': path.resolve(path.dirname(new URL(import.meta.url).pathname), './src')
       }
     },
     build: {
