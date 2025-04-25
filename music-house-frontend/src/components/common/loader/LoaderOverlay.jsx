@@ -1,10 +1,12 @@
 import { Box, CircularProgress } from '@mui/material'
 import LoadingText from '../loadingText/LoadingText'
 import PropTypes from 'prop-types'
+import { forwardRef } from 'react'
 
-const LoaderOverlay = ({ texto }) => {
+const LoaderOverlay = forwardRef(({ texto }, ref) => {
   return (
     <Box
+      ref={ref} // importante para compatibilidad con Fade / Transition
       sx={{
         position: 'fixed',
         top: 0,
@@ -28,10 +30,12 @@ const LoaderOverlay = ({ texto }) => {
       <LoadingText text={texto} />
     </Box>
   )
+})
+
+LoaderOverlay.propTypes = {
+  texto: PropTypes.string
 }
+
+LoaderOverlay.displayName = 'LoaderOverlay'
 
 export default LoaderOverlay
-
-LoaderOverlay.propTypes={
-    texto:PropTypes.string
-}

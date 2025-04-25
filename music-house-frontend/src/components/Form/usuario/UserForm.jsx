@@ -4,7 +4,8 @@ import {
   FormControlLabel,
   Checkbox,
   styled,
-  Grid
+  Grid,
+  Fade
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import PropTypes from 'prop-types'
@@ -69,13 +70,12 @@ export const UserForm = ({
     initialFormData.idUser || isUserAdmin ? 'Guardando' : 'Registrando'
 
   useEffect(() => {
-    if (
-      initialFormData.picture &&
-      typeof initialFormData.picture === 'string'
-    ) {
-      setPreview(initialFormData.picture)
+    // Solo setear preview si viene de backend como string
+    if (typeof initialFormData.picture === 'string') {
+      // Evitá pisar un preview ya existente desde input
+      setPreview((prev) => prev ?? initialFormData.picture)
     }
-  }, [initialFormData.picture])
+  }, [initialFormData.picture, preview])
 
   const formikInitialValues = {
     ...initialFormData,
@@ -253,7 +253,11 @@ export const UserForm = ({
           </form>
         )}
       </Formik>
-      {combinedLoading && <LoaderOverlay texto={buttonTextLoading} />}
+      {combinedLoading && (
+        <Fade in={combinedLoading} timeout={400} unmountOnExit>
+          <LoaderOverlay texto={buttonTextLoading} />
+        </Fade>
+      )}
     </>
   )
 }

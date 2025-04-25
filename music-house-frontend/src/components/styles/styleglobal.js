@@ -1,11 +1,18 @@
 export const inputStyles = {
-  width: "99%",
-  color: 'var( --texto-primario)',
-  margin:2,
+  width: '99%',
+  color: 'var(--texto-primario)',
+  margin: 2,
+
   '& .MuiInputBase-input': {
-    color: 'var( --texto-primario)',
+    color: 'var(--texto-primario)',
     fontSize: '18px',
 
+    // ✅ Estilo para autofill
+    '&:-webkit-autofill': {
+      WebkitBoxShadow: '0 0 0 1000px rgba(255,255,255,0) inset',
+      WebkitTextFillColor: 'var(--texto-primario)',
+      transition: 'background-color 9999s ease-in-out 0s'
+    }
   },
 
   '& .MuiOutlinedInput-root': {
@@ -13,31 +20,25 @@ export const inputStyles = {
       borderColor: 'var(--color-secundario)',
       borderWidth: '2px',
       borderRadius: '8px',
-      fontSize: '18px',
-
+      fontSize: '18px'
     },
     '&:hover fieldset': {
       borderColor: 'var(--color-primario)',
-      fontSize: '18px',
-
+      fontSize: '18px'
     },
     '&.Mui-focused fieldset': {
       borderColor: 'var(--color-exito)',
-      fontSize: '18px',
-
+      fontSize: '18px'
     }
   },
 
   '& .MuiInputLabel-root': {
-    color: 'var( --texto-primario)',
-    fontSize: '18px',
-
+    color: 'var(--texto-primario)',
+    fontSize: '18px'
   },
-
   '& .MuiInputLabel-root.Mui-focused': {
-    color: 'var( --texto-primario)',
-    fontSize: '18px',
-
+    color: 'var(--texto-primario)',
+    fontSize: '18px'
   }
 }
 
