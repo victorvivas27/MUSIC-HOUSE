@@ -1,18 +1,14 @@
 import { updateAddress } from '@/api/addresses'
 import { getErrorMessage } from '@/api/getErrorMessage'
-import { ContainerBottom, CustomButton } from '@/components/styles/ResponsiveComponents'
-import useAlert from '@/hook/useAlert'
 import {
-  Box,
-  CircularProgress,
-  Modal,
-  TextField,
-  Typography,
-  useMediaQuery
-} from '@mui/material'
+  ContainerBottom,
+  CustomButton
+} from '@/components/styles/ResponsiveComponents'
+import useAlert from '@/hook/useAlert'
+import { Box, Modal, TextField, Typography, useMediaQuery } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-
+import LoaderOverlay from '../loader/LoaderOverlay'
 
 const ModalUpdateDireccion = ({
   open,
@@ -165,31 +161,8 @@ const ModalUpdateDireccion = ({
           {error && <Typography color="error">{error}</Typography>}
 
           <ContainerBottom>
-            <CustomButton
-              variant="contained"
-              type="submit"
-              disabled={loading}
-              sx={{
-                minWidth: '150px',
-                minHeight: '40px',
-
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '10px'
-              }}
-            >
-              {loading ? (
-                <>
-                  <CircularProgress
-                    size={20}
-                    sx={{ color: 'var(--color-azul)' }}
-                  />
-                  Cargando...
-                </>
-              ) : (
-                'Guardar'
-              )}
+            <CustomButton type="submit" disabled={loading}>
+              Modificar
             </CustomButton>
 
             <Typography
@@ -209,6 +182,15 @@ const ModalUpdateDireccion = ({
             </Typography>
           </ContainerBottom>
         </form>
+        {loading && (
+          <LoaderOverlay
+            texto={'Modificando direccion'}
+            containerProps={{
+              borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.8)'
+            }}
+          />
+        )}
       </Box>
     </Modal>
   )

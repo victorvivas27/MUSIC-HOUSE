@@ -34,7 +34,7 @@ export const addPhone = async ({ idUser, phoneNumber }) => {
 export const removePhone = async (idPhone) => {
   try {
     const response = await axios
-    .delete(`${BASE_URL}/phones${idPhone}`);
+    .delete(`${BASE_URL}/phones/${idPhone}`);
     return response.data;
   } catch (error) {
     handleApiError(error);

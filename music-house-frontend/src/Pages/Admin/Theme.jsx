@@ -52,6 +52,8 @@ export const Theme = () => {
   const navigate = useNavigate()
   const { showConfirm, showLoading, showSuccess, showError } = useAlert()
   const { state, dispatch } = useAppStates()
+   const [loading, setLoading] = useState(true)
+   const [loadedImages, setLoadedImages] = useState(0);
   const {
     page,
     safePage,
@@ -65,7 +67,7 @@ export const Theme = () => {
     sizeToUse = rowsPerPage,
     isFirst = false
   ) => {
-    if (isFirst) dispatch({ type: actions.SET_LOADING, payload: true })
+    if (isFirst) setLoading(true)
     const sort = `${orderBy},${order}`
 
     try {
@@ -79,7 +81,7 @@ export const Theme = () => {
     } finally {
       setTimeout(() => {
         if (isFirst) setFirstLoad(false)
-        dispatch({ type: actions.SET_LOADING, payload: false })
+        setLoading(false)
       }, 100)
     }
   }
@@ -140,7 +142,9 @@ export const Theme = () => {
 
   return (
     <>
-     {state.loading && page === 0 && <Loader title="Cargando tematicas"/>}
+      {(loading || loadedImages < rows.length) && page === 0 && (
+               <Loader title="Cargando tematicas" fullSize={true} />
+             )}
     <MainWrapper>
       <Paper
         sx={{
@@ -211,10 +215,13 @@ export const Theme = () => {
 
                     <TableCell align="left" sx={{ ...flexRowContainer }}>
                       <ImageWithLoader
-                        src={row.imageUrlTheme}
+                        src={row.imageUrlTheme||
+                          '/src/assets/instrumento_general_03.jpg'}
                         variant="circular"
                         width={80}
                         height={80}
+                        onLoad={() => setLoadedImages(prev => prev + 1)}
+                        onError={() => setLoadedImages(prev => prev + 1)}
                       />
                     </TableCell>
 

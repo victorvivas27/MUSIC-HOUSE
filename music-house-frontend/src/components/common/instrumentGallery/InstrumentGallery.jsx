@@ -2,6 +2,7 @@ import ImageList from '@mui/material/ImageList'
 import ImageListItem from '@mui/material/ImageListItem'
 import { Box } from '@mui/material'
 import PropTypes from 'prop-types'
+import ImageWithLoader from '../imageWithLoader/ImageWithLoader'
 
 export const InstrumentGallery = ({ itemData }) => {
   return (
@@ -21,18 +22,15 @@ export const InstrumentGallery = ({ itemData }) => {
               }
             }}
           >
-            <Box
-              sx={{
-                padding: '0.5rem',
-                borderRadius: '10px'
-              }}
-            >
-              <img
-                src={item.imageUrl}
-                alt={`Instrumento ${index + 1}`}
-                loading="lazy"
-              />
-            </Box>
+            <ImageWithLoader
+              src={item.imageUrl}
+              fallbackSrc="/src/assets/instrumento_general_03.jpg"
+              alt="Instrumento de galería"
+              variant="rounded"
+              width="100%"
+              height="auto"
+              borderRadius="10px"
+            />
           </ImageListItem>
         ))}
       </ImageList>

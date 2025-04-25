@@ -19,10 +19,12 @@ public class PrivacyPolicy {
     @GeneratedValue(generator = "UUID")
     private UUID idPrivacyPolicy;
 
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @Lob
+    @Column(nullable = false)
     private String title;
 
-    @Column(nullable = false, columnDefinition = "LONGTEXT")
+    @Lob
+    @Column(nullable = false)
     private String content;
 
     @CreationTimestamp

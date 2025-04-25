@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 
-import { Box, CircularProgress, keyframes, Typography } from '@mui/material'
+import { Box, CircularProgress, keyframes} from '@mui/material'
 import useImageLoader from '@/hook/useImageLoader'
-
-// 🔁 Animación tipo AuthPage
+import LoadingText from '../loadingText/LoadingText'
+import { useState } from 'react'
 const fadeOut = keyframes`
   0% { opacity: 1; }
   100% { opacity: 0; visibility: hidden; }
@@ -19,9 +19,13 @@ const ImageWithLoader = ({
   borderRadius = '50%',
   fallbackSrc = '/src/assets/instrumento_general_03.jpg',
   delay = 10,
-  showText = false
+  showText = false,
+  onLoad = () => {},    
+  onError = () => {}   
+  
 }) => {
   const loaded = useImageLoader(src, delay)
+  const [hasError, setHasError] = useState(false)
 
   return (
     <Box
@@ -33,10 +37,18 @@ const ImageWithLoader = ({
         borderRadius: variant === 'circular' ? '50%' : borderRadius
       }}
     >
-      {/* Imagen final */}
+      {/* Imagen principal con fallback si falla */}
       <img
-        src={src || fallbackSrc}
-        alt={alt}
+       src={hasError ? fallbackSrc : src}
+       alt={alt}
+       onLoad={() => {
+         onLoad(); 
+         setHasError(false);
+       }}
+       onError={() => {
+         onError(); 
+         setHasError(true);
+       }}
         style={{
           width: '100%',
           height: '100%',
@@ -71,19 +83,13 @@ const ImageWithLoader = ({
         }}
       >
         <Box sx={{ mb: 1 }}>
-          <CircularProgress size={32} thickness={4} color="inherit" />
+          <CircularProgress
+            size={40}
+            thickness={1}
+            sx={{ color: 'var(--color-primario)' }}
+          />
         </Box>
-        {showText && (
-          <Typography
-            sx={{
-              color: 'white',
-              fontSize: '0.75rem',
-              opacity: 0.6
-            }}
-          >
-            Cargando imagen...
-          </Typography>
-        )}
+        {showText && <LoadingText text="Cargando imagen" />}
       </Box>
     </Box>
   )
@@ -99,7 +105,9 @@ ImageWithLoader.propTypes = {
   borderRadius: PropTypes.string,
   fallbackSrc: PropTypes.string,
   delay: PropTypes.number,
-  showText: PropTypes.bool
+  showText: PropTypes.bool,
+  onLoad: PropTypes.func,   
+  onError: PropTypes.func   
 }
 
 export default ImageWithLoader

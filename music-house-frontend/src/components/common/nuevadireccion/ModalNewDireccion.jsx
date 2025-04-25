@@ -1,10 +1,12 @@
 import { addAddress } from '@/api/addresses'
 import { getErrorMessage } from '@/api/getErrorMessage'
-import { ContainerBottom, CustomButton } from '@/components/styles/ResponsiveComponents'
+import {
+  ContainerBottom,
+  CustomButton
+} from '@/components/styles/ResponsiveComponents'
 import useAlert from '@/hook/useAlert'
 import {
   Box,
-  CircularProgress,
   Modal,
   TextField,
   Typography,
@@ -12,7 +14,7 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-import LoadingText from '../loadingText/LoadingText'
+import LoaderOverlay from '../loader/LoaderOverlay'
 
 const ModalNewDireccion = ({ open, handleClose, idUser, refreshUserData }) => {
   const [formData, setFormData] = useState({
@@ -167,17 +169,7 @@ const ModalNewDireccion = ({ open, handleClose, idUser, refreshUserData }) => {
 
           <ContainerBottom>
             <CustomButton type="submit" disabled={loading}>
-              {loading ? (
-                <>
-                  <LoadingText text="Cargando" />
-                  <CircularProgress
-                    size={20}
-                    sx={{ color: 'var(--color-azul)' }}
-                  />
-                </>
-              ) : (
-                'Agregar'
-              )}
+              Agregar
             </CustomButton>
             <Typography
               onClick={handleClose}
@@ -196,6 +188,15 @@ const ModalNewDireccion = ({ open, handleClose, idUser, refreshUserData }) => {
             </Typography>
           </ContainerBottom>
         </form>
+        {loading && (
+          <LoaderOverlay
+            texto={'Cargando nueva direccion'}
+            containerProps={{
+              borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.8)'
+            }}
+          />
+        )}
       </Box>
     </Modal>
   )

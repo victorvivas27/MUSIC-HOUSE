@@ -14,8 +14,7 @@ import {
   MainCrearUsuario
 } from '@/components/styles/ResponsiveComponents'
 import useBackgroundLoader from '@/hook/useBackgroundLoader'
-import { Box, CircularProgress, Typography } from '@mui/material'
-
+import FullScreenLoader from '@/components/common/fullScreenLoader/FullScreenLoader'
 const background =
   'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround.avif'
 
@@ -39,44 +38,7 @@ const AuthPage = () => {
 
   return (
     <MainCrearUsuario container bgLoaded={bgLoaded}>
-      <Box
-        sx={{
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100vh',
-          background:
-            'linear-gradient(135deg, rgba(30, 30, 30, 0.44) 0%, rgba(45, 45, 45, 0.38) 100%)',
-          zIndex: 9999,
-          backdropFilter: 'blur(4px)',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          transition: 'opacity 1s ease-in-out',
-          animation: bgLoaded ? 'fadeOut 1s ease-out forwards' : 'none',
-          '@keyframes fadeOut': {
-            '0%': { opacity: 1 },
-            '100%': { opacity: 0, visibility: 'hidden' }
-          }
-        }}
-      >
-        <Box sx={{ mb: 2 }}>
-          <CircularProgress size={48} thickness={4} color="inherit" />
-        </Box>
-        <Typography
-          sx={{
-            color: 'white',
-            fontSize: '1.5rem',
-            letterSpacing: '1px',
-            fontWeight: 300,
-            opacity: 0.6
-          }}
-        >
-          Cargando...
-        </Typography>
-      </Box>
+      <FullScreenLoader bgLoaded={bgLoaded} text="Cargando" />
 
       <BoxLogoSuperior>
         <Link to="/" onClick={() => navigate('/')}>

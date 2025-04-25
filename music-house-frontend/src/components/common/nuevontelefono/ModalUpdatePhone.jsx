@@ -1,10 +1,12 @@
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { updatePhone } from '@/api/phones'
-import { ContainerBottom, CustomButton } from '@/components/styles/ResponsiveComponents'
+import {
+  ContainerBottom,
+  CustomButton
+} from '@/components/styles/ResponsiveComponents'
 import useAlert from '@/hook/useAlert'
 import {
   Box,
-  CircularProgress,
   Modal,
   TextField,
   Typography,
@@ -12,7 +14,7 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-
+import LoaderOverlay from '../loader/LoaderOverlay'
 
 const ModalUpdatePhone = ({
   open,
@@ -114,31 +116,8 @@ const ModalUpdatePhone = ({
           {error && <Typography color="error">{error}</Typography>}
 
           <ContainerBottom>
-            <CustomButton
-              variant="contained"
-              type="submit"
-              disabled={loading}
-              sx={{
-                minWidth: '150px',
-                minHeight: '40px',
-
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '10px'
-              }}
-            >
-              {loading ? (
-                <>
-                  <CircularProgress
-                    size={20}
-                    sx={{ color: 'var(--color-azul)' }}
-                  />
-                  Cargando...
-                </>
-              ) : (
-                'Guardar'
-              )}
+            <CustomButton type="submit" disabled={loading}>
+              Modificar
             </CustomButton>
 
             <Typography
@@ -158,6 +137,15 @@ const ModalUpdatePhone = ({
             </Typography>
           </ContainerBottom>
         </form>
+        {loading && (
+          <LoaderOverlay
+            texto={'Modificando telefono'}
+            containerProps={{
+              borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.8)'
+            }}
+          />
+        )}
       </Box>
     </Modal>
   )

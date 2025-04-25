@@ -8,7 +8,7 @@ import {
   IconButton,
   Stack,
   Grid,
-  CircularProgress
+  CircularProgress,
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useAuth } from '@/hook/useAuth'
@@ -16,67 +16,77 @@ import useAlert from '@/hook/useAlert'
 import { deleteReservation, getReservationById } from '@/api/reservations'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import TooltipMy from '@/components/common/toolTip/ToolTipMy'
+import { Loader } from '@/components/common/loader/Loader'
 
 
 
 const MisReservas = () => {
-  const [reservas, setReservas] = useState([])
-  const [loading, setLoading] = useState(true)
-  const { idUser } = useAuth()
  
-  const { showConfirm, showLoading, showSuccess, showError } = useAlert()
+  const [reservas, setReservas] = useState([]);
+  const [loadingState, setLoadingState] = useState({
+    initial: true,
+    deleting: false
+  });
+  const { idUser } = useAuth();
+  const { showConfirm, showLoading, showSuccess, showError } = useAlert();
 
+  // Función de carga con manejo de estado mejorado
   const getAllReservations = useCallback(async () => {
-    setLoading(true)
+    setLoadingState(prev => ({ ...prev, initial: true }));
     try {
-      const response = await getReservationById(idUser)
-      setReservas(response.result || [])
-    } catch {
-      setReservas([])
+      const response = await getReservationById(idUser);
+      setReservas(response.result || []);
+    } catch (error) {
+      setReservas([]);
+      showError(`Error al cargar reservas: ${getErrorMessage(error)}`);
     } finally {
-      setTimeout(() => setLoading(false), 500)
+      setLoadingState(prev => ({ ...prev, initial: false }));
     }
-  }, [idUser])
+  }, [idUser, showError]);
 
   useEffect(() => {
-    getAllReservations()
-  }, [getAllReservations])
+    getAllReservations();
+  }, [getAllReservations]);
+
 
   const handleDelete = async (idReservation) => {
-    const reserva = reservas.find((r) => r.idReservation === idReservation)
-    if (!reserva) return
+    const reserva = reservas.find(r => r.idReservation === idReservation);
+    if (!reserva) return;
 
     const isConfirmed = await showConfirm(
       '¿Eliminar reserva?',
       'Esta acción no se puede deshacer.'
-    )
-    if (!isConfirmed) return
+    );
+    if (!isConfirmed) return;
 
-    showLoading('Eliminando...', 'Por favor espera.')
+    setLoadingState(prev => ({ ...prev, deleting: true }));
+    showLoading('Eliminando reserva...');
+    
     try {
       await deleteReservation(
         reserva.idInstrument,
         reserva.idUser,
         reserva.idReservation
-      )
-      showSuccess('✅ Reserva eliminada correctamente.')
-      getAllReservations()
+      );
+      showSuccess('✅ Reserva eliminada correctamente');
+      await getAllReservations();
     } catch (error) {
-      showError(`❌ ${getErrorMessage(error)}`)
+      showError(`❌ ${getErrorMessage(error)}`);
+    } finally {
+      setLoadingState(prev => ({ ...prev, deleting: false }));
     }
-  }
+  };
 
-  if (loading) {
+ 
+  if (loadingState.initial) {
     return (
-      <Box
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-        height="100vh"
-      >
-        <CircularProgress />
-      </Box>
-    )
+      <Loader 
+        title="Cargando tus reservas..." 
+        fullSize={true}
+        overlayColor="rgba(255, 255, 255, 0.8)"
+        progressColor="var(--color-primario)"
+      />
+    );
   }
 
   return (
@@ -87,7 +97,9 @@ const MisReservas = () => {
         backgroundColor: '#f5f5f5',
         borderRadius: 4,
         margin: 2,
-        boxShadow: 'var(--box-shadow)'
+        boxShadow: 'var(--box-shadow)',
+        opacity: loadingState.deleting ? 0.7 : 1,
+        transition: 'opacity 0.3s ease'
       }}
     >
       <Typography
@@ -113,7 +125,7 @@ const MisReservas = () => {
           }
         }}
       >
-        🎸Reservas
+        🎸 Mis Reservas
       </Typography>
 
       <Grid container spacing={1} justifyContent="center">
@@ -128,27 +140,44 @@ const MisReservas = () => {
                 transition: 'transform 0.3s',
                 height: '95%',
                 '&:hover': {
-                  transform: 'scale(1.05)'
-                }
+                  transform: loadingState.deleting ? 'none' : 'scale(1.05)'
+                },
+                position: 'relative'
               }}
             >
+              {/* Overlay durante eliminación */}
+              {loadingState.deleting && (
+                <Box
+                  sx={{
+                    position: 'absolute',
+                    top: 0,
+                    left: 0,
+                    width: '100%',
+                    height: '100%',
+                    backgroundColor: 'rgba(255, 255, 255, 0.5)',
+                    zIndex: 1,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center'
+                  }}
+                >
+                  <CircularProgress size={24} color="primary" />
+                </Box>
+              )}
+
               <CardMedia
                 component="img"
                 image={reserva.imageUrl || '/images/default-placeholder.png'}
                 alt={reserva.instrumentName}
                 sx={{
                   padding: 1,
-
                   objectFit: 'contain',
                   borderRadius: '4px 4px 0 0'
                 }}
               />
               <CardContent>
                 <Stack spacing={1}>
-                  <Typography
-                    variant="h6"
-                    sx={{ fontFamily: 'Roboto', fontWeight: 'bold' }}
-                  >
+                  <Typography variant="h6" sx={{ fontFamily: 'Roboto', fontWeight: 'bold' }}>
                     {reserva.instrumentName}
                   </Typography>
                   <Typography variant="body2">
@@ -157,17 +186,13 @@ const MisReservas = () => {
                   <Typography variant="body2">
                     <strong>Fin:</strong> {reserva.endDate}
                   </Typography>
-                  <Typography
-                    variant="subtitle1"
-                    fontWeight="bold"
-                    sx={{ color: '#d32f2f' }}
-                  >
+                  <Typography variant="subtitle1" fontWeight="bold" sx={{ color: '#d32f2f' }}>
                     Total: ${reserva.totalPrice}
                   </Typography>
                 </Stack>
                
                 <TooltipMy
-                  message="¿Seguro que deseas quitar esto de tus reservas? "
+                  message="¿Seguro que deseas quitar esto de tus reservas?"
                   backgroundColor="var(--color-primario)"
                   textColor="var(--color-error)"
                   fontSize="0.9rem"
@@ -176,25 +201,24 @@ const MisReservas = () => {
                   <IconButton
                     color="error"
                     onClick={() => handleDelete(reserva.idReservation)}
+                    disabled={loadingState.deleting}
                   >
                     <DeleteIcon />
                   </IconButton>
                 </TooltipMy>
-               
               </CardContent>
             </Card>
           </Grid>
         ))}
-        <div style={{ display: 'flex', gap: '1rem', padding: '2rem' }}></div>
       </Grid>
 
-      {reservas.length === 0 && (
+      {reservas.length === 0 && !loadingState.initial && (
         <Typography mt={6} textAlign="center" sx={{ color: '#757575' }}>
           No tienes reservas activas.
         </Typography>
       )}
     </Box>
-  )
-}
+  );
+};
 
-export default MisReservas
+export default MisReservas;

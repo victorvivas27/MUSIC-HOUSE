@@ -1,4 +1,4 @@
-import { Box, CircularProgress } from '@mui/material'
+import { Box } from '@mui/material'
 import {
   DateCalendar,
   LocalizationProvider,
@@ -22,7 +22,8 @@ import {
   ParagraphResponsive,
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
-import LoadingText from '../loadingText/LoadingText'
+import LoaderOverlay from '../loader/LoaderOverlay'
+
 
 const formatDate = (date) => dayjs(date).format('YYYY-MM-DD')
 
@@ -159,6 +160,7 @@ const CalendarReserva = ({ instrument }) => {
     const isReserved = reservedDates.includes(formattedDay)
 
     return (
+     
       <PickersDay
         {...other}
         day={day}
@@ -186,7 +188,13 @@ const CalendarReserva = ({ instrument }) => {
   }
 
   return (
+    <>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
+    <Box sx={{ 
+    position: 'relative',
+    minHeight: '600px',
+    width: '100%'
+  }}>
       <Box
         sx={{
           ...flexColumnContainer,
@@ -242,7 +250,6 @@ const CalendarReserva = ({ instrument }) => {
           }}
         >
           <CustomButton
-            variant="contained"
             onClick={handleConfirmReservation}
             disabled={loading}
             sx={{
@@ -256,21 +263,32 @@ const CalendarReserva = ({ instrument }) => {
               selectedDates.length > 1 ? 'fade-in-up' : 'fade-out-soft'
             }
           >
-            {loading ? (
-              <>
-                <LoadingText text="Cargando Reserva" />
-                <CircularProgress
-                  size={20}
-                  sx={{ color: 'var(--color-azul)' }}
-                />
-              </>
-            ) : (
-              'Reservar'
-            )}
-          </CustomButton>
+          Reservar
+            </CustomButton>
         </ContainerBottom>
       </Box>
+      {loading && (
+      <LoaderOverlay
+        texto={'Cargando reserva'}
+        containerProps={{
+          position: 'absolute',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          borderRadius: '8px',
+          background: 'rgba(255, 255, 255, 0.8)',
+          zIndex: 10,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center'
+        }}
+      />
+    )}
+  </Box>
     </LocalizationProvider>
+   
+            </>
   )
 }
 

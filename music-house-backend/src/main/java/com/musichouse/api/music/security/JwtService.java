@@ -28,7 +28,7 @@ import java.util.stream.Collectors;
 public class JwtService {
 
     /**
-     * Clave secreta para firmar y verificar los tokens, definida en application.properties o application.yml.
+     * Clave secreta para firmar y verificar los tokens, definida en application-dev.properties o application.yml.
      */
     @Value("${security.jwt.secret-key}")
     private String SECRET_KEY;
@@ -36,7 +36,7 @@ public class JwtService {
     /**
      * Tiempo de expiración del token JWT, expresado en minutos.
      * <p>
-     * Este valor se carga desde el archivo de configuración (application.properties o application.yml)
+     * Este valor se carga desde el archivo de configuración (application-dev.properties o application.yml)
      * utilizando la propiedad: {@code security.jwt.expiration-minutes}.
      * <p>
      * Ejemplo de configuración:

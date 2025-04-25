@@ -5,7 +5,6 @@ import { countryCodes } from '@/components/utils/codepaises/CountryCodes'
 import useAlert from '@/hook/useAlert'
 import {
   Box,
-  CircularProgress,
   FormControl,
   InputAdornment,
   MenuItem,
@@ -17,7 +16,8 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-import LoadingText from '../loadingText/LoadingText'
+
+import LoaderOverlay from '../loader/LoaderOverlay'
 
 
 
@@ -209,32 +209,9 @@ const ModalNewPhone = ({
           </Typography>
 
           <ContainerBottom>
-            <CustomButton
-              variant="contained"
-              type="submit"
-              disabled={loading}
-              sx={{
-                minWidth: '150px',
-                minHeight: '40px',
-
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                gap: '10px'
-              }}
-            >
-              {loading ? (
-                <>
-                  <LoadingText text="Cargando" />
-                  <CircularProgress
-                    size={20}
-                    sx={{ color: 'var(--color-azul)' }}
-                  />
-                </>
-              ) : (
-                'Agregar'
-              )}
-            </CustomButton>
+            <CustomButton type="submit"disabled={loading} >
+              Agregar
+              </CustomButton>
 
             <Typography
               onClick={handleCloseModalPhone}
@@ -253,6 +230,15 @@ const ModalNewPhone = ({
             </Typography>
           </ContainerBottom>
         </form>
+          {loading && (
+                  <LoaderOverlay
+                    texto={'Cargando nuevo telefono'}
+                    containerProps={{
+                      borderRadius: '8px',
+                      background: 'rgba(255, 255, 255, 0.8)'
+                    }}
+                  />
+                )}
       </Box>
     </Modal>
   )

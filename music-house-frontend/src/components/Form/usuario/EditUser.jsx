@@ -19,6 +19,12 @@ import { Logo } from '@/components/Images/Logo'
 import { actions } from '@/components/utils/actions'
 import { useAppStates } from '@/components/utils/global.context'
 import { countryCodes } from '@/components/utils/codepaises/CountryCodes'
+import useBackgroundLoader from '@/hook/useBackgroundLoader'
+
+import FullScreenLoader from '@/components/common/fullScreenLoader/FullScreenLoader'
+
+const background =
+  'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround.avif'
 const EditUser = ({ onSwitch }) => {
   const { id } = useParams()
   const [user, setUser] = useState()
@@ -31,6 +37,7 @@ const EditUser = ({ onSwitch }) => {
   const { showSuccess, showError } = useAlert()
   const { dispatch } = useAppStates()
   const isSubmittingRef = useRef(false)
+  const bgLoaded = useBackgroundLoader(background, 300)
 
   const parsePhone = (fullNumber) => {
     if (!fullNumber) return { countryCode: '', phoneNumber: '' }
@@ -168,7 +175,8 @@ const EditUser = ({ onSwitch }) => {
   if (isLoadingData) return <Loader title="Un momento por favor..." />
 
   return (
-    <MainCrearUsuario>
+    <MainCrearUsuario container bgLoaded={bgLoaded}>
+       <FullScreenLoader bgLoaded={bgLoaded} text="Cargando" />
       <>
         <BoxLogoSuperior>
           <Link to="/">

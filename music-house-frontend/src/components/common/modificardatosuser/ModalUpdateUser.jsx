@@ -1,11 +1,13 @@
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { UsersApi } from '@/api/users'
-import { ContainerBottom, CustomButton } from '@/components/styles/ResponsiveComponents'
+import {
+  ContainerBottom,
+  CustomButton
+} from '@/components/styles/ResponsiveComponents'
 import useAlert from '@/hook/useAlert'
 import {
   Avatar,
   Box,
-  CircularProgress,
   FormControl,
   Modal,
   TextField,
@@ -14,8 +16,8 @@ import {
 } from '@mui/material'
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
-import LoadingText from '../loadingText/LoadingText'
 
+import LoaderOverlay from '../loader/LoaderOverlay'
 
 const ModalUpdateUser = ({
   open,
@@ -134,127 +136,131 @@ const ModalUpdateUser = ({
           Modificar Datos
         </Typography>
         <form onSubmit={handleSubmit}>
-          <FormControl
-            fullWidth
-            sx={{ display: 'flex', alignItems: 'center', margin: 2 }}
+          <fieldset
+            disabled={loading}
+            style={{ border: 'none', padding: 0, margin: 0 }}
           >
-            <Box
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'center'
-              }}
+            <FormControl
+              fullWidth
+              sx={{ display: 'flex', alignItems: 'center', margin: 2 }}
             >
-              <label htmlFor="avatar-upload">
-                <Avatar
-                  src={preview}
-                  sx={{
-                    width: isMobile ? 80 : 100,
-                    height: isMobile ? 80 : 100,
-                    bgcolor: 'var(--color-secundario)',
-                    fontSize: 40,
-                    cursor: 'pointer',
-                    color: 'var(--color-primario)',
-                    margin: 2,
+              <Box
+                sx={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center'
+                }}
+              >
+                <label htmlFor="avatar-upload">
+                  <Avatar
+                    src={preview}
+                    sx={{
+                      width: isMobile ? 80 : 100,
+                      height: isMobile ? 80 : 100,
+                      bgcolor: 'var(--color-secundario)',
+                      fontSize: 40,
+                      cursor: 'pointer',
+                      color: 'var(--color-primario)',
+                      margin: 2,
 
-                    '&:hover': { opacity: 0.8 }
-                  }}
+                      '&:hover': { opacity: 0.8 }
+                    }}
+                  >
+                    {!preview && 'A'}
+                  </Avatar>
+                </label>
+
+                <input
+                  type="file"
+                  accept="image/*"
+                  id="avatar-upload"
+                  style={{ display: 'none' }}
+                  onChange={handleFileChange}
+                />
+
+                <Typography
+                  variant="body2"
+                  color="var(--text-primario)"
+                  sx={{ mt: 1, textAlign: 'center' }}
                 >
-                  {!preview && 'A'}
-                </Avatar>
-              </label>
+                  Máximo 5MB - Formatos: JPG, PNG
+                </Typography>
+              </Box>
+            </FormControl>
 
-              <input
-                type="file"
-                accept="image/*"
-                id="avatar-upload"
-                style={{ display: 'none' }}
-                onChange={handleFileChange}
-              />
+            <TextField
+              fullWidth
+              label="Nombre"
+              name="name"
+              value={formData.name}
+              onChange={handleChange}
+              margin="normal"
+              required
+              multiline
+              rows={1}
+            />
+
+            <TextField
+              fullWidth
+              label="Apellido"
+              name="lastName"
+              value={formData.lastName}
+              onChange={handleChange}
+              margin="normal"
+              required
+              multiline
+              rows={1}
+            />
+
+            <TextField
+              fullWidth
+              label="Email (No modificable)"
+              name="email"
+              value={formData.email}
+              margin="normal"
+              multiline
+              rows={1}
+              disabled
+            />
+
+            <Typography variant="body2" color="text.secondary" sx={{ m: 2 }}>
+              Para modificar tu correo, contacta con soporte.
+            </Typography>
+
+            {error && <Typography color="error">{error}</Typography>}
+
+            <ContainerBottom>
+              <CustomButton type="submit" disabled={loading}>
+                Modificar
+              </CustomButton>
 
               <Typography
-                variant="body2"
-                color="var(--text-primario)"
-                sx={{ mt: 1, textAlign: 'center' }}
+                onClick={handleCloseModalUser}
+                sx={{
+                  cursor: 'pointer',
+                  fontWeight: '600',
+                  color: 'var(--color-azul)',
+                  marginTop: { xs: '40px', md: '20px' },
+                  '&:hover': {
+                    textDecoration: 'underline',
+                    opacity: 0.8
+                  }
+                }}
               >
-                Máximo 5MB - Formatos: JPG, PNG
+                Cancelar
               </Typography>
-            </Box>
-          </FormControl>
-
-          <TextField
-            fullWidth
-            label="Nombre"
-            name="name"
-            value={formData.name}
-            onChange={handleChange}
-            margin="normal"
-            required
-            multiline
-            rows={1}
-          />
-
-          <TextField
-            fullWidth
-            label="Apellido"
-            name="lastName"
-            value={formData.lastName}
-            onChange={handleChange}
-            margin="normal"
-            required
-            multiline
-            rows={1}
-          />
-
-          <TextField
-            fullWidth
-            label="Email (No modificable)"
-            name="email"
-            value={formData.email}
-            margin="normal"
-            multiline
-            rows={1}
-            disabled
-          />
-
-          <Typography variant="body2" color="text.secondary" sx={{ m: 2 }}>
-            Para modificar tu correo, contacta con soporte.
-          </Typography>
-
-          {error && <Typography color="error">{error}</Typography>}
-
-          <ContainerBottom>
-            <CustomButton type="submit" disabled={loading}>
-              {loading ? (
-                <>
-                  <LoadingText text="Guardando" />
-                  <CircularProgress
-                    size={25}
-                    sx={{ color: 'var(--color-exito)' }}
-                  />
-                </>
-              ) : (
-                'Guardar'
-              )}
-            </CustomButton>
-
-            <Typography
-              onClick={handleCloseModalUser}
-              sx={{
-                cursor: 'pointer', 
-                fontWeight: '600',
-                color: 'var(--color-azul)',
-                marginTop: { xs: '40px', md: '20px' },
-                '&:hover': {
-                  textDecoration: 'underline',
-                  opacity: 0.8
-                }
-              }}
-            >
-              Cancelar
-            </Typography>
-          </ContainerBottom>
+            </ContainerBottom>
+          </fieldset>
         </form>
+        {loading && (
+          <LoaderOverlay
+            texto={'Guardando datos'}
+            containerProps={{
+              borderRadius: '8px', 
+              background: 'rgba(255, 255, 255, 0.8)' 
+            }}
+          />
+        )}
       </Box>
     </Modal>
   )

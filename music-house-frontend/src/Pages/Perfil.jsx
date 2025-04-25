@@ -11,7 +11,7 @@ import {
   Tooltip,
   IconButton,
   Stack,
- Grid
+  Grid
 } from '@mui/material'
 import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
@@ -48,7 +48,7 @@ const Perfil = () => {
   const [selectedPhone, setSelectedPhone] = useState(null)
   const [selectedDireccion, setSelectedDireccion] = useState(null)
   const { showSuccess, showConfirm } = useAlert()
- 
+  const [mainImageLoaded, setMainImageLoaded] = useState(false)
 
   const fetchUser = useCallback(async () => {
     if (!idUser) return
@@ -68,271 +68,282 @@ const Perfil = () => {
     fetchUser()
   }, [fetchUser])
 
-  if (loading) return <Loader title="Un momento por favor..." />
-
   return (
-    <Box sx={{ p: 3, marginTop: 40 }}>
-      <Card sx={{ borderRadius: 4, boxShadow: 'var(--box-shadow)', p: 2 }}>
-        <CardContent>
-          <Stack
-            direction={{ xs: 'column', sm: 'row' }}
-            spacing={3}
-            alignItems="center"
-          >
-            <Tooltip title="Editar tus datos">
-              <Box
-                onClick={() => setOpenModalUser(true)}
-                sx={{ cursor: 'pointer' }}
-              >
-                <ImageWithLoader
-                  src={userData?.picture}
-                  alt={userData?.name}
-                  width={90}
-                  height={90}
-                  variant="circular"
-                  fallbackSrc={undefined} // para que se vea la letra si no hay imagen
-                />
-                {!userData?.picture && (
-                  <Avatar
-                    sx={{
-                      width: 90,
-                      height: 90,
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      pointerEvents: 'none',
-                      backgroundColor: '#666',
-                      fontWeight: 'bold'
-                    }}
-                  >
-                    {userData?.name?.[0]}
-                  </Avatar>
-                )}
+    <>
+      {(loading || !mainImageLoaded) && (
+        <Loader title="Cargando perfil..." fullSize={true} />
+      )}
+      <Box sx={{ p: 3, marginTop: 40 }}>
+        <Card sx={{ borderRadius: 4, boxShadow: 'var(--box-shadow)', p: 2 }}>
+          <CardContent>
+            <Stack
+              direction={{ xs: 'column', sm: 'row' }}
+              spacing={3}
+              alignItems="center"
+            >
+              <Tooltip title="Editar tus datos">
+                <Box
+                  onClick={() => setOpenModalUser(true)}
+                  sx={{ cursor: 'pointer' }}
+                >
+                  <ImageWithLoader
+                    src={userData?.picture}
+                    alt={userData?.name}
+                    width={90}
+                    height={90}
+                    variant="circular"
+                    fallbackSrc={undefined}
+                    onLoad={() => setMainImageLoaded(true)}
+                    onError={() => setMainImageLoaded(true)}
+                  />
+                  {!userData?.picture && (
+                    <Avatar
+                      sx={{
+                        width: 90,
+                        height: 90,
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        pointerEvents: 'none',
+                        backgroundColor: '#666',
+                        fontWeight: 'bold'
+                      }}
+                    >
+                      {userData?.name?.[0]}
+                    </Avatar>
+                  )}
+                </Box>
+              </Tooltip>
+
+              <Box>
+                <Typography variant="h5">
+                  {userData?.name} {userData?.lastName}
+                </Typography>
+                <Stack direction="row" alignItems="center" spacing={1}>
+                  <EmailIcon fontSize="small" color="primary" />
+                  <Typography variant="body2">{userData?.email}</Typography>
+                </Stack>
               </Box>
-            </Tooltip>
+            </Stack>
 
-            <Box>
-              <Typography variant="h5">
-                {userData?.name} {userData?.lastName}
-              </Typography>
-              <Stack direction="row" alignItems="center" spacing={1}>
-                <EmailIcon fontSize="small" color="primary" />
-                <Typography variant="body2">{userData?.email}</Typography>
+            <Divider sx={{ my: 3 }} />
+
+            {/* Teléfonos */}
+            <Stack spacing={2}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <PhoneIcon color="success" />
+                <Typography variant="h6">Teléfonos</Typography>
+                <IconButton
+                  onClick={() => setOpenModalPhone(true)}
+                  color="secondary"
+                >
+                  <AddIcon />
+                </IconButton>
               </Stack>
-            </Box>
-          </Stack>
 
-          <Divider sx={{ my: 3 }} />
-
-          {/* Teléfonos */}
-          <Stack spacing={2}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <PhoneIcon color="success" />
-              <Typography variant="h6">Teléfonos</Typography>
-              <IconButton
-                onClick={() => setOpenModalPhone(true)}
-                color="secondary"
-              >
-                <AddIcon />
-              </IconButton>
-            </Stack>
-
-            <Grid container spacing={2}>
-              {userData?.phones?.length > 0 ? (
-                userData.phones.map((phone) => (
-                  <Grid item xs={12} sm={6} md={4} key={phone.idPhone}>
-                    <Card sx={{ p: 2 }}>
-                      <Stack
-                        justifyContent="space-between"
-                        direction="row"
-                        alignItems="center"
-                      >
-                        <a
-                          href={`tel:${phone.phoneNumber}`}
-                          style={{ textDecoration: 'none', color: '#1976d2' }}
-                        >
-                          {phone.phoneNumber}
-                        </a>
-                        <Stack direction="row" spacing={1}>
-                          <IconButton
-                            onClick={() => {
-                              setSelectedPhone(phone)
-                              setOpenModalPhoneUpdate(true)
-                            }}
-                          >
-                            <EditIcon fontSize="small" />
-                          </IconButton>
-                          <IconButton
-                            onClick={async () => {
-                              if (userData.phones.length > 1) {
-                                const confirm = await showConfirm(
-                                  '¿Estás seguro?',
-                                  'Esta acción eliminará el teléfono.'
-                                )
-                                if (confirm) {
-                                  await removePhone(phone.idPhone)
-                                  await fetchUser()
-                                  showSuccess(
-                                    'Eliminado',
-                                    'Teléfono eliminado.'
-                                  )
-                                }
-                              }
-                            }}
-                            disabled={userData.phones.length === 1}
-                          >
-                            <DeleteIcon
-                              color={
-                                userData.phones.length === 1
-                                  ? 'disabled'
-                                  : 'error'
-                              }
-                            />
-                          </IconButton>
-                        </Stack>
-                      </Stack>
-                    </Card>
-                  </Grid>
-                ))
-              ) : (
-                <Typography variant="body2">
-                  No hay teléfonos registrados.
-                </Typography>
-              )}
-            </Grid>
-          </Stack>
-
-          <Divider sx={{ my: 3 }} />
-
-          {/* Direcciones */}
-          <Stack spacing={2}>
-            <Stack direction="row" spacing={1} alignItems="center">
-              <HomeIcon color="primary" />
-              <Typography variant="h6">Direcciones</Typography>
-              <IconButton onClick={() => setOpenModal(true)} color="secondary">
-                <AddIcon />
-              </IconButton>
-            </Stack>
-
-            <Grid container spacing={2}>
-              {userData?.addresses?.length > 0 ? (
-                userData.addresses.map((address) => (
-                  <Grid item xs={12} sm={6} md={4} key={address.idAddress}>
-                    <Card sx={{ p: 2 }}>
-                      <Stack spacing={1}>
-                        <Typography variant="subtitle1" fontWeight="bold">
-                          {address.street}, {address.number}
-                        </Typography>
-                        <Typography variant="body2">
-                          Ciudad: {address.city}
-                        </Typography>
-                        <Typography variant="body2">
-                          Estado: {address.state}
-                        </Typography>
-                        <Typography variant="body2">
-                          País: {address.country}
-                        </Typography>
+              <Grid container spacing={2}>
+                {userData?.phones?.length > 0 ? (
+                  userData.phones.map((phone) => (
+                    <Grid item xs={12} sm={6} md={4} key={phone.idPhone}>
+                      <Card sx={{ p: 2 }}>
                         <Stack
+                          justifyContent="space-between"
                           direction="row"
-                          spacing={1}
-                          justifyContent="flex-end"
+                          alignItems="center"
                         >
-                          <IconButton
-                            onClick={() => {
-                              setSelectedDireccion(address)
-                              setOpenModalDireccionUpdate(true)
+                          <a
+                            href={`tel:${phone.phoneNumber}`}
+                            style={{
+                              textDecoration: 'none',
+                              color: '#1976d2'
                             }}
                           >
-                            <EditIcon fontSize="small" />
-                          </IconButton>
-                          <IconButton
-                            onClick={async () => {
-                              if (userData.addresses.length > 1) {
-                                const confirm = await showConfirm(
-                                  '¿Estás seguro?',
-                                  'Eliminarás esta dirección.'
-                                )
-                                if (confirm) {
-                                  await removeAddress(address.idAddress)
-                                  await fetchUser()
-                                  showSuccess(
-                                    'Eliminado',
-                                    'Dirección eliminada.'
+                            {phone.phoneNumber}
+                          </a>
+                          <Stack direction="row" spacing={1}>
+                            <IconButton
+                              onClick={() => {
+                                setSelectedPhone(phone)
+                                setOpenModalPhoneUpdate(true)
+                              }}
+                            >
+                              <EditIcon fontSize="small" />
+                            </IconButton>
+                            <IconButton
+                              onClick={async () => {
+                                if (userData.phones.length > 1) {
+                                  const confirm = await showConfirm(
+                                    '¿Estás seguro?',
+                                    'Esta acción eliminará el teléfono.'
                                   )
+                                  if (confirm) {
+                                    await removePhone(phone.idPhone)
+                                    await fetchUser()
+                                    showSuccess(
+                                      'Eliminado',
+                                      'Teléfono eliminado.'
+                                    )
+                                  }
                                 }
-                              }
-                            }}
-                            disabled={userData.addresses.length === 1}
-                          >
-                            <DeleteIcon
-                              color={
-                                userData.addresses.length === 1
-                                  ? 'disabled'
-                                  : 'error'
-                              }
-                            />
-                          </IconButton>
+                              }}
+                              disabled={userData.phones.length === 1}
+                            >
+                              <DeleteIcon
+                                color={
+                                  userData.phones.length === 1
+                                    ? 'disabled'
+                                    : 'error'
+                                }
+                              />
+                            </IconButton>
+                          </Stack>
                         </Stack>
-                      </Stack>
-                    </Card>
-                  </Grid>
-                ))
-              ) : (
-                <Typography variant="body2">
-                  No hay direcciones registradas.
-                </Typography>
-              )}
-            </Grid>
-          </Stack>
-        </CardContent>
-      </Card>
+                      </Card>
+                    </Grid>
+                  ))
+                ) : (
+                  <Typography variant="body2">
+                    No hay teléfonos registrados.
+                  </Typography>
+                )}
+              </Grid>
+            </Stack>
 
-      {/* Modales */}
-      <ModalNewDireccion
-        open={openModal}
-        handleClose={() => setOpenModal(false)}
-        idUser={idUser}
-        refreshUserData={fetchUser}
-      />
-      <ModalNewPhone
-        open={openModalPhone}
-        handleCloseModalPhone={() => setOpenModalPhone(false)}
-        idUser={idUser}
-        refreshPhoneData={fetchUser}
-      />
-      <ModalUpdateUser
-        open={openModalUser}
-        handleCloseModalUser={() => setOpenModalUser(false)}
-        idUser={idUser}
-        refreshUserData={fetchUser}
-        userData={userData}
-      />
-      <ModalUpdatePhone
-        open={openModalPhoneUpdate}
-        handleCloseModalPhoneUpdate={() => setOpenModalPhoneUpdate(false)}
-        refreshUserData={fetchUser}
-        selectedPhone={selectedPhone}
-      />
-      <ModalUpdateDireccion
-        open={openModalDireccionUpdate}
-        handleCloseModalDireccionUpdate={() =>
-          setOpenModalDireccionUpdate(false)
-        }
-        refreshUserData={fetchUser}
-        selectedDireccion={selectedDireccion}
-      />
+            <Divider sx={{ my: 3 }} />
 
-      {/* Snackbar */}
-      <Snackbar
-        open={openSnackbar}
-        autoHideDuration={3000}
-        onClose={() => setOpenSnackbar(false)}
-      >
-        <Alert severity="error" onClose={() => setOpenSnackbar(false)}>
-          {error}
-        </Alert>
-      </Snackbar>
-    </Box>
+            {/* Direcciones */}
+            <Stack spacing={2}>
+              <Stack direction="row" spacing={1} alignItems="center">
+                <HomeIcon color="primary" />
+                <Typography variant="h6">Direcciones</Typography>
+                <IconButton
+                  onClick={() => setOpenModal(true)}
+                  color="secondary"
+                >
+                  <AddIcon />
+                </IconButton>
+              </Stack>
+
+              <Grid container spacing={2}>
+                {userData?.addresses?.length > 0 ? (
+                  userData.addresses.map((address) => (
+                    <Grid item xs={12} sm={6} md={4} key={address.idAddress}>
+                      <Card sx={{ p: 2 }}>
+                        <Stack spacing={1}>
+                          <Typography variant="subtitle1" fontWeight="bold">
+                            {address.street}, {address.number}
+                          </Typography>
+                          <Typography variant="body2">
+                            Ciudad: {address.city}
+                          </Typography>
+                          <Typography variant="body2">
+                            Estado: {address.state}
+                          </Typography>
+                          <Typography variant="body2">
+                            País: {address.country}
+                          </Typography>
+                          <Stack
+                            direction="row"
+                            spacing={1}
+                            justifyContent="flex-end"
+                          >
+                            <IconButton
+                              onClick={() => {
+                                setSelectedDireccion(address)
+                                setOpenModalDireccionUpdate(true)
+                              }}
+                            >
+                              <EditIcon fontSize="small" />
+                            </IconButton>
+                            <IconButton
+                              onClick={async () => {
+                                if (userData.addresses.length > 1) {
+                                  const confirm = await showConfirm(
+                                    '¿Estás seguro?',
+                                    'Eliminarás esta dirección.'
+                                  )
+                                  if (confirm) {
+                                    await removeAddress(address.idAddress)
+                                    await fetchUser()
+                                    showSuccess(
+                                      'Eliminado',
+                                      'Dirección eliminada.'
+                                    )
+                                  }
+                                }
+                              }}
+                              disabled={userData.addresses.length === 1}
+                            >
+                              <DeleteIcon
+                                color={
+                                  userData.addresses.length === 1
+                                    ? 'disabled'
+                                    : 'error'
+                                }
+                              />
+                            </IconButton>
+                          </Stack>
+                        </Stack>
+                      </Card>
+                    </Grid>
+                  ))
+                ) : (
+                  <Typography variant="body2">
+                    No hay direcciones registradas.
+                  </Typography>
+                )}
+              </Grid>
+            </Stack>
+          </CardContent>
+        </Card>
+
+        {/* Modales */}
+        <ModalNewDireccion
+          open={openModal}
+          handleClose={() => setOpenModal(false)}
+          idUser={idUser}
+          refreshUserData={fetchUser}
+        />
+        <ModalNewPhone
+          open={openModalPhone}
+          handleCloseModalPhone={() => setOpenModalPhone(false)}
+          idUser={idUser}
+          refreshPhoneData={fetchUser}
+        />
+        <ModalUpdateUser
+          open={openModalUser}
+          handleCloseModalUser={() => setOpenModalUser(false)}
+          idUser={idUser}
+          refreshUserData={fetchUser}
+          userData={userData}
+        />
+        <ModalUpdatePhone
+          open={openModalPhoneUpdate}
+          handleCloseModalPhoneUpdate={() => setOpenModalPhoneUpdate(false)}
+          refreshUserData={fetchUser}
+          selectedPhone={selectedPhone}
+        />
+        <ModalUpdateDireccion
+          open={openModalDireccionUpdate}
+          handleCloseModalDireccionUpdate={() =>
+            setOpenModalDireccionUpdate(false)
+          }
+          refreshUserData={fetchUser}
+          selectedDireccion={selectedDireccion}
+        />
+
+        {/* Snackbar */}
+        <Snackbar
+          open={openSnackbar}
+          autoHideDuration={3000}
+          onClose={() => setOpenSnackbar(false)}
+        >
+          <Alert severity="error" onClose={() => setOpenSnackbar(false)}>
+            {error}
+          </Alert>
+        </Snackbar>
+      </Box>
+    </>
   )
 }
 

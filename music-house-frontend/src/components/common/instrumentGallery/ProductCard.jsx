@@ -1,9 +1,7 @@
-import CardMedia from '@mui/material/CardMedia'
 import Typography from '@mui/material/Typography'
 import { Link } from 'react-router-dom'
 import {
   Avatar,
-  Box,
   Card,
   CardActions,
   CardHeader,
@@ -13,15 +11,15 @@ import ShareIcon from '@mui/icons-material/Share'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
 import PropTypes from 'prop-types'
 import { red } from '@mui/material/colors'
-import { useState } from 'react'
+
 import { useAuth } from '@/hook/useAuth'
 import { CustomTooltip } from '../customTooltip/CustomTooltip'
 import FavoriteIcon from '../favorito/FavoriteIcon'
 import { ParagraphResponsive } from '@/components/styles/ResponsiveComponents'
+import ImageWithLoader from '../imageWithLoader/ImageWithLoader'
 
 const ProductCard = ({ name, imageUrl, id }) => {
   const { isUser } = useAuth()
-  const [imgError, setImgError] = useState(false)
 
   return (
     <Card
@@ -85,39 +83,12 @@ const ProductCard = ({ name, imageUrl, id }) => {
         arrow
       >
         <Link to={`/instrument/${id}`}>
-          {!imgError ? (
-            <CardMedia
-              component="img"
-              sx={{
-                width: 150,
-                height: 150,
-                objectFit: 'cover',
-                borderRadius: '50%',
-                boxShadow: 'var(--box-shadow)'
-              }}
-              image={imageUrl || '/src/assets/instrumento_general_03.jpg'}
-              alt={name}
-              onError={() => setImgError(true)}
-            />
-          ) : (
-            <Box
-              sx={{
-                width: 150,
-                height: 150,
-                borderRadius: '50%',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                backgroundColor: '#eee',
-                fontSize: '0.75rem',
-                textAlign: 'center',
-                padding: 1,
-                boxShadow: 'var(--box-shadow)'
-              }}
-            >
-              Imagen no disponible: {name}
-            </Box>
-          )}
+          <ImageWithLoader
+            src={imageUrl}
+            variant="circular"
+            width={150}
+            height={150}
+          />
         </Link>
       </CustomTooltip>
       {/* ✅ Título debajo de la imagen */}

@@ -5,9 +5,16 @@ import { useAppStates } from '@/components/utils/global.context'
 import { useAuth } from '@/hook/useAuth'
 import { getInstrumentById } from '@/api/instruments'
 import { Loader } from '@/components/common/loader/Loader'
-import { InstrumentDetailWrapper, ParagraphResponsive, TitleResponsive } from '@/components/styles/ResponsiveComponents'
+import {
+  InstrumentDetailWrapper,
+  ParagraphResponsive,
+  TitleResponsive
+} from '@/components/styles/ResponsiveComponents'
 import ArrowBack from '@/components/utils/ArrowBack'
-import { flexColumnContainer, flexRowContainer } from '@/components/styles/styleglobal'
+import {
+  flexColumnContainer,
+  flexRowContainer
+} from '@/components/styles/styleglobal'
 import FavoriteIcon from '@/components/common/favorito/FavoriteIcon'
 import { Si } from '@/components/Images/Si'
 import { No } from '@/components/Images/No'
@@ -16,6 +23,7 @@ import CalendarReserva from '@/components/common/availability/CalendarReseva'
 import { InstrumentTerms } from '@/components/common/terms/InstrumentTerms'
 import { ScreenModal } from '@/components/common/instrumentGallery/ScreenModal'
 import { InstrumentGallery } from '@/components/common/instrumentGallery/InstrumentGallery'
+import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
 
 export const Instrument = () => {
   const { id } = useParams()
@@ -28,15 +36,26 @@ export const Instrument = () => {
   const [instrument, setInstrument] = useState()
   const [showGallery, setShowGallery] = useState(false)
   const { isUser, isUserAdmin } = useAuth()
+  const [imageLoadState, setImageLoadState] = useState({
+    loaded: false,
+    fadeOut: false
+  })
 
   useEffect(() => {
+   
+    setImageLoadState({ loaded: false, fadeOut: false })
     setIsLoading(true)
+
     getInstrumentById(id)
       .then((instrument) => {
         setInstrument(instrument)
+       
+        if (!instrument?.result?.imageUrls?.length) {
+          setImageLoadState({ loaded: true, fadeOut: true })
+        }
       })
       .catch(() => {
-        setInstrument(undefined)
+        setImageLoadState({ loaded: true, fadeOut: true })
         navigate('/noDisponible')
       })
   }, [id, navigate])
@@ -54,10 +73,22 @@ export const Instrument = () => {
   const onClose = () => {
     setShowGallery(false)
   }
-  if (loading) return <Loader title="Cargando instrumentos..." />
+
   return (
     <>
-      <InstrumentDetailWrapper>
+      {(loading || !imageLoadState.loaded) && (
+        <Loader
+          title="Cargando instrumento"
+          fullSize={true}
+          show={!imageLoadState.fadeOut}
+        />
+      )}
+      <InstrumentDetailWrapper
+        style={{
+          opacity: imageLoadState.loaded ? 1 : 0,
+          transition: 'opacity 0.5s ease-in-out'
+        }}
+      >
         <ArrowBack />
         {/*Contenedor de la imagen,de los datos y del iciono de favoritos */}
         <Box
@@ -160,18 +191,23 @@ export const Instrument = () => {
                 disableRipple
                 disableElevation
               >
-                <Box
-                  component="img"
-                  src={
-                    instrumentSelected?.imageUrls?.length
-                      ? instrumentSelected.imageUrls[0].imageUrl
-                      : '/src/assets/instrumento_general_03.jpg'
-                  }
+                <ImageWithLoader
+                  src={instrumentSelected?.imageUrls?.[0]?.imageUrl}
                   alt={instrumentSelected?.name}
-                  sx={{
-                    height: 'auto',
-                    objectFit: 'contain'
+                  variant="rectangular"
+                  width="100%"
+                  height="auto"
+                  borderRadius="1rem"
+                  onLoad={() => {
+                    setImageLoadState({ loaded: true, fadeOut: false })>
+                        setImageLoadState((prev) => ({
+                          ...prev,
+                          fadeOut: true
+                        }))
                   }}
+                  onError={() =>
+                    setImageLoadState({ loaded: true, fadeOut: true })
+                  }
                 />
               </Button>
             </Tooltip>
@@ -340,7 +376,6 @@ export const Instrument = () => {
             </Box>
             {/* 📌 Fin Contenedor del Calendario */}
 
-            
             {/* 📌 Términos del Instrumento */}
             <Box
               sx={{
@@ -353,13 +388,9 @@ export const Instrument = () => {
             </Box>
           </>
         )}
-            <ScreenModal
-             isOpen={showGallery} 
-             onClose={onClose}
-             
-             >
-              <InstrumentGallery itemData={instrumentSelected?.imageUrls} />
-            </ScreenModal>
+        <ScreenModal isOpen={showGallery} onClose={onClose}>
+          <InstrumentGallery itemData={instrumentSelected?.imageUrls} />
+        </ScreenModal>
       </InstrumentDetailWrapper>
     </>
   )
