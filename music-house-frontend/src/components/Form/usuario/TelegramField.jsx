@@ -6,8 +6,6 @@ import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
 export const TelegramField = ({ values, touched, errors }) => {
-  console.log('✅ touched del telegram:', touched)
-  console.log('✅ errors del telegram:', errors)
   return (
     <Grid container spacing={2}>
       <Grid item sm={10} md={5}>

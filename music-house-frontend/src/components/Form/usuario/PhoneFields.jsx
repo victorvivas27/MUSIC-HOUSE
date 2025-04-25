@@ -12,9 +12,6 @@ import {
 import PropTypes from 'prop-types'
 
 export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
-
-  //console.log('✅ touched del telefono:', touched)
-  //console.log('✅ errors del telefono:', errors)
   return (
     <Grid container spacing={2}>
       {phones.map((phone, index) => (
@@ -24,7 +21,7 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
             <FormControl sx={{ ...inputStyles, mt: 2 }}>
               <Select
                 displayEmpty
-                value={phone.countryCode||''}
+                value={phone.countryCode || ''}
                 onChange={(e) => {
                   const newCode = e.target.value
                   const currentNumber = phones[index].phoneNumber.replace(
@@ -77,7 +74,9 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
                 touched?.[index]?.phoneNumber &&
                 Boolean(errors?.[index]?.phoneNumber)
               }
-             // helperText={ touched?.[index]?.phoneNumber && errors?.[index]?.phoneNumber}
+              helperText={
+                touched?.[index]?.phoneNumber && errors?.[index]?.phoneNumber
+              }
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

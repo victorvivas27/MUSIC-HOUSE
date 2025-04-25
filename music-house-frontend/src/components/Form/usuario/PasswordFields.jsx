@@ -7,15 +7,14 @@ import {
   InputAdornment,
   TextField
 } from '@mui/material'
-import {  Field } from 'formik'
+import { Field } from 'formik'
 import PropTypes from 'prop-types'
 import { useState } from 'react'
 
 export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false)
-  //console.log('✅ touched del password:', touched)
-  //console.log('✅ errors del password:', errors)
+
   return (
     <Grid container spacing={2}>
       {/* Campo de contraseña */}
@@ -29,7 +28,11 @@ export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
             value={values.password}
             onChange={(e) => setFieldValue('password', e.target.value)}
             error={touched.password && Boolean(errors.password)}
-            //helperText={<ErrorMessage name="password" />}
+            helperText={
+              touched.password && errors.password
+                ? errors.password
+                : ' '
+            }
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -70,7 +73,11 @@ export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
             value={values.repeatPassword}
             onChange={(e) => setFieldValue('repeatPassword', e.target.value)}
             error={touched.repeatPassword && Boolean(errors.repeatPassword)}
-            //helperText={<ErrorMessage name="repeatPassword" />}
+            helperText={
+              touched.repeatPassword && errors.repeatPassword
+                ? errors.repeatPassword
+                : ' '
+            }
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">

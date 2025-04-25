@@ -1,6 +1,7 @@
 import * as Yup from 'yup'
 
 export const userValidationSchema = Yup.object().shape({
+  
   name: Yup.string().min(3, 'Mínimo 3 caracteres').required('El nombre es obligatorio'),
   lastName: Yup.string().min(3, 'Mínimo 3 caracteres').required('El apellido es obligatorio'),
   email: Yup.string().email('Email inválido').required('El email es obligatorio'),
@@ -9,11 +10,21 @@ export const userValidationSchema = Yup.object().shape({
     .min(5, 'Mínimo 5 dígitos')
     .max(15, 'Máximo 15 dígitos')
     .required('El código de Telegram es obligatorio'),
-  password: Yup.string().when('idUser', {
-    is: (val) => !val, // solo obligatorio en creación
-    then: (schema) => schema.min(6, 'Debe tener al menos 6 caracteres').required('La contraseña es obligatoria'),
-    otherwise: (schema) => schema.notRequired()
-  }),
+
+
+    password: Yup.string().when('idUser', {
+      is: (val) => !val,
+      then: (schema) =>
+        schema
+          .min(6, 'Debe tener al menos 6 caracteres')
+          .matches(/[A-Z]/, 'La contraseña debe contener al menos una letra mayúscula')
+          .matches(/[0-9]/, 'La contraseña debe contener al menos un número')
+          .matches(/[@$!%*#?&]/, 'La contraseña debe contener al menos un carácter especial (@, #, $, etc.)')
+          .required('La contraseña es obligatoria'),
+      otherwise: (schema) => schema.notRequired()
+    }),
+
+
   repeatPassword: Yup.string().when('password', {
     is: (val) => !!val,
     then: (schema) =>
@@ -22,11 +33,13 @@ export const userValidationSchema = Yup.object().shape({
         .required('Debes repetir la contraseña'),
     otherwise: (schema) => schema.notRequired()
   }),
+
   roles: Yup.array().when('$isUserAdmin', {
     is: true,
     then: (schema) => schema.min(1, 'Debe haber al menos un rol asignado'),
     otherwise: (schema) => schema.notRequired()
   }),
+
   addresses: Yup.array().of(
     Yup.object().shape({
       street: Yup.string().required('La calle es obligatoria'),
@@ -36,6 +49,7 @@ export const userValidationSchema = Yup.object().shape({
       country: Yup.string().required('El país es obligatorio')
     })
   ),
+
   phones: Yup.array().of(
     Yup.object().shape({
       countryCode: Yup.string().required('Código requerido'),
@@ -44,6 +58,7 @@ export const userValidationSchema = Yup.object().shape({
         .required('Teléfono requerido')
     })
   ),
+
   accept: Yup.boolean()
   .oneOf([true], 'Debes aceptar los términos y condiciones')
   .notRequired()
