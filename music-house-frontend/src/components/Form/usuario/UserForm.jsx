@@ -19,7 +19,7 @@ import {
 } from '@/components/styles/ResponsiveComponents'
 
 import { ErrorMessage, Formik } from 'formik'
-//import { userValidationSchema } from '@/validations/userValidationSchema'
+import { userValidationSchema } from '@/validations/userValidationSchema'
 import { AddressFields } from './AddressFields'
 import { PhoneFields } from './PhoneFields'
 import { AvatarUploader } from './AvatarUploader'
@@ -91,7 +91,7 @@ export const UserForm = ({
     <>
       <Formik
         initialValues={formikInitialValues}
-        //validationSchema={userValidationSchema}
+        validationSchema={userValidationSchema}
         validateOnChange
         validateOnBlur
         onSubmit={onSubmit}
