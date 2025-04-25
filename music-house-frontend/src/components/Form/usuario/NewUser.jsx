@@ -59,9 +59,10 @@ const NewUser = ({ onSwitch }) => {
       }
     } catch (error) {
       showError(`❌ ${getErrorMessage(error)}`)
+      setLoading(false)
     } finally {
       setTimeout(() => {
-        loading( false )
+        setLoading(false)
       }, 100)
     }
   }

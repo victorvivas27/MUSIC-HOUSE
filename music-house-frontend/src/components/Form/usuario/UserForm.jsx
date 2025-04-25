@@ -5,7 +5,6 @@ import {
   Checkbox,
   styled,
   Grid,
-  Fade
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import PropTypes from 'prop-types'
@@ -20,7 +19,7 @@ import {
 } from '@/components/styles/ResponsiveComponents'
 
 import { ErrorMessage, Formik } from 'formik'
-import { userValidationSchema } from '@/validations/userValidationSchema'
+//import { userValidationSchema } from '@/validations/userValidationSchema'
 import { AddressFields } from './AddressFields'
 import { PhoneFields } from './PhoneFields'
 import { AvatarUploader } from './AvatarUploader'
@@ -92,7 +91,7 @@ export const UserForm = ({
     <>
       <Formik
         initialValues={formikInitialValues}
-        validationSchema={userValidationSchema}
+        //validationSchema={userValidationSchema}
         validateOnChange
         validateOnBlur
         onSubmit={onSubmit}
@@ -254,9 +253,9 @@ export const UserForm = ({
         )}
       </Formik>
       {combinedLoading && (
-        <Fade in={combinedLoading} timeout={400} unmountOnExit>
+       
           <LoaderOverlay texto={buttonTextLoading} />
-        </Fade>
+       
       )}
     </>
   )
