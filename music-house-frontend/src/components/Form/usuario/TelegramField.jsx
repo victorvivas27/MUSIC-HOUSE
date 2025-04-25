@@ -1,7 +1,7 @@
 import { ParagraphResponsive } from '@/components/styles/ResponsiveComponents'
 import { inputStyles} from '@/components/styles/styleglobal'
 import { FormControl, Grid, TextField } from '@mui/material'
-import { ErrorMessage, Field } from 'formik'
+import { Field } from 'formik'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 
@@ -19,7 +19,11 @@ export const TelegramField = ({ values, touched, errors }) => {
             type="text"
             value={values.telegramChatId}
             error={touched.telegramChatId && Boolean(errors.telegramChatId)}
-            helperText={<ErrorMessage name="telegramChatId" />}
+            helperText={
+              touched.telegramChatId && errors.telegramChatId
+                ? errors.telegramChatId
+                : ' '
+            }
             inputProps={{
               inputMode: 'numeric',
               pattern: '[0-9]*'
