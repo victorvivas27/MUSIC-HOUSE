@@ -1,9 +1,11 @@
 import {  inputStyles} from "@/components/styles/styleglobal"
 import {  FormControl, Grid, TextField } from "@mui/material"
-import { ErrorMessage, Field } from "formik"
+import {  Field } from "formik"
 import PropTypes from "prop-types"
 
 export const BasicInfoFields = ({ values, touched, errors }) => {
+  //console.log('✅ touched del usuario:', touched)
+  //console.log('✅ errors del usuario:', errors)
     return (
       <Grid container spacing={2} >
       <Grid item xs={12} md={6}>
@@ -14,7 +16,7 @@ export const BasicInfoFields = ({ values, touched, errors }) => {
             name="name"
             value={values.name}
             error={touched.name && Boolean(errors.name)}
-            helperText={<ErrorMessage name="name" />}
+            //helperText={<ErrorMessage name="name" />}
           />
         </FormControl>
         </Grid>
@@ -26,7 +28,7 @@ export const BasicInfoFields = ({ values, touched, errors }) => {
             name="lastName"
             value={values.lastName}
             error={touched.lastName && Boolean(errors.lastName)}
-            helperText={<ErrorMessage name="lastName" />}
+            //helperText={<ErrorMessage name="lastName" />}
           />
         </FormControl>
         </Grid>
@@ -40,7 +42,7 @@ export const BasicInfoFields = ({ values, touched, errors }) => {
             type="email"
             value={values.email}
             error={touched.email && Boolean(errors.email)}
-            helperText={<ErrorMessage name="email" />}
+            //helperText={<ErrorMessage name="email" />}
           />
         </FormControl>
         </Grid>

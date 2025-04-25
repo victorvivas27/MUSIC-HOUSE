@@ -13,7 +13,8 @@ import PropTypes from 'prop-types'
 
 export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
 
- 
+  //console.log('✅ touched del telefono:', touched)
+  //console.log('✅ errors del telefono:', errors)
   return (
     <Grid container spacing={2}>
       {phones.map((phone, index) => (
@@ -76,9 +77,7 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
                 touched?.[index]?.phoneNumber &&
                 Boolean(errors?.[index]?.phoneNumber)
               }
-              helperText={
-                touched?.[index]?.phoneNumber && errors?.[index]?.phoneNumber
-              }
+             // helperText={ touched?.[index]?.phoneNumber && errors?.[index]?.phoneNumber}
               InputProps={{
                 startAdornment: (
                   <InputAdornment position="start">

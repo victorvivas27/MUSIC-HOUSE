@@ -8,6 +8,8 @@ export const AddressFields = ({
   errors,
   setFieldValue
 }) => {
+  //console.log('✅ touched de la direccion:', touched)
+  //console.log('✅ errors de la direccion:', errors)
   return addresses.map((address, index) => (
     <Grid
       container
@@ -24,7 +26,7 @@ export const AddressFields = ({
             name={`addresses[${index}].street`}
             value={address.street}
             error={touched?.[index]?.street && Boolean(errors?.[index]?.street)}
-            helperText={touched?.[index]?.street && errors?.[index]?.street}
+            //helperText={touched?.[index]?.street && errors?.[index]?.street}
             onChange={(e) =>
               setFieldValue(`addresses[${index}].street`, e.target.value)
             }
@@ -41,7 +43,8 @@ export const AddressFields = ({
             name={`addresses[${index}].number`}
             value={address.number}
             error={touched?.[index]?.number && Boolean(errors?.[index]?.number)}
-            helperText={touched?.[index]?.number && errors?.[index]?.number}
+            //helperText={touched?.[index]?.number && errors?.[index]?.number}
+            
             onChange={(e) =>
               setFieldValue(`addresses[${index}].number`, e.target.value)
             }
@@ -58,7 +61,7 @@ export const AddressFields = ({
             name={`addresses[${index}].city`}
             value={address.city}
             error={touched?.[index]?.city && Boolean(errors?.[index]?.city)}
-            helperText={touched?.[index]?.city && errors?.[index]?.city}
+            //helperText={touched?.[index]?.city && errors?.[index]?.city}
             onChange={(e) =>
               setFieldValue(`addresses[${index}].city`, e.target.value)
             }
@@ -75,7 +78,7 @@ export const AddressFields = ({
             name={`addresses[${index}].state`}
             value={address.state}
             error={touched?.[index]?.state && Boolean(errors?.[index]?.state)}
-            helperText={touched?.[index]?.state && errors?.[index]?.state}
+            //helperText={touched?.[index]?.state && errors?.[index]?.state}
             onChange={(e) =>
               setFieldValue(`addresses[${index}].state`, e.target.value)
             }
@@ -94,7 +97,7 @@ export const AddressFields = ({
             error={
               touched?.[index]?.country && Boolean(errors?.[index]?.country)
             }
-            helperText={touched?.[index]?.country && errors?.[index]?.country}
+            //helperText={touched?.[index]?.country && errors?.[index]?.country}
             onChange={(e) =>
               setFieldValue(`addresses[${index}].country`, e.target.value)
             }
