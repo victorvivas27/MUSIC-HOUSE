@@ -38,7 +38,7 @@ const TematicCard = ({ title, imageUrlTheme, paragraph }) => {
             border="none"
             borderRadius="0"
             fallbackSrc="/src/assets/instrumento_general_03.jpg"
-            delay={500}
+            delay={10}
             showText={false}
           />
         </Box>

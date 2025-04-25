@@ -44,7 +44,7 @@ export const Categories = () => {
   const [order, setOrder] = useState('asc')
   const [orderBy, setOrderBy] = useState('categoryName')
   const [selected, setSelected] = useState([])
- const [firstLoad, setFirstLoad] = useState(true)
+  const [firstLoad, setFirstLoad] = useState(true)
   const navigate = useNavigate()
   const { showConfirm, showLoading, showSuccess, showError } = useAlert()
   const { state, dispatch } = useAppStates()
@@ -134,168 +134,174 @@ export const Categories = () => {
     }
   }
 
-  if (state.loading) return <Loader title="Cargando categorías..." />
+  
 
   return (
-    <MainWrapper>
-      <Paper
-        sx={{
-          width: '90%',
-          margin: 10,
-          display: { xs: 'none', lg: 'initial' },
-          borderRadius: 4,
-          boxShadow: 'var(--box-shadow)'
-        }}
-      >
-        <ArrowBack />
+    <>
+      {state.loading && page === 0 && <Loader title="Cargando categorías" />}
+      <MainWrapper>
+        <Paper
+          sx={{
+            width: '90%',
+            margin: 10,
+            display: { xs: 'none', lg: 'initial' },
+            borderRadius: 4,
+            boxShadow: 'var(--box-shadow)'
+          }}
+        >
+          <ArrowBack />
 
-        <EnhancedTableToolbar
-          title="Categorías"
-          titleAdd="Agregar categoría"
-          handleAdd={handleAdd}
-          numSelected={selected.length}
-          handleConfirmDelete={() => handleConfirmDelete()}
-        />
-        <SearchNameCategory/>
-        <TableContainer>
-          <Table
-            sx={{ minWidth: 750 }}
-            aria-labelledby="tableTitle"
-            size="medium"
-          >
-            <EnhancedTableHead
-              headCells={headCellsCategory}
-              numSelected={selected.length}
-              order={order}
-              orderBy={orderBy}
-              onSelectAllClick={handleSelectAllClick}
-              onRequestSort={handleRequestSort}
-              rowCount={rows.length}
-              disableSelectAll
-            />
-            <TableBody>
-              {rows.map((row, index) => {
-                const isItemSelected = isSelected(row.idCategory, selected)
-                const labelId = `enhanced-table-checkbox-${index}`
-                const isRowEven = index % 2 === 0
+          <EnhancedTableToolbar
+            title="Categorías"
+            titleAdd="Agregar categoría"
+            handleAdd={handleAdd}
+            numSelected={selected.length}
+            handleConfirmDelete={() => handleConfirmDelete()}
+          />
+          <SearchNameCategory />
+          <TableContainer>
+            <Table
+              sx={{ minWidth: 750 }}
+              aria-labelledby="tableTitle"
+              size="medium"
+            >
+              <EnhancedTableHead
+                headCells={headCellsCategory}
+                numSelected={selected.length}
+                order={order}
+                orderBy={orderBy}
+                onSelectAllClick={handleSelectAllClick}
+                onRequestSort={handleRequestSort}
+                rowCount={rows.length}
+                disableSelectAll
+              />
+              <TableBody>
+                {rows.map((row, index) => {
+                  const isItemSelected = isSelected(row.idCategory, selected)
+                  const labelId = `enhanced-table-checkbox-${index}`
+                  const isRowEven = index % 2 === 0
 
-                return (
-                  <TableRow
-                    hover
-                    role="checkbox"
-                    aria-checked={isItemSelected}
-                    tabIndex={-1}
-                    key={row.idCategory}
-                    selected={isItemSelected}
-                    className={isRowEven ? 'table-row-even' : 'table-row-odd'}
-                    sx={{ cursor: 'pointer' }}
-                    onClick={(event) => handleClick(event, row.idCategory)}
-                  >
-                    <TableCell padding="checkbox">
-                      <Checkbox
-                        color="primary"
-                        checked={isItemSelected}
-                        inputProps={{ 'aria-labelledby': labelId }}
-                      />
-                    </TableCell>
+                  return (
+                    <TableRow
+                      hover
+                      role="checkbox"
+                      aria-checked={isItemSelected}
+                      tabIndex={-1}
+                      key={row.idCategory}
+                      selected={isItemSelected}
+                      className={isRowEven ? 'table-row-even' : 'table-row-odd'}
+                      sx={{ cursor: 'pointer' }}
+                      onClick={(event) => handleClick(event, row.idCategory)}
+                    >
+                      <TableCell padding="checkbox">
+                        <Checkbox
+                          color="primary"
+                          checked={isItemSelected}
+                          inputProps={{ 'aria-labelledby': labelId }}
+                        />
+                      </TableCell>
 
-                    <TableCell align="center">
-                      {page * rowsPerPage + index + 1}
-                    </TableCell>
+                      <TableCell align="center">
+                        {page * rowsPerPage + index + 1}
+                      </TableCell>
 
-                    <TableCell align="left">{row.categoryName}</TableCell>
-                    <TableCell align="left"
-                     sx={{
-                      whiteSpace: 'normal',
-                      wordBreak: 'break-word',
-                      maxWidth: 500 
-                    }}
-                    >{row.description}</TableCell>
-                    <TableCell align="left">{row.registDate}</TableCell>
-                    <TableCell align="left">{row.modifiedDate}</TableCell>
-                    <TableCell align="left">
-                      <Box
-                        style={{
-                          opacity: selected.length > 0 ? 0 : 1,
-                          pointerEvents: selected.length > 0 ? 'none' : 'auto',
-                          transition: 'opacity 0.5s ease-in-out'
+                      <TableCell align="left">{row.categoryName}</TableCell>
+                      <TableCell
+                        align="left"
+                        sx={{
+                          whiteSpace: 'normal',
+                          wordBreak: 'break-word',
+                          maxWidth: 500
                         }}
                       >
-                        <Tooltip title="Editar">
-                          <IconButton
-                            onClick={(event) => {
-                              handleEdit(row.idCategory)
-                              event.stopPropagation()
-                            }}
-                          >
-                            <EditIcon />
-                          </IconButton>
-                        </Tooltip>
-                        <Tooltip title="Eliminar">
-                          <IconButton
-                            onClick={(event) => {
-                              handleConfirmDelete(row.idCategory)
-                              event.stopPropagation()
-                            }}
-                          >
-                            <DeleteIcon />
-                          </IconButton>
-                        </Tooltip>
-                      </Box>
+                        {row.description}
+                      </TableCell>
+                      <TableCell align="left">{row.registDate}</TableCell>
+                      <TableCell align="left">{row.modifiedDate}</TableCell>
+                      <TableCell align="left">
+                        <Box
+                          style={{
+                            opacity: selected.length > 0 ? 0 : 1,
+                            pointerEvents:
+                              selected.length > 0 ? 'none' : 'auto',
+                            transition: 'opacity 0.5s ease-in-out'
+                          }}
+                        >
+                          <Tooltip title="Editar">
+                            <IconButton
+                              onClick={(event) => {
+                                handleEdit(row.idCategory)
+                                event.stopPropagation()
+                              }}
+                            >
+                              <EditIcon />
+                            </IconButton>
+                          </Tooltip>
+                          <Tooltip title="Eliminar">
+                            <IconButton
+                              onClick={(event) => {
+                                handleConfirmDelete(row.idCategory)
+                                event.stopPropagation()
+                              }}
+                            >
+                              <DeleteIcon />
+                            </IconButton>
+                          </Tooltip>
+                        </Box>
+                      </TableCell>
+                    </TableRow>
+                  )
+                })}
+                {rows.length === 0 && (
+                  <TableRow>
+                    <TableCell colSpan={7} align="center">
+                      <TitleResponsive>
+                        No se encontraron categorías
+                      </TitleResponsive>
                     </TableCell>
                   </TableRow>
-                )
-              })}
-              {rows.length === 0 && (
-                <TableRow>
-                  <TableCell colSpan={7} align="center">
-                    <TitleResponsive>
-                      No se encontraron categorías
-                    </TitleResponsive>
-                  </TableCell>
-                </TableRow>
-              )}
-               {Array.from({ length: Math.max(0, rowsPerPage - rows.length) }).map(
-              (_, i) => (
-                <TableRow key={`empty-${i}`} style={{ height: 80 }}>
-                  <TableCell colSpan={7} />
-                </TableRow>
-              )
-            )}
-            </TableBody>
-           
-          </Table>
-        </TableContainer>
+                )}
+                {Array.from({
+                  length: Math.max(0, rowsPerPage - rows.length)
+                }).map((_, i) => (
+                  <TableRow key={`empty-${i}`} style={{ height: 80 }}>
+                    <TableCell colSpan={7} />
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
 
-        <TablePagination
-          rowsPerPageOptions={[5, 10, 25]}
-          component="div"
-          count={state.categories.totalElements || 0}
-          rowsPerPage={rowsPerPage}
-          page={safePage}
-          onPageChange={handleChangePage}
-          onRowsPerPageChange={handleChangeRowsPerPage}
-          labelRowsPerPage="Filas por página"
-          sx={{ ...paginationStyles }}
-        />
-      </Paper>
+          <TablePagination
+            rowsPerPageOptions={[5, 10, 25]}
+            component="div"
+            count={state.categories.totalElements || 0}
+            rowsPerPage={rowsPerPage}
+            page={safePage}
+            onPageChange={handleChangePage}
+            onRowsPerPageChange={handleChangeRowsPerPage}
+            labelRowsPerPage="Filas por página"
+            sx={{ ...paginationStyles }}
+          />
+        </Paper>
 
-      <Box
-        sx={{
-          display: { xs: 'flex', lg: 'none' },
-          height: '100vh'
-        }}
-      >
-        <Typography
-          gutterBottom
-          variant="h6"
-          component="h6"
-          textAlign="center"
-          sx={{ paddingTop: 30, fontWeight: 'bold' }}
+        <Box
+          sx={{
+            display: { xs: 'flex', lg: 'none' },
+            height: '100vh'
+          }}
         >
-          Funcionalidad no disponible en esta resolución
-        </Typography>
-      </Box>
-    </MainWrapper>
+          <Typography
+            gutterBottom
+            variant="h6"
+            component="h6"
+            textAlign="center"
+            sx={{ paddingTop: 30, fontWeight: 'bold' }}
+          >
+            Funcionalidad no disponible en esta resolución
+          </Typography>
+        </Box>
+      </MainWrapper>
+    </>
   )
 }

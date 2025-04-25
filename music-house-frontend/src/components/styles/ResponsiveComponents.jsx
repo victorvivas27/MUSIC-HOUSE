@@ -67,7 +67,7 @@ export const ContainerForm = styled(Grid, {
 })(({ theme, sx = {} }) => ({
   ...flexColumnContainer,
   width: '99vw',
-  height: '98vh',
+  height: '80vh',
   padding: theme.spacing(1),
   borderRadius: '16px',
   backgroundColor: 'rgba(255, 255, 255, 0.13)',
@@ -76,16 +76,24 @@ export const ContainerForm = styled(Grid, {
   boxShadow: 'var(--box-shadow)',
 
   [theme.breakpoints.up('sm')]: {
-    width: '75vw'
+    width: '67vw',
+    height: '70vh',
+    marginBottom:10
   },
   [theme.breakpoints.up('md')]: {
-    width: '65vw'
+    width: '68vw',
+    height: '70vh',
+    marginBottom:10
   },
   [theme.breakpoints.up('lg')]: {
-    width: '55vw'
+    width: '69vw',
+    height: '70vh',
+    marginBottom:10
   },
   [theme.breakpoints.up('xl')]: {
-    width: '70vw'
+    width: '70vw',
+    height: '80vh',
+    marginBottom:10
   },
 
   ...sx

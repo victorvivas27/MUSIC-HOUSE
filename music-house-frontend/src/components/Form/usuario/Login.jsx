@@ -26,17 +26,17 @@ import { loginValidationSchema } from '@/validations/login'
 import useAlert from '@/hook/useAlert'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { useAppStates } from '@/components/utils/global.context'
-import { actions } from '@/components/utils/actions'
 import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
 
 
 const Login = ({ onSwitch }) => {
   const navigate = useNavigate()
   const { setAuthData } = useAuth()
-  const { dispatch, state } = useAppStates()
+  const { state } = useAppStates()
   const [showPassword, setShowPassword] = useState(false)
   const { showSuccess, showError } = useAlert()
   const handleClickShowPassword = () => setShowPassword((show) => !show)
+  const [loading, setLoading] = useState(false)
 
   const formik = useFormik({
     initialValues: {
@@ -45,26 +45,26 @@ const Login = ({ onSwitch }) => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      dispatch({ type: actions.SET_LOADING, payload: true })
+      setLoading(true )
 
       try {
         const response = await UsersApi.loginUser(values)
 
         if (response?.result?.token) {
           setAuthData({ token: response.result.token })
-          dispatch({ type: actions.SET_LOADING, payload: false })
+          setLoading(false)
           showSuccess(`✅ ${response.message}`)
 
           setTimeout(() => {
             navigate('/')
-          }, 1500)
+          }, 1300)
         } else {
-          //showError(`❌ ${response.message}`)
-          dispatch({ type: actions.SET_LOADING, payload: false })
+          showError(`❌ ${response.message}`)
+          setLoading(false)
         }
       } catch (error) {
         showError(`❌ ${getErrorMessage(error)}`)
-        dispatch({ type: actions.SET_LOADING, payload: false })
+        setLoading(false)
       }
     }
   })
@@ -73,7 +73,7 @@ const Login = ({ onSwitch }) => {
     <>
     <form onSubmit={formik.handleSubmit}>
       <fieldset
-        disabled={state.loading}
+        disabled={loading}
         style={{ border: 'none', padding: 0, margin: 0 }}
         >
         
@@ -161,7 +161,7 @@ const Login = ({ onSwitch }) => {
         </ContainerForm>
       </fieldset>
     </form>
-    {state.loading && <LoaderOverlay />}
+    {loading && <LoaderOverlay texto={"Iniciando sesión..."} />}
     </>
   )
 }

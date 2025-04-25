@@ -6,8 +6,7 @@ import { useAuth } from '@/hook/useAuth'
 import useAlert from '@/hook/useAlert'
 import { UsersApi } from '@/api/users'
 import { getErrorMessage } from '@/api/getErrorMessage'
-import { actions } from '@/components/utils/actions'
-import { useAppStates } from '@/components/utils/global.context'
+import { useState } from 'react'
 
 const NewUser = ({ onSwitch }) => {
   const initialFormData = {
@@ -28,10 +27,11 @@ const NewUser = ({ onSwitch }) => {
   const navigate = useNavigate()
   const { showError } = useAlert()
   const { isUserAdmin } = useAuth()
-  const { dispatch, state } = useAppStates()
+  const [loading, setLoading] = useState(false)
+  const { showSuccess } = useAlert()
 
   const handleSubmit = async (formData) => {
-    dispatch({ type: actions.SET_LOADING, payload: true })
+    setLoading(true )
 
     try {
       const formDataToSend = new FormData()
@@ -46,7 +46,7 @@ const NewUser = ({ onSwitch }) => {
       const response = await UsersApi.registerUser(formDataToSend)
 
       if (response?.result?.token) {
-        //showSuccess(`✅${response.message}`)
+      showSuccess(`✅${response.message}`)
 
         setTimeout(() => {
           if (isUserAdmin) {
@@ -61,7 +61,7 @@ const NewUser = ({ onSwitch }) => {
       showError(`❌ ${getErrorMessage(error)}`)
     } finally {
       setTimeout(() => {
-        dispatch({ type: actions.SET_LOADING, payload: false })
+        loading( false )
       }, 100)
     }
   }
@@ -72,7 +72,7 @@ const NewUser = ({ onSwitch }) => {
         onSwitch={onSwitch}
         initialFormData={initialFormData}
         onSubmit={handleSubmit}
-        loading={state.loading}
+        loading={loading}
       />
     </>
   )

@@ -127,9 +127,11 @@ export const Usuarios = () => {
     }
   }
 
-  if (state.loading) return <Loader title="Cargando usuarios..." />
+ 
 
   return (
+    <>
+    {state.loading && page === 0 && <Loader title="Cargando usuarios"/>}
     <MainWrapper>
       <Paper
         sx={{
@@ -206,6 +208,7 @@ export const Usuarios = () => {
                         width={80}
                         height={80}
                         fallbackSrc={undefined}
+                        delay = {100}
                       />
                     </TableCell>
 
@@ -263,8 +266,6 @@ export const Usuarios = () => {
                   </TableCell>
                 </TableRow>
               )}
-            </TableBody>
-
             {Array.from({ length: Math.max(0, rowsPerPage - rows.length) }).map(
               (_, i) => (
                 <TableRow key={`empty-${i}`} style={{ height: 80 }}>
@@ -272,6 +273,8 @@ export const Usuarios = () => {
                 </TableRow>
               )
             )}
+            </TableBody>
+
           </Table>
         </TableContainer>
         <TablePagination
@@ -309,5 +312,6 @@ export const Usuarios = () => {
         </Typography>
       </Box>
     </MainWrapper>
+    </>
   )
 }

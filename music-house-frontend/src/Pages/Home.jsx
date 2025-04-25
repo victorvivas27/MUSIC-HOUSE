@@ -20,7 +20,6 @@ export const Home = () => {
   const [page, setPage] = useState(0)
   const [pageSize] = useState(5)
 
-
   const observer = useRef()
   const lastElementRef = useCallback(
     (node) => {
@@ -61,7 +60,6 @@ export const Home = () => {
         showError(`❌ ${getErrorMessage(error)}`)
       } finally {
         dispatch({ type: actions.SET_LOADING, payload: false })
-        
       }
     }
 
@@ -70,12 +68,11 @@ export const Home = () => {
 
   const instruments = state.instruments?.content || []
 
-  if (state.loading && page === 0) {
-    return <Loader title="Un momento por favor..." />
-  }
-
   return (
     <>
+      {state.loading && page === 0 && (
+        <Loader title="Un momento por favor" />
+      )}
       <MainWrapper>
         <AutoScrollCarousel themes={state.themes?.content || []} />
       </MainWrapper>
@@ -102,9 +99,9 @@ export const Home = () => {
         <div ref={lastElementRef} style={{ height: '1px' }} />
 
         {/* Loader al final al hacer scroll */}
-        {state.loading && (
+        {state.loading && page > 0 && (
           <div style={{ textAlign: 'center', padding: '1rem' }}>
-            <Loader title="Cargando más instrumentos..." />
+            <Loader title="Cargando más instrumentos..." fullSize={false} />
           </div>
         )}
       </ProductsWrapper>

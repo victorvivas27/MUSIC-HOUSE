@@ -1,58 +1,66 @@
-import { keyframes, styled } from '@mui/material/styles'
-import { Container, CircularProgress, Typography, Box } from '@mui/material'
+import { keyframes} from '@mui/material/styles'
+import { CircularProgress, Typography, Box } from '@mui/material'
 import PropTypes from 'prop-types'
+import LoadingText from '../loadingText/LoadingText'
 
 const fadeIn = keyframes`
-  0% { opacity: 0; transform: translateY(10px); }
-  100% { opacity: 1; transform: translateY(0); }
+  from { opacity: 0; }
+  to { opacity: 1; }
 `
 
-const CustomLoader = styled(CircularProgress)(({ theme }) => ({
-  color: theme.palette.primary.main,
-}))
+const fadeOut = keyframes`
+  from { opacity: 1; }
+  to { opacity: 0; visibility: hidden; }
+`
 
-export const Loader = ({ title, fullSize = true }) => {
+export const Loader = ({ title = 'Cargando...', fullSize = true, show = true }) => {
   return (
-    <Container
+    <Box
       sx={{
-        width: fullSize ? '100%' : 'auto',
+        position: fullSize ? 'fixed' : 'relative',
+        top: 0,
+        left: 0,
+        width: fullSize ? '100vw' : 'auto',
         height: fullSize ? '100vh' : 'auto',
+        zIndex: 1500,
+        background: fullSize
+          ? 'linear-gradient(135deg, rgba(30, 30, 30, 0.44) 0%, rgba(45, 45, 45, 0.38) 100%)'
+          : 'transparent',
+        backdropFilter: fullSize ? 'blur(4px)' : 'none',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
         flexDirection: 'column',
-        gap: title ? '1.5rem' : 0,
-        backgroundColor: fullSize ? 'transparent' : 'var(--color-primario)',
+        animation: `${show ? fadeIn : fadeOut} 0.6s ease-out forwards`,
+        transition: 'opacity 0.6s ease-in-out',
+        pointerEvents: show ? 'auto' : 'none',
       }}
     >
-      <Box sx={{ position: 'relative' }}>
-        <CustomLoader
-          disableShrink
-          size={fullSize ? '4rem' : '2rem'}
-          thickness={4}
-        />
+      <Box sx={{ mb: 2 }}>
+      <CircularProgress 
+      size={70} 
+      thickness={1}
+      sx={{ color: 'var(--color-primario)' }}
+      />
       </Box>
-
-      {title && (
-        <Typography
-          variant="h5"
-          component="h2"
-          sx={{
-            fontWeight: 500,
-            fontSize: { xs: '1.2rem', sm: '1.5rem' },
-            color: 'var(--color-exito)',
-            animation: `${fadeIn} 0.6s ease-in-out`,
-            textAlign: 'center',
-          }}
-        >
-          {title}
-        </Typography>
-      )}
-    </Container>
+      <Typography
+        sx={{
+          color: 'white',
+          fontSize: '1.5rem',
+          letterSpacing: '1px',
+          fontWeight: 300,
+          opacity: 0.6,
+          textAlign: 'center',
+        }}
+      >
+        <LoadingText text={title}/>
+      </Typography>
+    </Box>
   )
 }
 
 Loader.propTypes = {
   title: PropTypes.string,
   fullSize: PropTypes.bool,
+  show: PropTypes.bool, 
 }

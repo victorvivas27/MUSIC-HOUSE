@@ -136,9 +136,11 @@ export const Theme = () => {
     }
   }
 
-  if (state.loading) return <Loader title="Cargando tematicas..." />
+
 
   return (
+    <>
+     {state.loading && page === 0 && <Loader title="Cargando tematicas"/>}
     <MainWrapper>
       <Paper
         sx={{
@@ -313,5 +315,6 @@ export const Theme = () => {
         </Typography>
       </Box>
     </MainWrapper>
+    </>
   )
 }
