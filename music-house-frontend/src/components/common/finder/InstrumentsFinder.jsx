@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react'
+import { useState, useRef, useEffect, useCallback } from 'react'
 import Box from '@mui/material/Box'
 import List from '@mui/material/List'
 import ListItem from '@mui/material/ListItem'
@@ -7,7 +7,7 @@ import Close from '@mui/icons-material/Close'
 import { IconButton } from '@mui/material'
 import { InputFinder } from './InputFinder'
 import { Link, useLocation } from 'react-router-dom'
-import Draggable from 'react-draggable'
+
 import { searchInstrumentsByName } from '@/api/instruments'
 
 export const Finder = () => {
@@ -15,12 +15,20 @@ export const Finder = () => {
   const [showSugests, setShowSugests] = useState(false)
   const [found, setFound] = useState(false)
   const [instruments, setInstruments] = useState([])
+  const [page, setPage] = useState(0)
+  const [hasMore, setHasMore] = useState(false)
   const inputRef = useRef()
+  const observer = useRef()
+  
+  const pageSize = 2
+
   const [position, setPosition] = useState({
     left: 100,
     top: 100,
     width: '100%'
   })
+
+  const location = useLocation()
 
   useEffect(() => {
     if (inputRef.current) {
@@ -33,33 +41,59 @@ export const Finder = () => {
     }
   }, [searchPattern])
 
-  useEffect(() => {
-    const fetchInstruments = async () => {
-      if (searchPattern.trim() === '') {
-        setInstruments([])
-        setShowSugests(false)
-        return
-      }
-
-      try {
-        const response = await searchInstrumentsByName(searchPattern, 0, 5)
-        const content = response?.result?.content || []
-        setInstruments(content)
-        setFound(content.length > 0)
-        setShowSugests(true)
-      } catch (error) {
-        setInstruments([])
-        setFound(false)
-        setShowSugests(false)
-      }
+  const fetchInstruments = async (pattern, currentPage = 0) => {
+    if (pattern.trim() === '') {
+      setInstruments([])
+      setShowSugests(false)
+      return
     }
+    try {
+      const response = await searchInstrumentsByName(pattern, currentPage, pageSize)
+      const content = response?.result?.content || []
+      const totalPages = response?.result?.totalPages || 1
 
+      if (currentPage === 0) {
+        // Primera búsqueda
+        setInstruments(content)
+      } else {
+        // Scroll: agregar a los existentes
+        setInstruments((prev) => [...prev, ...content])
+      }
+
+      setFound(content.length > 0)
+      setHasMore(currentPage + 1 < totalPages)
+      setShowSugests(true)
+    } catch (error) {
+      setInstruments([])
+      setFound(false)
+      setShowSugests(false)
+    }
+  }
+
+  useEffect(() => {
     const delayDebounce = setTimeout(() => {
-      fetchInstruments()
+      if (searchPattern) {
+        setPage(0) // cuando cambia el patrón, volvemos a la página 0
+        fetchInstruments(searchPattern, 0)
+      }
     }, 300)
 
     return () => clearTimeout(delayDebounce)
   }, [searchPattern])
+
+  useEffect(() => {
+    if (location.pathname !== '/') {
+      clearFinder()
+    }
+  }, [location.pathname])
+
+  const clearFinder = () => {
+    setSearchPattern('')
+    setInstruments([])
+    setShowSugests(false)
+    setPage(0)
+    setHasMore(false)
+  }
 
   const handleKeyUp = (keyCode) => {
     if (keyCode === 27) {
@@ -71,20 +105,24 @@ export const Finder = () => {
     if (keyCode === 9) setShowSugests(false)
   }
 
-  const clearFinder = () => {
-    setSearchPattern('')
-    setInstruments([])
-    setShowSugests(false)
-  }
-  const location = useLocation()
+  const lastElementObserver = useCallback(
+    (node) => {
+      if (observer.current) observer.current.disconnect()
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore) {
+          setPage((prev) => prev + 1)
+        }
+      })
+      if (node) observer.current.observe(node)
+    },
+    [hasMore]
+  )
 
   useEffect(() => {
-    if (location.pathname !== '/') {
-      setSearchPattern('')
-      setInstruments([])
-      setShowSugests(false)
+    if (page > 0) {
+      fetchInstruments(searchPattern, page)
     }
-  }, [location.pathname])
+  }, [page])
 
   return (
     <Box
@@ -107,63 +145,55 @@ export const Finder = () => {
         onClose={clearFinder}
       />
       {showSugests && found && (
-        <Draggable handle=".drag-header">
+        <Box
+          sx={{
+            position: 'fixed',
+            left: position.left,
+            top: position.top,
+            width: position.width,
+            backgroundColor: 'var(--color-secundario-80)',
+            borderRadius: '5px',
+            boxShadow: 'var(--box-shadow)',
+            zIndex: 1300,
+            maxHeight: '300px',
+            overflowY: 'auto'
+          }}
+        >
           <Box
             sx={{
-              position: 'fixed',
-              left: position.left,
-              top: position.top,
-              width: position.width,
-              backgroundColor: 'var( --color-secundario-80)',
-
-              borderRadius: '5px',
-              boxShadow: 'var(--box-shadow)',
-              zIndex: 1300,
-              cursor: 'pointer'
+              display: 'flex',
+              flexFlow: 'row',
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              px: 2,
+              py: 1,
+              backgroundColor: 'var(--color-primario)',
+              borderBottom: '1px solid #ccc',
+              borderTopLeftRadius: '5px',
+              borderTopRightRadius: '5px'
             }}
-            className="drag-header"
           >
-            <Box
-              sx={{
-                display: 'flex',
-                flexFlow: 'row',
-                justifyContent: 'space-between',
-                alignItems: 'center',
-                px: 2,
-                py: 1,
-                backgroundColor: 'var(--color-primario)',
-                borderBottom: '1px solid #ccc',
-                borderTopLeftRadius: '5px',
-                borderTopRightRadius: '5px'
-              }}
+            <strong style={{ fontSize: '0.95rem' }}>
+              Resultados de búsqueda
+            </strong>
+            <IconButton
+              sx={{ width: 30, height: 30 }}
+              size="small"
+              onClick={clearFinder}
             >
-              <strong style={{ fontSize: '0.95rem' }}>
-                Resultados de búsqueda
-              </strong>
-              <IconButton
-                sx={{
-                  width: 30,
-                  height: 30
-                }}
-                size="small"
-                onClick={clearFinder}
-              >
-                <Close
-                  sx={{
-                    fontSize: 22,
-                    color: 'var(--color-error)'
-                  }}
-                />
-              </IconButton>
-            </Box>
+              <Close sx={{ fontSize: 22, color: 'var(--color-error)' }} />
+            </IconButton>
+          </Box>
 
-            <List>
-              {instruments.map((instrument, index) => (
+          <List>
+            {instruments.map((instrument, index) => {
+              const isLast = index === instruments.length - 1
+              return (
                 <ListItem
                   key={instrument.idInstrument || index}
+                  ref={isLast ? lastElementObserver : null}
                   sx={{
                     cursor: 'pointer',
-
                     transition: 'background-color 0.2s ease',
                     '&:hover': {
                       backgroundColor: 'var(--color-secundario)'
@@ -202,10 +232,10 @@ export const Finder = () => {
                     </Box>
                   </Link>
                 </ListItem>
-              ))}
-            </List>
-          </Box>
-        </Draggable>
+              )
+            })}
+          </List>
+        </Box>
       )}
     </Box>
   )

@@ -1,9 +1,12 @@
-import { Search } from './Search'
-import { SearchIconWrapper } from './SearchIconWrapper'
-import { StyledInputBase } from './StyledInputBase'
+
+
+
 import SearchIcon from '@mui/icons-material/Search'
 import { Box } from '@mui/material'
 import PropTypes from 'prop-types'
+import { Search } from './style/Search'
+import { SearchIconWrapper } from './style/SearchIconWrapper'
+import { StyledInputBase } from './style/StyledInputBase'
 
 export const InputFinder = ({
   value,
