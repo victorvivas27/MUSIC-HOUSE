@@ -1,62 +1,74 @@
-
-
-
 import SearchIcon from '@mui/icons-material/Search'
-import { Box } from '@mui/material'
+import { Box, IconButton, InputBase } from '@mui/material'
 import PropTypes from 'prop-types'
-import { Search } from './style/Search'
-import { SearchIconWrapper } from './style/SearchIconWrapper'
-import { StyledInputBase } from './style/StyledInputBase'
+import { useEffect, useState } from 'react'
+export const InputFinder = ({ value, setValue, onKeyUp, onKeyDown, inputRef, collapsed }) => {
+  const [expanded, setExpanded] = useState(false)
 
-export const InputFinder = ({
-  value,
-  setValue,
-  onKeyUp,
-  onKeyDown,
-  inputRef
-}) => {
-  const handleKeyUp = (event) => {
-    const keyCode = event.keyCode
+  useEffect(() => {
+    if (collapsed) {
+      setExpanded(false)
+    }
+  }, [collapsed])
+  useEffect(() => {
+    const handleEsc = (event) => {
+      if (event.key === 'Escape') {
+        setExpanded(false)
+      }
+    }
+    document.addEventListener('keydown', handleEsc)
+    return () => document.removeEventListener('keydown', handleEsc)
+  }, [])
 
-    if (typeof onKeyUp === 'function') onKeyUp(keyCode)
-  }
-
-  const handleKeyDown = (event) => {
-    const keyCode = event.keyCode
-
-    if (typeof onKeyDown === 'function') onKeyDown(keyCode)
-  }
-
-  const handleChange = (event) => {
-    const value = event.target.value
-
-    if (typeof setValue === 'function') setValue(value.trim())
+  const handleChange = (e) => {
+    if (typeof setValue === 'function') {
+      setValue(e.target.value.trim())
+    }
   }
 
   return (
-    <Search ref={inputRef}>
-      <SearchIconWrapper>
-        <SearchIcon />
-      </SearchIconWrapper>
-      <StyledInputBase
-        placeholder="Busca tu instrumento favorito..."
-        inputProps={{ 'aria-label': 'búsqueda' }}
-        onChange={handleChange}
-        onKeyUp={handleKeyUp}
-        onKeyDown={handleKeyDown}
-        value={value}
-      />
-      <Box
+    <Box
+      ref={inputRef}
+      sx={{
+        position: 'relative',
+        display: 'flex',
+        alignItems: 'center',
+        height: '45px',
+        backgroundColor: expanded ? 'var(--color-secundario-80)' : 'var(--background-transparente-dark)',
+        borderRadius: '30px',
+        overflow: 'hidden',
+        padding: expanded ? '0 10px' : '0',
+        boxShadow: expanded ? '0 0 8px 2px var(--color-primario)' : 'none',
+        transition: 'all 0.4s ease',
+        width: expanded ? { xs: '280px', md: '450px' } : '55px',
+      }}
+    >
+      <IconButton
+        onClick={() => setExpanded(true)}
         sx={{
-          display: { xs: 'flex', md: 'none' },
-          position: 'absolute',
-          height: '100%',
-          top: 0,
-          right: 0,
-          '& svg': { height: '1.5rem' }
+          color: 'var(--color-primario)',
+          p: 1,
+          ml: expanded ? 0 : 'auto',
+          animation: 'vibrate-2 1.5s linear infinite paused',
+          '&:hover': { animationPlayState: 'running' }
         }}
-      ></Box>
-    </Search>
+      >
+        <SearchIcon />
+      </IconButton>
+      <InputBase
+        placeholder="Buscar instrumento....."
+        value={value}
+        onChange={handleChange}
+        onKeyUp={(e) => onKeyUp && onKeyUp(e.keyCode)}
+        onKeyDown={(e) => onKeyDown && onKeyDown(e.keyCode)}
+        sx={{
+          ml: 1,
+          flex: 1,
+          opacity: expanded ? 1 : 0,
+          transition: 'opacity 0.3s ease',
+        }}
+      />
+    </Box>
   )
 }
 
@@ -69,5 +81,6 @@ InputFinder.propTypes = {
     PropTypes.func,
     PropTypes.shape({ current: PropTypes.instanceOf(Element) })
   ]),
-  onClose: PropTypes.func
+  onClose: PropTypes.func,
+  collapsed: PropTypes.bool
 }
