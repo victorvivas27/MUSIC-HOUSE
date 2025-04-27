@@ -2,9 +2,8 @@ FROM maven:3.8.4-openjdk-17 AS build
 
 WORKDIR /home/app
 
-COPY music-house-backend/pom.xml .
-
-COPY music-house-backend/src ./src
+COPY pom.xml .
+COPY src ./src
 
 RUN mvn package
 
