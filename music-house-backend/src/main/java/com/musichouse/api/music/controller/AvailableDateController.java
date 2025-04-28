@@ -18,7 +18,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
-@CrossOrigin
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/available-dates")

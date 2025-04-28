@@ -33,7 +33,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-@CrossOrigin
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/users")
