@@ -1,10 +1,12 @@
 package com.musichouse.api.music.security;
 
-import org.springframework.beans.factory.annotation.Value;
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -18,53 +20,56 @@ import org.springframework.web.cors.CorsConfigurationSource;
  */
 
 @Configuration
+@EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
-
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CorsConfigurationSource corsConfigurationSource;
 
-    @Value("${spring.profiles.active:dev}") // 👈 Valor por defecto: dev
-    private String activeProfile;
-
-    public SecurityConfig(JwtAuthenticationFilter jwtAuthenticationFilter,
-                          AuthenticationProvider authenticationProvider,
-                          CorsConfigurationSource corsConfigurationSource) {
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.authenticationProvider = authenticationProvider;
-        this.corsConfigurationSource = corsConfigurationSource;
-    }
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        System.out.println("🔵 Perfil activo: " + activeProfile); // 👈 DEBUG
-        http.csrf(csrf -> csrf.disable());
+        http
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(authRequest -> authRequest
+                        // Rutas públicas
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
+                        // Rutas de usuario (todas las operaciones)
+                        .requestMatchers("/api/users/**").permitAll()
+                        // Rutas de dirección (todas las operaciones)
+                        .requestMatchers("/api/address/**").permitAll()
+                        // Rutas de teléfono (todas las operaciones)
+                        .requestMatchers("/api/phones/**").permitAll()
+                        // Rutas de temas (todas las operaciones)
+                        .requestMatchers("/api/themes/**").permitAll()
+                        // Rutas de categorías (todas las operaciones)
+                        .requestMatchers("/api/categoryes/**").permitAll()
+                        // Rutas de instrumentos (todas las operaciones)
+                        .requestMatchers("/api/instruments/**").permitAll()
+                        // Rutas de caracteristica (todas las operaciones)
+                        .requestMatchers("/api/characteristic/**").permitAll()
+                        // Rutas de URLs de imagen (todas las operaciones)
+                        .requestMatchers("/api/imageurls/**").permitAll()
+                        // Rutas de Roles (todas las operaciones)
+                        .requestMatchers("/api/roles/**").permitAll()
+                        // Rutas de fechas disponibles (todas las operaciones)
+                        .requestMatchers("/api/available-dates/**").permitAll()
+                        // Rutas de Favoritos (todas las operaciones)
+                        .requestMatchers("/api/favorites/**").permitAll()
+                        // Rutas de Politica de privacidad  (todas las operaciones)
+                        .requestMatchers("/api/privacy-policy/**").permitAll()
+                        // Rutas de Reserva  (todas las operaciones)
+                        .requestMatchers("/api/reservations/**").permitAll()
 
-        if (activeProfile != null && activeProfile.contains("dev")) {  // 👈 no falla aunque no esté exacto
-            http.authorizeHttpRequests(auth -> auth.anyRequest().permitAll());
-        } else {
-            http.authorizeHttpRequests(authRequest -> authRequest
-                            .requestMatchers("/", "/actuator/**").permitAll()
-                            .requestMatchers("/api/users/**").permitAll()
-                            .requestMatchers("/api/address/**").permitAll()
-                            .requestMatchers("/api/phones/**").permitAll()
-                            .requestMatchers("/api/themes/**").permitAll()
-                            .requestMatchers("/api/categories/**").permitAll()
-                            .requestMatchers("/api/instruments/**").permitAll()
-                            .requestMatchers("/api/characteristic/**").permitAll()
-                            .requestMatchers("/api/imageurls/**").permitAll()
-                            .requestMatchers("/api/roles/**").permitAll()
-                            .requestMatchers("/api/available-dates/**").permitAll()
-                            .requestMatchers("/api/favorites/**").permitAll()
-                            .requestMatchers("/api/privacy-policy/**").permitAll()
-                            .requestMatchers("/api/reservations/**").permitAll()
-                            .anyRequest().authenticated()
-                    ).sessionManagement(sessionManager -> sessionManager
-                            .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                    .authenticationProvider(authenticationProvider)
-                    .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
-                    .cors(cors -> cors.configurationSource(corsConfigurationSource));
-        }
+
+                        .anyRequest().authenticated()
+                ).sessionManagement(sessionManager -> sessionManager
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource));
         return http.build();
     }
+
+
 }
