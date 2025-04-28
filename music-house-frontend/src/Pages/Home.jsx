@@ -89,6 +89,7 @@ export const Home = () => {
                   : '/src/assets/instrumento_general_03.jpg'
               }
               id={instrument.idInstrument}
+              rentalPrice={instrument.rentalPrice}
             />
           ))
         ) : (

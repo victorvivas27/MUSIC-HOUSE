@@ -12,8 +12,8 @@ public class CorsGlobalConfig implements WebMvcConfigurer {
         registry.addMapping("/**")
                 .allowedOrigins(
                         "https://musichouse-production.up.railway.app",
-                        "https://micliente.com",
-                        "https://otrocliente.com"
+                        "http://localhost:5173/"
+
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*")

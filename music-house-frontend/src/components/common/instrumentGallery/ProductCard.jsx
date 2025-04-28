@@ -2,6 +2,7 @@ import Typography from '@mui/material/Typography'
 import { Link } from 'react-router-dom'
 import {
   Avatar,
+  Box,
   Card,
   CardActions,
   CardHeader,
@@ -15,38 +16,35 @@ import { red } from '@mui/material/colors'
 import { useAuth } from '@/hook/useAuth'
 import { CustomTooltip } from '../customTooltip/CustomTooltip'
 import FavoriteIcon from '../favorito/FavoriteIcon'
-import { ParagraphResponsive } from '@/components/styles/ResponsiveComponents'
+
 import ImageWithLoader from '../imageWithLoader/ImageWithLoader'
 
-const ProductCard = ({ name, imageUrl, id }) => {
+const ProductCard = ({ name, imageUrl, id,rentalPrice }) => {
   const { isUser } = useAuth()
 
   return (
     <Card
       sx={{
-        width: {
-          xs: '170px',
-          sm: '180px',
-          md: '190px',
-          lg: '200px',
-          xl: '250px'
-        },
-        height: {
-          xs: '330px',
-          sm: '340px',
-          md: '350px',
-          lg: '360px',
-          xl: '350px'
-        },
-        margin: 1,
-        boxShadow: 3,
-        borderRadius: 2,
+        width: { xs: 180, sm: 200, md: 220, lg: 230, xl: 250 },
+        height: { xs: 340, sm: 360, md: 380, lg: 400, xl: 420 },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'flex-start',
-        paddingBottom: 2,
-        gap: 1
+        justifyContent: 'space-between',
+        backgroundColor: 'background.paper',
+        borderRadius: 4,
+        boxShadow: "var(--box-shadow)",
+        padding: 2,
+        gap: 1,
+        transition: 'all 0.3s ease',
+        position: 'relative',
+        overflow: 'hidden',
+        '&:hover': {
+          transform: 'translateY(-5px)',
+          boxShadow: 8,
+          backgroundColor: 'background.default'
+        },
+        margin:1
       }}
     >
       <CardHeader
@@ -55,10 +53,11 @@ const ProductCard = ({ name, imageUrl, id }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           height: 50,
-          width: '100%'
+          width: '100%',
+          padding: 0
         }}
         avatar={
-          <Avatar sx={{ bgcolor: red[500] }} aria-label="product">
+          <Avatar sx={{ bgcolor: red[500], width: 40, height: 40 }} aria-label="product">
             {name.charAt(0)}
           </Avatar>
         }
@@ -71,12 +70,7 @@ const ProductCard = ({ name, imageUrl, id }) => {
 
       <CustomTooltip
         title={
-          <Typography
-            sx={{
-              fontFamily: 'Roboto',
-              fontSize: 10
-            }}
-          >
+          <Typography sx={{ fontFamily: 'Roboto', fontSize: 10 }}>
             <strong>✅ Más info</strong>
           </Typography>
         }
@@ -91,26 +85,70 @@ const ProductCard = ({ name, imageUrl, id }) => {
           />
         </Link>
       </CustomTooltip>
-      {/* ✅ Título debajo de la imagen */}
-      <ParagraphResponsive>{name}</ParagraphResponsive>
 
-      <CardActions
+      {/* ✅ Título debajo de la imagen */}
+      <Box
         sx={{
-          display: 'flex',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          height: 30,
           width: '100%',
-          marginTop: 'auto'
+          minHeight: 50,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: 'center',
+          px: 1,
+          backgroundColor: 'background.paper',
+          borderRadius: 2,
+          boxShadow: 1,
+          textAlign: 'center',
+          overflow: 'hidden'
         }}
       >
-        {isUser && (
-          <>
-            <FavoriteIcon idInstrument={id} />
-            <ShareIcon />
-          </>
-        )}
-      </CardActions>
+        <Typography
+          variant="subtitle2"
+          sx={{
+            fontWeight: 400,
+            whiteSpace: 'nowrap',
+            overflow: 'hidden',
+            textOverflow: 'ellipsis',
+            fontSize: { xs: '0.9rem', sm: '1rem' },
+            maxWidth: '100%',
+            fontStyle: 'italic',
+          }}
+        >
+          {name}
+        </Typography>
+      </Box>
+
+      <CardActions
+  sx={{
+    width: '100%',
+    display: 'flex',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    px: 1,
+    marginTop: 'auto',
+    height: 40
+  }}
+>
+  {isUser && (
+    <>
+      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+        <FavoriteIcon idInstrument={id} />
+        <ShareIcon />
+      </Box>
+
+      <Typography
+        variant="subtitle2"
+        sx={{
+          fontWeight: 600,
+          fontSize: { xs: '0.8rem', sm: '0.9rem' },
+          color: 'text.primary'
+        }}
+      >
+        ${rentalPrice}
+      </Typography>
+    </>
+  )}
+</CardActions>
     </Card>
   )
 }
@@ -119,8 +157,7 @@ ProductCard.propTypes = {
   name: PropTypes.string.isRequired,
   imageUrl: PropTypes.string.isRequired,
   id: PropTypes.string.isRequired,
-  isFavorite: PropTypes.bool,
-  onClickTrash: PropTypes.func
+  rentalPrice: PropTypes.number
 }
 
 export default ProductCard
