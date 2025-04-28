@@ -11,20 +11,38 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class AwsConfig {
+
     @Value("${aws.s3.access-key}")
     private String accessKeyId;
+
     @Value("${aws.s3.secret-key}")
     private String accessSecretKey;
+
     @Value("${aws.s3.region}")
     private String region;
 
     @Bean
     public AmazonS3 getS3Client() {
+        // Validaciones
+        if (accessKeyId == null || accessKeyId.isBlank()) {
+            throw new IllegalArgumentException("AWS Access Key is missing!");
+        }
+        if (accessSecretKey == null || accessSecretKey.isBlank()) {
+            throw new IllegalArgumentException("AWS Secret Key is missing!");
+        }
+        if (region == null || region.isBlank()) {
+            throw new IllegalArgumentException("AWS Region is missing!");
+        }
+
+        System.out.println("AWS Access Key: " + accessKeyId);
+        System.out.println("AWS Region: " + region);
+
         BasicAWSCredentials credentials = new BasicAWSCredentials(accessKeyId, accessSecretKey);
         AmazonS3 s3Client = AmazonS3ClientBuilder.standard()
                 .withRegion(Regions.fromName(region))
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .build();
+
         System.out.println("AmazonS3 Client Bean Created Successfully!");
         return s3Client;
     }
