@@ -6,10 +6,9 @@ import com.amazonaws.regions.Regions;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.stereotype.Component;
 
-@Configuration
+@Component
 public class AwsConfig {
 
     @Value("${aws.s3.access-key:}")
@@ -21,28 +20,15 @@ public class AwsConfig {
     @Value("${aws.s3.region:}")
     private String region;
 
-    @Bean
-    public AmazonS3 getS3Client() {
-        try {
-            if (accessKeyId == null || accessKeyId.isBlank() ||
-                    accessSecretKey == null || accessSecretKey.isBlank() ||
-                    region == null || region.isBlank()) {
-                System.out.println("⚠️ AWS credentials missing or incomplete, AmazonS3 client not created.");
-                return null;
-            }
-
-            System.out.println("✅ AWS credentials detected, creating AmazonS3 client...");
-
-            BasicAWSCredentials credentials = new BasicAWSCredentials(accessKeyId, accessSecretKey);
-
-            return AmazonS3ClientBuilder.standard()
-                    .withRegion(Regions.fromName(region))
-                    .withCredentials(new AWSStaticCredentialsProvider(credentials))
-                    .build();
-
-        } catch (Exception ex) {
-            System.out.println("❌ Error creating AmazonS3 client: " + ex.getMessage());
+    public AmazonS3 createS3Client() {
+        if (accessKeyId.isBlank() || accessSecretKey.isBlank() || region.isBlank()) {
+            System.out.println("⚠️ AWS credentials are missing. Cannot create S3 client.");
             return null;
         }
+        BasicAWSCredentials credentials = new BasicAWSCredentials(accessKeyId, accessSecretKey);
+        return AmazonS3ClientBuilder.standard()
+                .withRegion(Regions.fromName(region))
+                .withCredentials(new AWSStaticCredentialsProvider(credentials))
+                .build();
     }
 }

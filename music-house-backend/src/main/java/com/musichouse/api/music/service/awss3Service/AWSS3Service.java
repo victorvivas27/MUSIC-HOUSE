@@ -1,6 +1,7 @@
 package com.musichouse.api.music.service.awss3Service;
 
 import com.amazonaws.services.s3.AmazonS3;
+import com.musichouse.api.music.config.AwsConfig;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.interfaces.AWSS3Interface;
 import org.slf4j.Logger;
@@ -14,9 +15,10 @@ import java.util.UUID;
 
 @Service
 public class AWSS3Service implements AWSS3Interface {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(AWSS3Service.class);
 
-    private final AmazonS3 amazonS3;
+    private final AwsConfig awsConfig;
     private final S3UploadHelper s3UploadHelper;
 
     @Value("${aws.s3.bucket-name}")
@@ -25,19 +27,28 @@ public class AWSS3Service implements AWSS3Interface {
     @Value("${aws.s3.region}")
     private String region;
 
+    public AWSS3Service(AwsConfig awsConfig, S3UploadHelper s3UploadHelper) {
+        this.awsConfig = awsConfig;
+        this.s3UploadHelper = s3UploadHelper;
+    }
+
+    private AmazonS3 getS3Client() {
+        AmazonS3 client = awsConfig.createS3Client();
+        if (client == null) {
+            throw new IllegalStateException("Amazon S3 Client not available!");
+        }
+        return client;
+    }
 
     public String copyDefaultUserImage(UUID idUser) {
+        AmazonS3 amazonS3 = getS3Client();
+
         String sourceKey = "usuarios/default/default.png";
         String destinationKey = "usuarios/" + idUser + "/default.png";
 
         amazonS3.copyObject(bucketName, sourceKey, bucketName, destinationKey);
 
         return "https://" + bucketName + ".s3." + region + ".amazonaws.com/" + destinationKey;
-    }
-
-    public AWSS3Service(AmazonS3 amazonS3, S3UploadHelper s3UploadHelper) {
-        this.amazonS3 = amazonS3;
-        this.s3UploadHelper = s3UploadHelper;
     }
 
     public String uploadFileToS3User(MultipartFile file, UUID idUser) {
@@ -59,7 +70,6 @@ public class AWSS3Service implements AWSS3Interface {
     public String uploadSingleFile(MultipartFile file, String folder) {
         return s3UploadHelper.uploadSingleFile(file, folder);
     }
-
 }
 
 
