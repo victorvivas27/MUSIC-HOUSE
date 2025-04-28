@@ -58,14 +58,14 @@ const FavoriteIcon = ({ idInstrument }) => {
         {isFavorite ? (
           <Favorite
             color="error"
-            sx={{ fontSize: { xs: 20, sm: 25, md: 30, lg: 35 } }}
+            sx={{  fontSize: { xs: 18, sm: 20, md: 22, lg: 23, xl: 24 } }}
             className="pulse"
           />
         ) : (
           <FavoriteBorder
             color="action"
             sx={{
-              fontSize: { xs: 20, sm: 25, md: 30, lg: 35 },
+              fontSize: { xs: 18, sm: 20, md: 22, lg: 23, xl: 24 },
               transition: 'transform 0.2s ease-in-out',
               '&:hover': { transform: 'scale(1.1)' }
             }}

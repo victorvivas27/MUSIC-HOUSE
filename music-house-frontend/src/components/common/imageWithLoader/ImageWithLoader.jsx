@@ -20,9 +20,8 @@ const ImageWithLoader = ({
   fallbackSrc = '/src/assets/instrumento_general_03.jpg',
   delay = 10,
   showText = false,
-  onLoad = () => {},    
-  onError = () => {}   
-  
+  onLoad = () => {},
+  onError = () => {}
 }) => {
   const loaded = useImageLoader(src, delay)
   const [hasError, setHasError] = useState(false)
@@ -38,18 +37,19 @@ const ImageWithLoader = ({
       }}
     >
       {/* Imagen principal con fallback si falla */}
-      <img
-       src={hasError ? fallbackSrc : src}
-       alt={alt}
-       onLoad={() => {
-         onLoad(); 
-         setHasError(false);
-       }}
-       onError={() => {
-         onError(); 
-         setHasError(true);
-       }}
-        style={{
+      <Box
+        component="img"
+        src={hasError ? fallbackSrc : src}
+        alt={alt}
+        onLoad={() => {
+          onLoad()
+          setHasError(false)
+        }}
+        onError={() => {
+          onError()
+          setHasError(true)
+        }}
+        sx={{
           width: '100%',
           height: '100%',
           objectFit: 'cover',
@@ -98,16 +98,24 @@ const ImageWithLoader = ({
 ImageWithLoader.propTypes = {
   src: PropTypes.string,
   alt: PropTypes.string,
-  width: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
-  height: PropTypes.oneOfType([PropTypes.number, PropTypes.string]),
+  width: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.object
+  ]),
+  height: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.object
+  ]),
   variant: PropTypes.oneOf(['circular', 'rectangular']),
   border: PropTypes.string,
   borderRadius: PropTypes.string,
   fallbackSrc: PropTypes.string,
   delay: PropTypes.number,
   showText: PropTypes.bool,
-  onLoad: PropTypes.func,   
-  onError: PropTypes.func   
+  onLoad: PropTypes.func,
+  onError: PropTypes.func
 }
 
 export default ImageWithLoader

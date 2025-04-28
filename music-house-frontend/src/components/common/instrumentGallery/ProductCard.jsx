@@ -19,21 +19,21 @@ import FavoriteIcon from '../favorito/FavoriteIcon'
 
 import ImageWithLoader from '../imageWithLoader/ImageWithLoader'
 
-const ProductCard = ({ name, imageUrl, id,rentalPrice }) => {
+const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
   const { isUser } = useAuth()
 
   return (
     <Card
       sx={{
-        width: { xs: 180, sm: 200, md: 220, lg: 230, xl: 250 },
-        height: { xs: 340, sm: 360, md: 380, lg: 400, xl: 420 },
+        width: { xs: 160, sm: 200, md: 220, lg: 230, xl: 250 },
+        height: { xs: 280, sm: 360, md: 380, lg: 400, xl: 420 },
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
         justifyContent: 'space-between',
         backgroundColor: 'background.paper',
         borderRadius: 4,
-        boxShadow: "var(--box-shadow)",
+        boxShadow: 'var(--box-shadow)',
         padding: 2,
         gap: 1,
         transition: 'all 0.3s ease',
@@ -44,7 +44,7 @@ const ProductCard = ({ name, imageUrl, id,rentalPrice }) => {
           boxShadow: 8,
           backgroundColor: 'background.default'
         },
-        margin:1
+        margin: 1
       }}
     >
       <CardHeader
@@ -57,7 +57,10 @@ const ProductCard = ({ name, imageUrl, id,rentalPrice }) => {
           padding: 0
         }}
         avatar={
-          <Avatar sx={{ bgcolor: red[500], width: 40, height: 40 }} aria-label="product">
+          <Avatar
+            sx={{ bgcolor: red[500], width: 30, height: 30 }}
+            aria-label="product"
+          >
             {name.charAt(0)}
           </Avatar>
         }
@@ -80,8 +83,8 @@ const ProductCard = ({ name, imageUrl, id,rentalPrice }) => {
           <ImageWithLoader
             src={imageUrl}
             variant="circular"
-            width={150}
-            height={150}
+            width={{ xs: 100, sm: 120, md: 140, lg: 160, xl: 180 }}
+            height={{ xs: 100, sm: 120, md: 140, lg: 160, xl: 180 }}
           />
         </Link>
       </CustomTooltip>
@@ -89,17 +92,15 @@ const ProductCard = ({ name, imageUrl, id,rentalPrice }) => {
       {/* ✅ Título debajo de la imagen */}
       <Box
         sx={{
-          width: '100%',
-          minHeight: 50,
+          width: '110%',
+          minHeight: { xs: 40, sm: 60, md: 70 },
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          px: 1,
-          backgroundColor: 'background.paper',
+          px: 2,
           borderRadius: 2,
-          boxShadow: 1,
-          textAlign: 'center',
-          overflow: 'hidden'
+          boxShadow: 3,
+          textAlign: 'center'
         }}
       >
         <Typography
@@ -109,9 +110,15 @@ const ProductCard = ({ name, imageUrl, id,rentalPrice }) => {
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
-            fontSize: { xs: '0.9rem', sm: '1rem' },
-            maxWidth: '100%',
-            fontStyle: 'italic',
+            fontSize: {
+              xs: '0.5rem',   
+              sm: '0.6rem',   
+              md: '0.7rem',  
+              lg: '0.8rem',   
+              xl: '0.9rem'    
+            },
+           
+            fontStyle: 'italic'
           }}
         >
           {name}
@@ -119,36 +126,40 @@ const ProductCard = ({ name, imageUrl, id,rentalPrice }) => {
       </Box>
 
       <CardActions
-  sx={{
-    width: '100%',
-    display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    px: 1,
-    marginTop: 'auto',
-    height: 40
-  }}
->
-  {isUser && (
-    <>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-        <FavoriteIcon idInstrument={id} />
-        <ShareIcon />
-      </Box>
-
-      <Typography
-        variant="subtitle2"
         sx={{
-          fontWeight: 600,
-          fontSize: { xs: '0.8rem', sm: '0.9rem' },
-          color: 'text.primary'
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          px: 1,
+          marginTop: 'auto',
+          height: 40
         }}
       >
-        ${rentalPrice}
-      </Typography>
-    </>
-  )}
-</CardActions>
+        {isUser && (
+          <>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <FavoriteIcon idInstrument={id} />
+              <ShareIcon
+                sx={{
+                  fontSize: { xs: 18, sm: 20, md: 22, lg: 23, xl: 24 }
+                }}
+              />
+            </Box>
+
+            <Typography
+              variant="subtitle2"
+              sx={{
+                fontWeight: 600,
+                fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                color: 'text.primary'
+              }}
+            >
+              ${rentalPrice}
+            </Typography>
+          </>
+        )}
+      </CardActions>
     </Card>
   )
 }
