@@ -7,7 +7,7 @@ import {
   IconButton,
   Grid,
   Button,
-  Collapse,
+  Collapse
 } from '@mui/material'
 import DeleteIcon from '@mui/icons-material/Delete'
 import { useAuth } from '@/hook/useAuth'
@@ -22,18 +22,19 @@ import { CustomTooltip } from '@/components/common/customTooltip/CustomTooltip'
 import { Link } from 'react-router-dom'
 import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
 
-
-
 const MisReservas = () => {
   const [reservas, setReservas] = useState([])
-  const [loadingState, setLoadingState] = useState({ initial: true, deleting: false })
+  const [loadingState, setLoadingState] = useState({
+    initial: true,
+    deleting: false
+  })
   const [expandedId, setExpandedId] = useState(null)
 
   const { idUser } = useAuth()
   const { showConfirm, showLoading, showSuccess, showError } = useAlert()
 
   const getAllReservations = useCallback(async () => {
-    setLoadingState(prev => ({ ...prev, initial: true }))
+    setLoadingState((prev) => ({ ...prev, initial: true }))
     try {
       const response = await getReservationById(idUser)
       setReservas(response.result || [])
@@ -41,7 +42,7 @@ const MisReservas = () => {
       setReservas([])
       showError(`Error al cargar reservas: ${getErrorMessage(error)}`)
     } finally {
-      setLoadingState(prev => ({ ...prev, initial: false }))
+      setLoadingState((prev) => ({ ...prev, initial: false }))
     }
   }, [idUser, showError])
 
@@ -50,28 +51,35 @@ const MisReservas = () => {
   }, [getAllReservations])
 
   const handleDelete = async (idReservation) => {
-    const reserva = reservas.find(r => r.idReservation === idReservation)
+    const reserva = reservas.find((r) => r.idReservation === idReservation)
     if (!reserva) return
 
-    const isConfirmed = await showConfirm('¿Eliminar reserva?', 'Esta acción no se puede deshacer.')
+    const isConfirmed = await showConfirm(
+      '¿Eliminar reserva?',
+      'Esta acción no se puede deshacer.'
+    )
     if (!isConfirmed) return
 
-    setLoadingState(prev => ({ ...prev, deleting: true }))
+    setLoadingState((prev) => ({ ...prev, deleting: true }))
     showLoading('Eliminando reserva...')
 
     try {
-      await deleteReservation(reserva.idInstrument, reserva.idUser, reserva.idReservation)
+      await deleteReservation(
+        reserva.idInstrument,
+        reserva.idUser,
+        reserva.idReservation
+      )
       showSuccess('✅ Reserva eliminada correctamente')
       await getAllReservations()
     } catch (error) {
       showError(`❌ ${getErrorMessage(error)}`)
     } finally {
-      setLoadingState(prev => ({ ...prev, deleting: false }))
+      setLoadingState((prev) => ({ ...prev, deleting: false }))
     }
   }
 
   const handleExpandClick = (id) => {
-    setExpandedId(prevId => (prevId === id ? null : id))
+    setExpandedId((prevId) => (prevId === id ? null : id))
   }
 
   if (loadingState.initial) {
@@ -143,23 +151,28 @@ const MisReservas = () => {
               >
                 {/* Imagen + Botón delete */}
                 <Box sx={{ position: 'relative', width: '100%' }}>
-                <CustomTooltip
-  title={
-    <Typography sx={{ fontFamily: 'Roboto', fontSize: 10 }}>
-      <strong>✅ Más info</strong>
-    </Typography>
-  }
-  arrow
->
-  <Link to={`/instrument/${reserva.idInstrument}`} style={{ textDecoration: 'none' }}>
-    <ImageWithLoader
-      src={reserva.imageUrl || '/images/default-placeholder.png'}
-      variant="circular"
-      width={{ xs: 100, sm: 120, md: 140, lg: 160, xl: 180 }}
-      height={{ xs: 100, sm: 120, md: 140, lg: 160, xl: 180 }}
-    />
-  </Link>
-</CustomTooltip>
+                  <CustomTooltip
+                    title={
+                      <Typography sx={{ fontFamily: 'Roboto', fontSize: 10 }}>
+                        <strong>✅ Más info</strong>
+                      </Typography>
+                    }
+                    arrow
+                  >
+                    <Link
+                      to={`/instrument/${reserva.idInstrument}`}
+                      style={{ textDecoration: 'none' }}
+                    >
+                      <ImageWithLoader
+                        src={
+                          reserva.imageUrl || '/images/default-placeholder.png'
+                        }
+                        variant="circular"
+                        width={{ xs: 100, sm: 120, md: 140, lg: 160, xl: 180 }}
+                        height={{ xs: 100, sm: 120, md: 140, lg: 160, xl: 180 }}
+                      />
+                    </Link>
+                  </CustomTooltip>
                   <IconButton
                     onClick={() => handleDelete(reserva.idReservation)}
                     color="error"
@@ -181,14 +194,26 @@ const MisReservas = () => {
                 <Button
                   size="small"
                   onClick={() => handleExpandClick(reserva.idReservation)}
-                  endIcon={expandedId === reserva.idReservation ? <ExpandLessIcon /> : <ExpandMoreIcon />}
+                  endIcon={
+                    expandedId === reserva.idReservation ? (
+                      <ExpandLessIcon />
+                    ) : (
+                      <ExpandMoreIcon />
+                    )
+                  }
                   sx={{ fontSize: '0.7rem', mt: 1 }}
                 >
-                  {expandedId === reserva.idReservation ? 'Ocultar detalles' : 'Ver detalles'}
+                  {expandedId === reserva.idReservation
+                    ? 'Ocultar detalles'
+                    : 'Ver detalles'}
                 </Button>
 
                 {/* Contenido expandible */}
-                <Collapse in={expandedId === reserva.idReservation} timeout="auto" unmountOnExit>
+                <Collapse
+                  in={expandedId === reserva.idReservation}
+                  timeout="auto"
+                  unmountOnExit
+                >
                   <CardContent sx={{ textAlign: 'center', pt: 1 }}>
                     <Typography
                       variant="subtitle2"
@@ -204,15 +229,24 @@ const MisReservas = () => {
                       {reserva.instrumentName}
                     </Typography>
 
-                    <Typography variant="body2" sx={{ fontSize: { xs: '0.6rem', sm: '0.7rem' }, mb: 0.5 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ fontSize: { xs: '0.6rem', sm: '0.7rem' }, mb: 0.5 }}
+                    >
                       <strong>Inicio:</strong> {reserva.startDate}
                     </Typography>
 
-                    <Typography variant="body2" sx={{ fontSize: { xs: '0.6rem', sm: '0.7rem' }, mb: 0.5 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ fontSize: { xs: '0.6rem', sm: '0.7rem' }, mb: 0.5 }}
+                    >
                       <strong>Fin:</strong> {reserva.endDate}
                     </Typography>
 
-                    <Typography variant="body2" sx={{ fontSize: { xs: '0.6rem', sm: '0.7rem' }, mb: 0.5 }}>
+                    <Typography
+                      variant="body2"
+                      sx={{ fontSize: { xs: '0.6rem', sm: '0.7rem' }, mb: 0.5 }}
+                    >
                       <strong>Días:</strong> {rentalDays} días
                     </Typography>
 
