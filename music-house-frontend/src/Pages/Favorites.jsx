@@ -114,6 +114,7 @@ export const Favorites = () => {
               imageUrl={favorite.instrument.imageUrl}
               id={favorite.instrument.idInstrument}
               isFavorite={true}
+              rentalPrice={favorite.instrument.rentalPrice}
             />
           ))
         ) : (

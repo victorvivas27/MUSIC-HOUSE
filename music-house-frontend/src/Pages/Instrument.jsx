@@ -4,7 +4,7 @@ import { Box, Divider, Tooltip, Button, Typography } from '@mui/material'
 import { useAppStates } from '@/components/utils/global.context'
 import { useAuth } from '@/hook/useAuth'
 import { getInstrumentById } from '@/api/instruments'
-import { Loader } from '@/components/common/loader/Loader'
+
 import {
   InstrumentDetailWrapper,
   ParagraphResponsive,
@@ -29,66 +29,35 @@ export const Instrument = () => {
   const { id } = useParams()
   const { state } = useAppStates()
   const navigate = useNavigate()
-  const [loading, setIsLoading] = useState(true)
   const [instrumentSelected, setInstrumentSelected] = useState({
     characteristics: {}
   })
   const [instrument, setInstrument] = useState()
   const [showGallery, setShowGallery] = useState(false)
   const { isUser, isUserAdmin } = useAuth()
-  const [imageLoadState, setImageLoadState] = useState({
-    loaded: false,
-    fadeOut: false
-  })
-
   useEffect(() => {
-   
-    setImageLoadState({ loaded: false, fadeOut: false })
-    setIsLoading(true)
-
     getInstrumentById(id)
       .then((instrument) => {
         setInstrument(instrument)
-       
-        if (!instrument?.result?.imageUrls?.length) {
-          setImageLoadState({ loaded: true, fadeOut: true })
-        }
+        !instrument?.result?.imageUrls?.length
       })
       .catch(() => {
-        setImageLoadState({ loaded: true, fadeOut: true })
         navigate('/noDisponible')
       })
   }, [id, navigate])
-
   useEffect(() => {
     if (!instrument?.result) return
-
     setInstrumentSelected(instrument.result)
-    setIsLoading(false)
     if (window) {
       window.scrollTo({ top: 0, behavior: 'smooth' })
     }
   }, [instrument])
-
   const onClose = () => {
     setShowGallery(false)
   }
-
   return (
     <>
-      {(loading || !imageLoadState.loaded) && (
-        <Loader
-          title="Cargando instrumento"
-          fullSize={true}
-          show={!imageLoadState.fadeOut}
-        />
-      )}
-      <InstrumentDetailWrapper
-        style={{
-          opacity: imageLoadState.loaded ? 1 : 0,
-          transition: 'opacity 0.5s ease-in-out'
-        }}
-      >
+      <InstrumentDetailWrapper>
         <ArrowBack />
         {/*Contenedor de la imagen,de los datos y del iciono de favoritos */}
         <Box
@@ -102,9 +71,10 @@ export const Instrument = () => {
             sx={{
               ...flexColumnContainer,
               width: {
-                sm: '48%',
-                md: '55%',
-                lg: '57%',
+                xs: '98%',
+                sm: '97%',
+                md: '65%',
+                lg: '65%',
                 xl: '60%'
               }
             }}
@@ -162,14 +132,15 @@ export const Instrument = () => {
           <Box
             sx={{
               width: {
-                sm: '35%',
+                xs: '60%',
+                sm: '65%',
                 md: '31%',
-                lg: '32%',
-                xl: '30%'
+                lg: '30%',
+                xl: '25%'
               },
-              margin: 1,
+
               boxShadow: 'var(--box-shadow)',
-              borderRadius: 5
+              borderRadius: 3
             }}
           >
             {/* Nombre del instrumento */}
@@ -197,17 +168,7 @@ export const Instrument = () => {
                   variant="rectangular"
                   width="100%"
                   height="auto"
-                  borderRadius="1rem"
-                  onLoad={() => {
-                    setImageLoadState({ loaded: true, fadeOut: false })>
-                        setImageLoadState((prev) => ({
-                          ...prev,
-                          fadeOut: true
-                        }))
-                  }}
-                  onError={() =>
-                    setImageLoadState({ loaded: true, fadeOut: true })
-                  }
+                  borderRadius="0.5rem"
                 />
               </Button>
             </Tooltip>
@@ -269,11 +230,11 @@ export const Instrument = () => {
                       src={characteristic.image}
                       sx={{
                         width: {
-                          xs: '36%',
-                          sm: '38%',
-                          md: '40%',
-                          lg: '42%',
-                          xl: '45%'
+                          xs: '30%',
+                          sm: '32%',
+                          md: '35%',
+                          lg: '38%',
+                          xl: '40%'
                         },
                         backgroundColor: 'var(--color-primario)',
                         borderRadius: 4,
@@ -284,9 +245,9 @@ export const Instrument = () => {
 
                   {instrumentSelected?.characteristics[characteristic.id] ===
                   'si' ? (
-                    <Si size={18} color="var(--color-azul)" />
+                    <Si size={16} color="var(--color-azul)" />
                   ) : (
-                    <No size={18} color="var(--color-error)" />
+                    <No size={15} color="var(--color-error)" />
                   )}
                 </Box>
               )
@@ -353,21 +314,24 @@ export const Instrument = () => {
               }}
             >
               {/* 🔹 Precio por día */}
-              <Typography
-                variant="h5"
-                sx={{
-                  textAlign: 'center',
-                  fontWeight: 'bold',
-                  margin: 2
-                }}
-              >
-                Este instrumento tiene un valor por día de alquiler:{' '}
-                <span
-                  style={{ color: 'var(--color-azul)', fontWeight: 'bold' }}
+              <TitleResponsive>
+                Valor por día de alquiler:{' '}
+                <TitleResponsive
+                  sx={{
+                    color: 'var(--color-azul)',
+                    fontWeight: 'bold',
+                    fontSize: '1rem',
+                    backgroundColor: 'rgba(100, 181, 246, 0.1)', 
+                    padding: '2px 6px',
+                    borderRadius: '8px',
+                    display: 'inline-block',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
+                    letterSpacing: '0.5px'
+                  }}
                 >
                   $ {instrumentSelected?.rentalPrice}
-                </span>
-              </Typography>
+                </TitleResponsive>
+              </TitleResponsive>
               {/* 🔹Fin  Precio por día */}
 
               <Divider sx={{ width: '100%' }} />

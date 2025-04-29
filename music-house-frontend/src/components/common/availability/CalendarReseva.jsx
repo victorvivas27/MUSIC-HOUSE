@@ -24,7 +24,6 @@ import {
 } from '@/components/styles/ResponsiveComponents'
 import LoaderOverlay from '../loader/LoaderOverlay'
 
-
 const formatDate = (date) => dayjs(date).format('YYYY-MM-DD')
 
 const CalendarReserva = ({ instrument }) => {
@@ -43,41 +42,33 @@ const CalendarReserva = ({ instrument }) => {
       if (!idInstrument) return
       try {
         const dates = await getAllAvailableDatesByInstrument(idInstrument)
-
-        const filteredDates = dates.result
-          .filter((item) => item.available)
-          .map((item) => formatDate(item.dateAvailable))
-
-        setAvailableDates(filteredDates)
-      } catch (error) {
-        showError(`❌ ${getErrorMessage(error)}`)
+        const filtered = dates.result
+          .filter((d) => d.available)
+          .map((d) => formatDate(d.dateAvailable))
+        setAvailableDates(filtered)
+      } catch (err) {
+        showError(`❌ ${getErrorMessage(err)}`)
       }
     }
-
     fetchAvailableDates()
   }, [idInstrument, showError])
 
   const handleDateSelect = (date) => {
-    const formattedDate = formatDate(date)
-
-    if (!availableDates.includes(formattedDate)) {
-      const isPast = dayjs(formattedDate).isBefore(dayjs(), 'day')
-
+    const formatted = formatDate(date)
+    if (!availableDates.includes(formatted)) {
+      const isPast = dayjs(formatted).isBefore(dayjs(), 'day')
       showError(
         isPast
           ? '❌ No se puede seleccionar una fecha pasada.'
           : '❌ El instrumento no está habilitado para esa fecha.'
       )
-
       return
     }
-
-    setSelectedDates((prevDates) => {
-      const newDates = prevDates.includes(formattedDate)
-        ? prevDates.filter((d) => d !== formattedDate)
-        : [...prevDates, formattedDate]
-
-      return newDates.sort((a, b) => dayjs(a).unix() - dayjs(b).unix())
+    setSelectedDates((prev) => {
+      const updated = prev.includes(formatted)
+        ? prev.filter((d) => d !== formatted)
+        : [...prev, formatted]
+      return updated.sort((a, b) => dayjs(a).unix() - dayjs(b).unix())
     })
   }
 
@@ -85,20 +76,16 @@ const CalendarReserva = ({ instrument }) => {
     setLoading(true)
     const startDate = selectedDates[0]
     const endDate = selectedDates[selectedDates.length - 1]
-
     try {
       await createReservation(idUser, idInstrument, startDate, endDate)
-
       showSuccess(
         '¡Reserva realizada!',
         `Tu reserva ha sido confirmada del ${startDate} al ${endDate}.`
       )
       setSelectedDates([])
-      setTimeout(() => {
-        navigate('/')
-      }, 2500)
-    } catch (error) {
-      showError(`❌ ${getErrorMessage(error)}`)
+      setTimeout(() => navigate('/'), 2500)
+    } catch (err) {
+      showError(`❌ ${getErrorMessage(err)}`)
     } finally {
       setLoading(false)
     }
@@ -106,30 +93,17 @@ const CalendarReserva = ({ instrument }) => {
 
   const fetchReservedDates = useCallback(async () => {
     try {
-      const reservations = await getReservationById(idUser)
-
-      if (
-        !reservations.result ||
-        !Array.isArray(reservations.result) ||
-        reservations.result.length === 0
-      ) {
-        setReservedDates([])
-        return
-      }
-
-      const instrumentReservations = reservations.result.filter(
-        (res) => res.idInstrument === idInstrument
+      const res = await getReservationById(idUser)
+      const reservas = res.result || []
+      const instrumentRes = reservas.filter(
+        (r) => r.idInstrument === idInstrument
       )
+      setIsInstrumentReserved(instrumentRes.length > 0)
 
-      if (instrumentReservations.length > 0) {
-        setIsInstrumentReserved(true)
-      }
-
-      const bookedDates = instrumentReservations.flatMap((res) => {
-        const start = dayjs(res.startDate)
-        const end = dayjs(res.endDate)
+      const booked = instrumentRes.flatMap((r) => {
+        const start = dayjs(r.startDate)
+        const end = dayjs(r.endDate)
         const range = []
-
         for (
           let d = start;
           d.isSame(end) || d.isBefore(end);
@@ -137,13 +111,11 @@ const CalendarReserva = ({ instrument }) => {
         ) {
           range.push(formatDate(d))
         }
-
         return range
       })
-
-      setReservedDates(bookedDates)
-    } catch (error) {
-      showError(`❌ ${getErrorMessage(error)}`)
+      setReservedDates(booked)
+    } catch (err) {
+      showError(`❌ ${getErrorMessage(err)}`)
       setReservedDates([])
     }
   }, [idInstrument, idUser, showError])
@@ -160,7 +132,6 @@ const CalendarReserva = ({ instrument }) => {
     const isReserved = reservedDates.includes(formattedDay)
 
     return (
-     
       <PickersDay
         {...other}
         day={day}
@@ -188,107 +159,100 @@ const CalendarReserva = ({ instrument }) => {
   }
 
   return (
-    <>
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-    <Box sx={{ 
-    position: 'relative',
-    minHeight: '600px',
-    width: '100%'
-  }}>
-      <Box
-        sx={{
-          ...flexColumnContainer,
-          gap: 2,
-          padding: 2
-        }}
-      >
-        <DateCalendar
-          slots={{
-            day: CustomDayComponent
-          }}
-          sx={{
-            boxShadow: 'var(--box-shadow)'
-          }}
-        />
+      <Box sx={{ position: 'relative', minHeight: '600px', width: '100%' }}>
+        <Box sx={{ ...flexColumnContainer, gap: 2, padding: 2 }}>
+          <Box
+            sx={{
+              width: '100%',
+              maxHeight: { xs: 280, sm: 320, md: 360 },
+              overflowY: 'auto',
+              display: 'flex',
+              justifyContent: 'center',
+              p: 1
+            }}
+          >
+            <DateCalendar
+              slots={{ day: CustomDayComponent }}
+              sx={{
+                boxShadow: 'var(--box-shadow)',
+                width: { xs: '100%', sm: '90%', md: '80%', lg: '70%' },
+                minWidth: 280,
+                '& .MuiPickersCalendarHeader-root': { pb: 1 },
+                '& .MuiPickersSlideTransition-root': { minHeight: 200 }
+              }}
+            />
+          </Box>
 
-        <Box
-          sx={{
-            visibility:
-              selectedDates.length > 0 && !isInstrumentReserved
-                ? 'visible'
-                : 'hidden',
-            mt: 3,
-            p: 2,
-            backgroundColor: 'var(--color-exito)',
-            borderRadius: 2,
-            color: 'var(--texto-inverso-black)',
-            textAlign: 'center',
+          {selectedDates.length > 0 && !isInstrumentReserved && (
+            <Box
+              sx={{
+                mt: 3,
+                p: 2,
+                backgroundColor: 'var(--color-exito)',
+                borderRadius: 2,
+                color: 'var(--texto-inverso-black)',
+                textAlign: 'center',
+                width: {
+                  xs: '100%',
+                  sm: '100%',
+                  md: '90%',
+                  lg: '72%',
+                  xl: '70%'
+                }
+              }}
+            >
+              <TitleResponsive>📅 Fechas seleccionadas:</TitleResponsive>
+              <ParagraphResponsive>
+                {selectedDates.join(' • ')}
+              </ParagraphResponsive>
+            </Box>
+          )}
 
-            width: {
-              xs: '100%',
-              sm: '100%',
-              md: '90%',
-              lg: '72%',
-              xl: '70%'
-            }
-          }}
-          className={selectedDates.length > 0 ? 'fade-in-up' : 'fade-out-soft'}
-        >
-          <TitleResponsive>📅 Fechas seleccionadas:</TitleResponsive>
-          <ParagraphResponsive>{selectedDates.join(' • ')}</ParagraphResponsive>
+          <ContainerBottom
+            sx={{
+              width: { xs: '100%', sm: '100%', md: '90%', lg: '70%', xl: '50%' }
+            }}
+          >
+            <CustomButton
+              onClick={handleConfirmReservation}
+              disabled={loading}
+              sx={{
+                visibility:
+                  selectedDates.length > 0 && !isInstrumentReserved
+                    ? 'visible'
+                    : 'hidden',
+                boxShadow: 'var(--box-shadow)'
+              }}
+              className={
+                selectedDates.length > 1 ? 'fade-in-up' : 'fade-out-soft'
+              }
+            >
+              Reservar
+            </CustomButton>
+          </ContainerBottom>
         </Box>
 
-        <ContainerBottom
-          sx={{
-            width: {
-              xs: '100%',
-              sm: '100%',
-              md: '90%',
-              lg: '70%',
-              xl: '50%'
-            }
-          }}
-        >
-          <CustomButton
-            onClick={handleConfirmReservation}
-            disabled={loading}
-            sx={{
-              visibility:
-                selectedDates.length > 0 && !isInstrumentReserved
-                  ? 'visible'
-                  : 'hidden',
-              boxShadow: 'var(--box-shadow)'
+        {loading && (
+          <LoaderOverlay
+            texto={'Cargando reserva'}
+            containerProps={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.8)',
+              zIndex: 10,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
             }}
-            className={
-              selectedDates.length > 1 ? 'fade-in-up' : 'fade-out-soft'
-            }
-          >
-          Reservar
-            </CustomButton>
-        </ContainerBottom>
+          />
+        )}
       </Box>
-      {loading && (
-      <LoaderOverlay
-        texto={'Cargando reserva'}
-        containerProps={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '100%',
-          height: '100%',
-          borderRadius: '8px',
-          background: 'rgba(255, 255, 255, 0.8)',
-          zIndex: 10,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center'
-        }}
-      />
-    )}
-  </Box>
     </LocalizationProvider>
-   
-            </>
   )
 }
 

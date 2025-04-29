@@ -7,24 +7,28 @@ import {
   useTheme,
   useMediaQuery
 } from '@mui/material'
-import { MainWrapper } from '@/components/styles/ResponsiveComponents'
-import { AboutUs } from '@/components/Images/AboutUs'
-
-
+import {
+  MainWrapper,
+  ParagraphResponsive,
+  TitleResponsive
+} from '@/components/styles/ResponsiveComponents'
+import imageAbout from '@/components/Images/image_about.png'
 
 const CustomTypography = styled(Typography)(({ theme, bgColor }) => ({
-  padding: '1.3rem',
+  padding: '1rem 1rem',
   fontWeight: 'bold',
   width: 'fit-content',
   color: 'white',
-  backgroundColor: bgColor || theme.palette.secondary.main 
+  backgroundColor: bgColor || theme.palette.primary.main,
+  borderRadius: '8px',
+  boxShadow: 'var(--box-shadow)',
+  marginBottom: '1rem'
 }))
 
 export const About = () => {
   const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('md')) 
-  const isTablet = useMediaQuery('(max-width: 1240px) and (min-width: 900px)') 
-  
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'))
+  const isTablet = useMediaQuery('(max-width: 1240px) and (min-width: 1000px)')
 
   return (
     <main>
@@ -34,83 +38,94 @@ export const About = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-            padding: isMobile ? '1rem' : '2rem'
+        
+            gap: 1
           }}
         >
           <Box>
-            <Typography
-              variant={isMobile ? 'h4' : 'h3'}
-              component="h2"
-              textAlign="center"
-              sx={{ paddingBottom: '2rem', fontWeight: 'bold' }}
-            >
-              Sobre nosotros
-            </Typography>
+            <TitleResponsive>🎶 Bienvenido a Music House</TitleResponsive>
+            <ParagraphResponsive>
+              Donde cada nota cobra vida. Nos dedicamos a ofrecer experiencias
+              musicales auténticas a través del alquiler de instrumentos de alta
+              calidad y asesoría personalizada para artistas de todos los
+              niveles.
+            </ParagraphResponsive>
           </Box>
 
           <Box>
-            <CustomTypography
-              variant={isMobile ? 'body2' : 'h6'}
-              textAlign="left"
-              sx={{ color: 'black', background: 'yellow' }}
-            >
-              Oferta de servicios
+            <CustomTypography>
+              <TitleResponsive>🎸 Nuestra Propuesta</TitleResponsive>
             </CustomTypography>
+
+            <ParagraphResponsive>
+              En Music House nos enfocamos en facilitar el acceso a instrumentos
+              musicales profesionales para estudio, práctica o eventos.
+              Transformamos sueños en experiencias musicales satisfactorias, sin
+              importar tu nivel o trayectoria artística.
+            </ParagraphResponsive>
           </Box>
 
           <Box>
-            <Typography
-              variant={isMobile ? 'body2' : 'h5'}
-              sx={{ fontWeight: '300', padding: isMobile ? '1rem' : '2rem' }}
-            >
-              Transformamos en emociones satisfactorias, las experiencias que
-              podrían impedir la realización de nuestros sueños.
-            </Typography>
+            <CustomTypography>
+              <TitleResponsive>🧑‍🎤 ¿Quiénes somos?</TitleResponsive>
+            </CustomTypography>
+            <ParagraphResponsive>
+              Somos un equipo apasionado por la música y la educación artística.
+              Conectamos a músicos con las herramientas necesarias para
+              potenciar su talento, brindando orientación, calidad y compromiso
+              en cada servicio.
+            </ParagraphResponsive>
           </Box>
 
           <Box
             sx={{
               display: 'flex',
               flexDirection: isMobile ? 'column-reverse' : 'row',
+              alignItems: 'center',
               justifyContent: 'space-between',
-              alignItems: isTablet
-                ? 'center'
-                : isMobile
-                  ? 'flex-start'
-                  : 'flex-end'
+              gap: 3
             }}
           >
-            <Box>
-              <CustomTypography
-                variant={isMobile ? 'body2' : 'h6'}
-                textAlign="left"
-              >
-                ¿Quiénes somos?
-              </CustomTypography>
-            </Box>
             <Box
               sx={{
-                marginBottom: isMobile ? '4rem' : '1em',
-                display: 'flex',
-                justifyContent: 'center',
-                maxWidth: isMobile ? '90%' : isTablet ? '85%' : '80%',
-                marginX: 'auto'
+                maxWidth: isMobile ? '100%' : isTablet ? '85%' : '50%',
+                marginX: 'auto',
+                borderRadius: 2,
+                overflow: 'hidden',
+                boxShadow: 3
               }}
             >
-              <AboutUs style={{ width: '100%' }} />
+              <img
+                src={imageAbout}
+                alt="Músicos en escena"
+                style={{
+                  width: '100%',
+                  height: 'auto',
+                  objectFit: 'cover'
+                }}
+              />
+            </Box>
+
+            <Box>
+              <CustomTypography>
+                <TitleResponsive>📦 Lo que ofrecemos</TitleResponsive>
+              </CustomTypography>
+              <ParagraphResponsive>
+                Alquiler flexible, instrumentos probados y mantenidos, atención
+                personalizada y variedad de accesorios complementarios.
+              </ParagraphResponsive>
             </Box>
           </Box>
 
           <Box>
-            <Typography
-              variant={isMobile ? 'body1' : 'h5'}
-              sx={{ fontWeight: '300', padding: isMobile ? '1rem' : '2rem' }}
-            >
-              MUSIC HOUSE es el lugar donde encontrará en alquiler instrumentos
-              de calidad que aportan al crecimiento del artista por medio de la
-              práctica y suministra los equipos que permite realizar
-              presentaciones profesionales.
-            </Typography>
+            <CustomTypography>
+              <TitleResponsive>🌟 Nuestra Misión</TitleResponsive>
+            </CustomTypography>
+            <ParagraphResponsive>
+              Ser el puente entre los músicos y sus metas. Ofrecer una
+              experiencia musical completa, confiable y accesible, que acompañe
+              cada nota en tu camino artístico.
+            </ParagraphResponsive>
           </Box>
         </Container>
       </MainWrapper>

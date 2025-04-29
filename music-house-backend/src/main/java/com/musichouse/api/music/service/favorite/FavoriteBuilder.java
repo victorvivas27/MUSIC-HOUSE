@@ -36,6 +36,7 @@ public class FavoriteBuilder {
                         .findFirst()
                         .map(ImageUrlsInstrument::getImageUrl)
                         .orElse(null))
+                .rentalPrice(instrument.getRentalPrice())
                 .build();
     }
 

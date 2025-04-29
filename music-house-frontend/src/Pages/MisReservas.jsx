@@ -21,6 +21,10 @@ import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { CustomTooltip } from '@/components/common/customTooltip/CustomTooltip'
 import { Link } from 'react-router-dom'
 import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
+import {
+  ParagraphResponsive,
+  TitleResponsive
+} from '@/components/styles/ResponsiveComponents'
 
 const MisReservas = () => {
   const [reservas, setReservas] = useState([])
@@ -96,36 +100,26 @@ const MisReservas = () => {
   return (
     <Box
       sx={{
-        mt: { xs: 20, sm: 12, md: 40 },
+        mt: { xs: 25, sm: 22, md: 40 },
         p: 2,
-        backgroundColor: '#f5f5f5',
         borderRadius: 4,
-        margin: 2,
+        margin: 1,
         boxShadow: 'var(--box-shadow)',
         opacity: loadingState.deleting ? 0.7 : 1,
         transition: 'opacity 0.3s ease'
       }}
     >
-      <Typography
-        variant="h4"
-        align="center"
-        gutterBottom
+      <TitleResponsive
         sx={{
-          fontFamily: 'Roboto',
-          fontWeight: 'bold',
           color: 'var(--color-primario)',
-          backgroundColor: '#fff',
-          borderRadius: 2,
           px: 3,
           py: 1,
           display: 'inline-block',
-          mx: 'auto',
-          width: 'fit-content',
-          fontSize: { xs: '1.5rem', sm: '2rem', md: '2.5rem' }
+          mx: 'auto'
         }}
       >
         🎸 Mis Reservas
-      </Typography>
+      </TitleResponsive>
 
       <Grid container spacing={2} justifyContent="center">
         {reservas.map((reserva) => {
@@ -150,7 +144,16 @@ const MisReservas = () => {
                 }}
               >
                 {/* Imagen + Botón delete */}
-                <Box sx={{ position: 'relative', width: '100%' }}>
+                <Box
+                  sx={{
+                    position: 'relative',
+                    width: '100%',
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    margin: 1
+                  }}
+                >
                   <CustomTooltip
                     title={
                       <Typography sx={{ fontFamily: 'Roboto', fontSize: 10 }}>
@@ -168,8 +171,8 @@ const MisReservas = () => {
                           reserva.imageUrl || '/images/default-placeholder.png'
                         }
                         variant="circular"
-                        width={{ xs: 100, sm: 120, md: 140, lg: 160, xl: 180 }}
-                        height={{ xs: 100, sm: 120, md: 140, lg: 160, xl: 180 }}
+                        width={{ xs: 100, sm: 110, md: 120, lg: 130, xl: 140 }}
+                        height={{ xs: 100, sm: 110, md: 120, lg: 130, xl: 140 }}
                       />
                     </Link>
                   </CustomTooltip>
@@ -179,33 +182,47 @@ const MisReservas = () => {
                     size="small"
                     sx={{
                       position: 'absolute',
-                      top: 8,
-                      left: 8,
-                      backgroundColor: '#fff',
+                      top: { xs: 1, sm: -1, md: 1, lg: -1 },
+                      left: { xs: 1, sm: -1, md: 1, lg: -1 },
                       '&:hover': { backgroundColor: '#ffe5e5' },
                       boxShadow: 2
                     }}
                   >
-                    <DeleteIcon sx={{ fontSize: { xs: 18, sm: 20 } }} />
+                    <DeleteIcon
+                      sx={{
+                        fontSize: {
+                          xs: 18,
+                          sm: 20
+                        }
+                      }}
+                    />
                   </IconButton>
                 </Box>
 
                 {/* Expandir */}
                 <Button
-                  size="small"
                   onClick={() => handleExpandClick(reserva.idReservation)}
                   endIcon={
                     expandedId === reserva.idReservation ? (
-                      <ExpandLessIcon />
+                      <ExpandLessIcon sx={{ color: 'var(--color-azul)' }} />
                     ) : (
-                      <ExpandMoreIcon />
+                      <ExpandMoreIcon sx={{ color: 'var( --color-azul)' }} />
                     )
                   }
-                  sx={{ fontSize: '0.7rem', mt: 1 }}
                 >
-                  {expandedId === reserva.idReservation
-                    ? 'Ocultar detalles'
-                    : 'Ver detalles'}
+                  {expandedId === reserva.idReservation ? (
+                    <ParagraphResponsive
+                      sx={{ color: 'var( --color-primario-active)' }}
+                    >
+                      Ocultar detalles
+                    </ParagraphResponsive>
+                  ) : (
+                    <ParagraphResponsive
+                      sx={{ color: 'var( --color-primario-active)' }}
+                    >
+                      Ver detalles
+                    </ParagraphResponsive>
+                  )}
                 </Button>
 
                 {/* Contenido expandible */}
@@ -218,8 +235,8 @@ const MisReservas = () => {
                     <Typography
                       variant="subtitle2"
                       sx={{
-                        fontWeight: 600,
-                        fontSize: { xs: '0.8rem', sm: '0.9rem' },
+                        fontWeight: 400,
+                        fontSize: { xs: '0.6rem', sm: '0.8rem' },
                         mb: 1,
                         textOverflow: 'ellipsis',
                         overflow: 'hidden',

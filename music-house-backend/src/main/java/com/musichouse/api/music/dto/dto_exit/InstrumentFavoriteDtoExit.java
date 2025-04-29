@@ -2,6 +2,7 @@ package com.musichouse.api.music.dto.dto_exit;
 
 import lombok.*;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 @Getter
@@ -16,4 +17,6 @@ public class InstrumentFavoriteDtoExit {
     private String name;
 
     private String imageUrl;
+
+    private BigDecimal rentalPrice;
 }
