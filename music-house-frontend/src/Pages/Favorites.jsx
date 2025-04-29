@@ -95,9 +95,7 @@ export const Favorites = () => {
         >
           🎵 Tus Favoritos
         </Typography>
-        <Typography variant="subtitle1" sx={{ color: 'text.secondary' }}>
-          Aquí puedes ver los instrumentos que marcaste como favoritos.
-        </Typography>
+      
       </Box>
 
       <ProductsWrapper

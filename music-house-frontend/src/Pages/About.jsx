@@ -44,8 +44,8 @@ export const About = () => {
           }}
         >
           <Box>
-            <TitleResponsive>🎶 Bienvenido a Music House</TitleResponsive>
-            <ParagraphResponsive>
+            <TitleResponsive  sx={{ color: 'var(--color-primario)' }}>🎶 Bienvenido a Music House</TitleResponsive>
+            <ParagraphResponsive sx={{ color: 'var(--color-primario)' }}>
               Donde cada nota cobra vida. Nos dedicamos a ofrecer experiencias
               musicales auténticas a través del alquiler de instrumentos de alta
               calidad y asesoría personalizada para artistas de todos los
@@ -54,11 +54,11 @@ export const About = () => {
           </Box>
 
           <Box>
-            <CustomTypography>
+            <CustomTypography >
               <TitleResponsive>🎸 Nuestra Propuesta</TitleResponsive>
             </CustomTypography>
 
-            <ParagraphResponsive>
+            <ParagraphResponsive sx={{ color: 'var(--color-primario)' }}>
               En Music House nos enfocamos en facilitar el acceso a instrumentos
               musicales profesionales para estudio, práctica o eventos.
               Transformamos sueños en experiencias musicales satisfactorias, sin
@@ -70,7 +70,7 @@ export const About = () => {
             <CustomTypography>
               <TitleResponsive>🧑‍🎤 ¿Quiénes somos?</TitleResponsive>
             </CustomTypography>
-            <ParagraphResponsive>
+            <ParagraphResponsive sx={{ color: 'var(--color-primario)' }}>
               Somos un equipo apasionado por la música y la educación artística.
               Conectamos a músicos con las herramientas necesarias para
               potenciar su talento, brindando orientación, calidad y compromiso
@@ -110,7 +110,7 @@ export const About = () => {
               <CustomTypography>
                 <TitleResponsive>📦 Lo que ofrecemos</TitleResponsive>
               </CustomTypography>
-              <ParagraphResponsive>
+              <ParagraphResponsive sx={{ color: 'var(--color-primario)' }}>
                 Alquiler flexible, instrumentos probados y mantenidos, atención
                 personalizada y variedad de accesorios complementarios.
               </ParagraphResponsive>
@@ -121,7 +121,7 @@ export const About = () => {
             <CustomTypography>
               <TitleResponsive>🌟 Nuestra Misión</TitleResponsive>
             </CustomTypography>
-            <ParagraphResponsive>
+            <ParagraphResponsive sx={{ color: 'var(--color-primario)' }}>
               Ser el puente entre los músicos y sus metas. Ofrecer una
               experiencia musical completa, confiable y accesible, que acompañe
               cada nota en tu camino artístico.
