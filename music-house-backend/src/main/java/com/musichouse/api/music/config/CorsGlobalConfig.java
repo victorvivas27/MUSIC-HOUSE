@@ -11,7 +11,7 @@ public class CorsGlobalConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
                 .allowedOrigins(
-                        "https://musichouse-production.up.railway.app",
+                        "https://musichouse.up.railway.app/",
                         "http://localhost:5173/"
 
                 )
