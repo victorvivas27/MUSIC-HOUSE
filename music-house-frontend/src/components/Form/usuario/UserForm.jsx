@@ -71,7 +71,7 @@ export const UserForm = ({
   useEffect(() => {
     // Solo setear preview si viene de backend como string
     if (typeof initialFormData.picture === 'string') {
-      // Evitá pisar un preview ya existente desde input
+    
       setPreview((prev) => prev ?? initialFormData.picture)
     }
   }, [initialFormData.picture, preview])

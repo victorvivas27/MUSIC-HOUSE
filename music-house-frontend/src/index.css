@@ -96,6 +96,34 @@ html {
 body {
   min-height: 100vh;
   overflow-x: hidden;
+  margin: 0;
+  position: relative;
+}
+
+body::before {
+  content: "";
+  background-image: 
+  url('https://music-house-78.s3.us-east-1.amazonaws.com/Leonardo_Phoenix_10_Highresolution_wideangle_photo_of_a_stylis_0.jpg');
+  background-size: cover;
+  background-position: center;
+  background-attachment: fixed;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -2;
+}
+
+body::after {
+  content: "";
+  background: rgba(0, 0, 0, 0.205); /* Color negro con 40% opacidad */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
 }
 
 /* 🎭 Evitar zoom involuntario en móviles */
