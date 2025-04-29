@@ -13,6 +13,7 @@ import {
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
 import imageAbout from '@/components/Images/image_about.png'
+import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
 
 const CustomTypography = styled(Typography)(({ theme, bgColor }) => ({
   padding: '1rem 1rem',
@@ -95,14 +96,13 @@ export const About = () => {
                 boxShadow: 3
               }}
             >
-              <img
+              <ImageWithLoader
                 src={imageAbout}
                 alt="Músicos en escena"
-                style={{
-                  width: '100%',
-                  height: 'auto',
-                  objectFit: 'cover'
-                }}
+                variant="rectangular"
+                width="100%"
+                height="auto"
+                borderRadius="0.5rem"
               />
             </Box>
 
