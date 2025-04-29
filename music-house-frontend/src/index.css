@@ -2,7 +2,7 @@
 :root {
   /* 🖌️ 🎨 Colores */
   --calendario-fondo-no-disponible: #EE4116;
-  --calendario-color-no-disponible: #B0B0B0;
+  --calendario-color-no-disponible: #747272c9;
 
   --background-color: #232323;
 
@@ -117,7 +117,7 @@ body::before {
 
 body::after {
   content: "";
-  background: rgba(0, 0, 0, 0.205); /* Color negro con 40% opacidad */
+  background: rgba(0, 0, 0, 0.61); /* Color negro con 40% opacidad */
   position: fixed;
   top: 0;
   left: 0;

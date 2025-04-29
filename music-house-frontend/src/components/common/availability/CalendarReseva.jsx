@@ -144,8 +144,7 @@ const CalendarReserva = ({ instrument }) => {
               : isAvailable
                 ? 'var(--color-exito) !important'
                 : 'var(--calendario-color-no-disponible) !important',
-          color: 'var(--texto-inverso-black) !important',
-          borderRadius: '50%',
+          color: 'var(--color-primario) !important',
           pointerEvents: isReserved ? 'none' : 'auto',
           cursor: isReserved ? 'not-allowed' : 'pointer'
         }}
@@ -175,11 +174,10 @@ const CalendarReserva = ({ instrument }) => {
             <DateCalendar
               slots={{ day: CustomDayComponent }}
               sx={{
-                boxShadow: 'var(--box-shadow)',
-                width: { xs: '100%', sm: '90%', md: '80%', lg: '70%' },
-                minWidth: 280,
-                '& .MuiPickersCalendarHeader-root': { pb: 1 },
-                '& .MuiPickersSlideTransition-root': { minHeight: 200 }
+                backgroundColor: 'rgba(251, 193, 45, 0.57)',
+                borderRadius: 2, // opcional: bordes redondeados
+                width: { xs: '90%', sm: '90%', md: '80%', lg: '40%' },
+                minWidth: 280
               }}
             />
           </Box>

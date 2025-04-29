@@ -82,12 +82,13 @@ export const Instrument = () => {
             {/* Descripción */}
             <ParagraphResponsive
               sx={{
-                color: 'var(--color-oscuro-suave)',
-                width: '97%'
+                color: 'var( --texto-secundario)',
+                width: '97%',
+                
               }}
             >
               {instrumentSelected?.description}
-            </ParagraphResponsive>
+            </ParagraphResponsive  >
 
             <Divider sx={{ width: '100%', my: 2 }} />
 
@@ -118,7 +119,7 @@ export const Instrument = () => {
                     sm: '1rem',
                     md: '1.1rem'
                   },
-                  color: 'var(--color-suave)',
+                  color: 'var( --texto-secundario)',
                   padding: '0.3rem 0'
                 }}
               >
@@ -149,7 +150,8 @@ export const Instrument = () => {
                 textAlign: 'center',
                 textTransform: 'uppercase',
                 letterSpacing: '3px',
-                padding: 1
+                padding: 1,
+                color: 'var( --texto-secundario)',
               }}
             >
               {instrumentSelected?.name}
@@ -203,7 +205,8 @@ export const Instrument = () => {
             sx={{
               letterSpacing: '1px',
               textTransform: 'uppercase',
-              textAlign: 'center'
+              textAlign: 'center',
+              color: 'var( --texto-secundario)',
             }}
           >
             Características
@@ -245,9 +248,9 @@ export const Instrument = () => {
 
                   {instrumentSelected?.characteristics[characteristic.id] ===
                   'si' ? (
-                    <Si size={16} color="var(--color-azul)" />
+                    <Si size={18} color="var(--color-azul)" />
                   ) : (
-                    <No size={15} color="var(--color-error)" />
+                    <No size={18} color="var(--color-error)" />
                   )}
                 </Box>
               )
@@ -272,7 +275,8 @@ export const Instrument = () => {
             {/* 📌 Título del calendario */}
             <TitleResponsive
               sx={{
-                textTransform: 'uppercase'
+                textTransform: 'uppercase',
+                color: 'var( --texto-secundario)',
               }}
             >
               📅 Calendario para agregar Disponibilidad
@@ -314,14 +318,14 @@ export const Instrument = () => {
               }}
             >
               {/* 🔹 Precio por día */}
-              <TitleResponsive>
+              <TitleResponsive sx={{  color: 'var( --texto-secundario)',}}>
                 Valor por día de alquiler:{' '}
                 <TitleResponsive
                   sx={{
                     color: 'var(--color-azul)',
                     fontWeight: 'bold',
                     fontSize: '1rem',
-                    backgroundColor: 'rgba(100, 181, 246, 0.1)', 
+                    backgroundColor: 'rgba(251, 193, 45, 0.75)', 
                     padding: '2px 6px',
                     borderRadius: '8px',
                     display: 'inline-block',

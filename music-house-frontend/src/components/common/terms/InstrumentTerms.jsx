@@ -9,7 +9,8 @@ export const InstrumentTerms = () => {
         sx={{
           textAlign: 'center',
           fontWeight: 'bold',
-          marginBottom: '1.5rem'
+          marginBottom: '1.5rem',
+          color: 'var( --texto-secundario)',
         }}
       >
         📜 Políticas del Producto
@@ -29,7 +30,11 @@ export const InstrumentTerms = () => {
         <Box sx={{ flex: 1, minWidth: '300px' }}>
           <Typography
             variant="h6"
-            sx={{ fontWeight: 'bold', marginBottom: '0.5rem' }}
+            sx={{ 
+              fontWeight: 'bold',
+               marginBottom: '0.5rem',
+               color: 'var( --texto-secundario)',
+              }}
           >
             Reglas de Entrega y Uso
           </Typography>
@@ -41,7 +46,7 @@ export const InstrumentTerms = () => {
               'El instrumento debe ser entregado junto con sus accesorios en buen estado.'
             ].map((item, index) => (
               <ListItem key={index} sx={{ paddingY: '4px' }}>
-                <Typography variant="body1" sx={{ fontWeight: '300' }}>
+                <Typography variant="body1" sx={{ fontWeight: '300',  color: 'var( --texto-secundario)', }}>
                   {index + 1}) {item}
                 </Typography>
               </ListItem>
@@ -53,7 +58,7 @@ export const InstrumentTerms = () => {
         <Box sx={{ flex: 1, minWidth: '300px' }}>
           <Typography
             variant="h6"
-            sx={{ fontWeight: 'bold', marginBottom: '0.5rem' }}
+            sx={{ fontWeight: 'bold', marginBottom: '0.5rem',  color: 'var( --texto-secundario)' }}
           >
             Seguridad y Pruebas
           </Typography>
@@ -63,7 +68,7 @@ export const InstrumentTerms = () => {
               'Puede adquirir una póliza de seguro que lo cubre ante accidentes.'
             ].map((item, index) => (
               <ListItem key={index + 5} sx={{ paddingY: '4px' }}>
-                <Typography variant="body1" sx={{ fontWeight: '300' }}>
+                <Typography variant="body1" sx={{ fontWeight: '300',  color: 'var( --texto-secundario)', }}>
                   {index + 5}) {item}
                 </Typography>
               </ListItem>
