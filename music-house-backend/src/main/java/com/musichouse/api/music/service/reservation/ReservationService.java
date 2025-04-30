@@ -23,6 +23,7 @@ import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -49,6 +50,7 @@ public class ReservationService implements ReservationInterface {
     @Autowired
     private final MailManager mailManager;
 
+    @CacheEvict(value = "availableDates", key = "#reservationDtoEntrance.idInstrument")
     public ReservationDtoExit createReservation(ReservationDtoEntrance reservationDtoEntrance)
             throws ResourceNotFoundException, MessagingException, IOException {
 
@@ -88,9 +90,10 @@ public class ReservationService implements ReservationInterface {
                         reservation.getEndDate()
                 );
 
-        datesToUpdate.forEach(date -> date.setAvailable(false));
-
-        availableDateRepository.saveAll(datesToUpdate);
+        for (AvailableDate date : datesToUpdate) {
+            date.setAvailable(false);
+            availableDateRepository.save(date);
+        }
 
         ReservationDtoExit reservationDtoExit = reservationBuilder.buildDtoReservationExit(
                 reservationSaved,

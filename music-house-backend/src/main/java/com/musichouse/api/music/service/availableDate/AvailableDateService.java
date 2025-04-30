@@ -12,10 +12,12 @@ import com.musichouse.api.music.service.instrument.InstrumentValidator;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -63,6 +65,7 @@ public class AvailableDateService implements AvailableDateInterface {
     /**
      * encontrar todas las fechas disponibles por ID de instrumento
      */
+    @Cacheable(value = "availableDates", key = "#idInstrument")
     @Transactional
     @Override
     public List<AvailableDateDtoExit> findByInstrumentIdInstrument(UUID idInstrument)
@@ -101,10 +104,11 @@ public class AvailableDateService implements AvailableDateInterface {
                 .collect(Collectors.toList());
     }
 
-
+    @CacheEvict(value = "availableDates", allEntries = true)
     @Transactional
     public void deletePastAvailableDates() {
-        LocalDate today = LocalDate.now();
+        LocalDate today = LocalDate.now(ZoneId.of("America/Santiago"));
         availableDateRepository.deleteByDateAvailableBefore(today);
+
     }
 }

@@ -1,22 +1,19 @@
 export const getErrorMessage = (error) => {
   if (!error) return '⚠️ Error desconocido (sin detalles).'
 
-  const response = error.response?.data
+  const data = error.response?.data || error || {}
+  const message = data.message || ''
+  const errorText = data.error || ''
+  const result = data.result || {}
 
-  // 🔹 Captura todos los posibles mensajes
-  const message = response?.message || error.message
-  const errorDetail = response?.error || error.error
-
-  // 🔸 Si errorDetail es un array, lo unimos
-  const errorText = Array.isArray(errorDetail)
-    ? errorDetail.join('\n')
-    : errorDetail
-
-  // 🔹 Combina ambos si existen
-  if (message && errorText) {
-    return `${message}\n${errorText}`
+  let resultText = ''
+  if (result && typeof result === 'object' && !Array.isArray(result)) {
+    resultText = Object.entries(result)
+      .map(([, value]) => value) // 🔹 solo el mensaje, sin 'startDate:'
+      .join('\n')
   }
 
-  // 🔹 Solo uno u otro
-  return message || errorText || '⚠️ Error inesperado.'
+  return [message, errorText, resultText]
+    .filter(Boolean)
+    .join('\n')
 }

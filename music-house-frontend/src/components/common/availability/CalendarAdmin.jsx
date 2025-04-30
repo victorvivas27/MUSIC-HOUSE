@@ -14,6 +14,10 @@ import {
 } from '@/api/availability'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { TitleResponsive } from '@/components/styles/ResponsiveComponents'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
+dayjs.extend(utc)
+dayjs.extend(timezone)
 
 const CalendarAdmin = ({ instrument }) => {
   const [availableDates, setAvailableDates] = useState([])
@@ -92,13 +96,9 @@ const CalendarAdmin = ({ instrument }) => {
             : isAvailable
               ? 'var( --color-exito) !important'
               : 'var( --calendario-fondo-no-disponible)!important',
-
-          color: isPastDate ? '#7a7a7a !important' : '#ffffff !important',
-
-          borderRadius: '50%',
-          opacity: isPastDate ? 0.6 : 1,
-          border: selected ? '3px solid var( --color-primario)' : 'none',
-          transition: 'all 0.3s ease'
+          color: isPastDate
+            ? 'var( --color-primario-active) !important'
+            : '#ffffff !important'
         }}
       />
     )
@@ -111,7 +111,15 @@ const CalendarAdmin = ({ instrument }) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateCalendar slots={{ day: CustomDayComponent }} />
+      <DateCalendar
+        slots={{ day: CustomDayComponent }}
+        sx={{
+          backgroundColor: 'rgba(251, 193, 45, 0.57)',
+          borderRadius: 2, // opcional: bordes redondeados
+          width: { xs: '90%', sm: '90%', md: '80%', lg: '40%' },
+          minWidth: 280
+        }}
+      />
 
       {/* 🔥 Leyenda de colores */}
       <Box
@@ -123,7 +131,9 @@ const CalendarAdmin = ({ instrument }) => {
           gap: '2rem'
         }}
       >
-        <TitleResponsive>Leyenda del Calendario</TitleResponsive>
+        <TitleResponsive sx={{
+          color:"var(--color-primario)"
+          }}>Leyenda del Calendario</TitleResponsive>
 
         <Box
           sx={{
@@ -137,22 +147,26 @@ const CalendarAdmin = ({ instrument }) => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Box
               sx={{
-                width: '20px',
-                height: '20px',
+                width: '25px',
+                height: '25px',
                 backgroundColor: 'var(--calendario-color-no-disponible)',
                 borderRadius: '50%',
-                border: '1px solid var(--calendario-color-no-disponible)'
+                border: '1px solid var(--calendario-color-no-disponible)',
+              
               }}
             />
-            <Typography variant="body2">Fechas pasadas</Typography>
+            <Typography
+             variant="body1"
+             sx={{   color:"var(--color-primario)"}}
+             >Fechas pasadas</Typography>
           </Box>
 
           {/* 🟢 Fechas Disponibles */}
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Box
               sx={{
-                width: '20px',
-                height: '20px',
+                width: '25px',
+                height: '25px',
                 backgroundColor:
                   'var( --calendario-fondo-no-disponible)!important',
                 borderRadius: '50%',
@@ -160,7 +174,10 @@ const CalendarAdmin = ({ instrument }) => {
                   '1px solid var( --calendario-fondo-no-disponible)!important'
               }}
             />
-            <Typography variant="body2">
+            <Typography
+             variant="body1"
+             sx={{   color:"var(--color-primario)"}}
+             >
               Lista para ingresar a disponible
             </Typography>
           </Box>
@@ -169,14 +186,17 @@ const CalendarAdmin = ({ instrument }) => {
           <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
             <Box
               sx={{
-                width: '20px',
-                height: '20px',
+                width: '25px',
+                height: '25px',
                 backgroundColor: 'var( --color-exito) !important',
                 borderRadius: '50%',
                 border: '1px solid var( --color-exito) !important'
               }}
             />
-            <Typography variant="body2">
+            <Typography
+             variant="body1"
+             sx={{   color:"var(--color-primario)"}}
+             >
               Instrumento marcado como disponible
             </Typography>
           </Box>

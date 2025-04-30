@@ -58,7 +58,7 @@ public abstract class Person {
 
     @PrePersist
     @PreUpdate
-    protected void normalizeData() {
+    public void normalizeData() {
         if (this.name != null) {
             this.name = this.name.replaceAll("\\s+", " ").trim().toUpperCase();
         }

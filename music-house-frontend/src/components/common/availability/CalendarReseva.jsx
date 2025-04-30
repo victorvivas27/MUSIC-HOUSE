@@ -16,6 +16,8 @@ import { getAllAvailableDatesByInstrument } from '@/api/availability'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { createReservation, getReservationById } from '@/api/reservations'
 import { flexColumnContainer } from '@/components/styles/styleglobal'
+import utc from 'dayjs/plugin/utc'
+import timezone from 'dayjs/plugin/timezone'
 import {
   ContainerBottom,
   CustomButton,
@@ -23,7 +25,8 @@ import {
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
 import LoaderOverlay from '../loader/LoaderOverlay'
-
+dayjs.extend(utc)
+dayjs.extend(timezone)
 const formatDate = (date) => dayjs(date).format('YYYY-MM-DD')
 
 const CalendarReserva = ({ instrument }) => {
@@ -44,7 +47,7 @@ const CalendarReserva = ({ instrument }) => {
         const dates = await getAllAvailableDatesByInstrument(idInstrument)
         const filtered = dates.result
           .filter((d) => d.available)
-          .map((d) => formatDate(d.dateAvailable))
+          .map((item) => dayjs(item.dateAvailable).format('YYYY-MM-DD'))
         setAvailableDates(filtered)
       } catch (err) {
         showError(`❌ ${getErrorMessage(err)}`)
@@ -54,7 +57,7 @@ const CalendarReserva = ({ instrument }) => {
   }, [idInstrument, showError])
 
   const handleDateSelect = (date) => {
-    const formatted = formatDate(date)
+    const formatted = dayjs.utc(date).tz('America/Santiago').format('YYYY-MM-DD')
     if (!availableDates.includes(formatted)) {
       const isPast = dayjs(formatted).isBefore(dayjs(), 'day')
       showError(
@@ -83,7 +86,7 @@ const CalendarReserva = ({ instrument }) => {
         `Tu reserva ha sido confirmada del ${startDate} al ${endDate}.`
       )
       setSelectedDates([])
-      setTimeout(() => navigate('/'), 2500)
+      setTimeout(() => navigate('/'), 1500)
     } catch (err) {
       showError(`❌ ${getErrorMessage(err)}`)
     } finally {
@@ -138,13 +141,13 @@ const CalendarReserva = ({ instrument }) => {
         onClick={() => !isReserved && handleDateSelect(day)}
         sx={{
           bgcolor: isReserved
-            ? 'var(--color-primario) !important'
+            ? 'var( --color-primario-active) !important'
             : isSelected
               ? 'var(--color-azul) !important'
               : isAvailable
                 ? 'var(--color-exito) !important'
                 : 'var(--calendario-color-no-disponible) !important',
-          color: 'var( --color-primario-active) !important',
+          color: 'var( --color-primario) !important',
           pointerEvents: isReserved ? 'none' : 'auto',
           cursor: isReserved ? 'not-allowed' : 'pointer'
         }}
@@ -241,11 +244,12 @@ const CalendarReserva = ({ instrument }) => {
               width: '100%',
               height: '100%',
               borderRadius: '8px',
-              background: 'rgba(255, 255, 255, 0.8)',
+              background: 'rgba(255, 255, 255, 0.08)',
               zIndex: 10,
               display: 'flex',
               justifyContent: 'center',
-              alignItems: 'center'
+              alignItems: 'center',
+               color: 'var( --color-primario) !important',
             }}
           />
         )}

@@ -171,6 +171,7 @@ public class UserService implements UserInterface {
 
         modelMapper.map(userDtoModify, userToUpdate);
 
+        userToUpdate.normalizeData();
 
         if (userDtoModify.getRoles() != null) {
 
