@@ -38,6 +38,7 @@ const MisReservas = () => {
   const { showConfirm, showLoading, showSuccess, showError } = useAlert()
 
   const getAllReservations = useCallback(async () => {
+    if (!idUser) return // ← protección adicional
     setLoadingState((prev) => ({ ...prev, initial: true }))
     try {
       const response = await getReservationById(idUser)

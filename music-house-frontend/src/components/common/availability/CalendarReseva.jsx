@@ -144,7 +144,7 @@ const CalendarReserva = ({ instrument }) => {
               : isAvailable
                 ? 'var(--color-exito) !important'
                 : 'var(--calendario-color-no-disponible) !important',
-          color: 'var(--color-primario) !important',
+          color: 'var( --color-primario-active) !important',
           pointerEvents: isReserved ? 'none' : 'auto',
           cursor: isReserved ? 'not-allowed' : 'pointer'
         }}

@@ -121,7 +121,7 @@ export const Favorites = () => {
             sx={{
               textAlign: 'center',
               marginTop: 4,
-              color: 'text.secondary',
+              color: 'var(--color-primario)',
               fontStyle: 'italic'
             }}
           >
