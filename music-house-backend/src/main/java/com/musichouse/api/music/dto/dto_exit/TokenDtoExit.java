@@ -2,6 +2,7 @@ package com.musichouse.api.music.dto.dto_exit;
 
 import lombok.*;
 
+import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -14,13 +15,16 @@ public class TokenDtoExit {
 
     private UUID idUser;
 
-    //private String name;
+    private String email;
+    
+    private String name;
 
-    // private String lastName;
+    private String lastName;
 
-    //private List<String> roles;
+    private List<String> roles;
 
     private String token;
+
 
     @Builder.Default
     private String tokenType = "Bearer ";

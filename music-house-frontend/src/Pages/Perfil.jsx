@@ -73,15 +73,45 @@ const Perfil = () => {
       {(loading || !mainImageLoaded) && (
         <Loader title="Cargando perfil..." fullSize={true} />
       )}
-      <Box sx={{ p: 3, marginTop: 40 }}>
-        <Card sx={{ borderRadius: 4, boxShadow: 'var(--box-shadow)', p: 2 }}>
+      <Box
+        sx={{
+          p: 3,
+          marginTop: 40
+        }}
+      >
+        <Card
+          sx={{
+            borderRadius: 4,
+            boxShadow: 'var(--box-shadow)',
+            p: 2,
+            backgroundColor: 'var( --background-claro)'
+          }}
+        >
           <CardContent>
             <Stack
               direction={{ xs: 'column', sm: 'row' }}
               spacing={3}
               alignItems="center"
             >
-              <Tooltip title="Editar tus datos">
+              <Tooltip
+                title="Editar tus datos"
+                slotProps={{
+                  tooltip: {
+                    sx: {
+                      bgcolor: 'var(--texto-primario)',
+                      color: 'var(--color-primario)',
+                      fontSize: 13,
+                      px: 2,
+                      py: 1
+                    }
+                  },
+                  arrow: {
+                    sx: {
+                      color: 'var(--texto-primario)'
+                    }
+                  }
+                }}
+              >
                 <Box
                   onClick={() => setOpenModalUser(true)}
                   sx={{ cursor: 'pointer' }}
@@ -105,7 +135,7 @@ const Perfil = () => {
                         top: 0,
                         left: 0,
                         pointerEvents: 'none',
-                        backgroundColor: '#666',
+
                         fontWeight: 'bold'
                       }}
                     >
@@ -129,7 +159,10 @@ const Perfil = () => {
             <Divider sx={{ my: 3 }} />
 
             {/* Teléfonos */}
-            <Stack spacing={2}>
+            <Stack 
+            spacing={2}
+            
+            >
               <Stack direction="row" spacing={1} alignItems="center">
                 <PhoneIcon color="success" />
                 <Typography variant="h6">Teléfonos</Typography>
@@ -145,7 +178,11 @@ const Perfil = () => {
                 {userData?.phones?.length > 0 ? (
                   userData.phones.map((phone) => (
                     <Grid item xs={12} sm={6} md={4} key={phone.idPhone}>
-                      <Card sx={{ p: 2 }}>
+                      <Card sx={{ 
+                        p: 2,
+                        backgroundColor: 'transparent',
+                        boxShadow: 'var(--box-shadow)' // opcional: quita también la sombra si no la querés
+                        }}>
                         <Stack
                           justifyContent="space-between"
                           direction="row"
@@ -155,7 +192,7 @@ const Perfil = () => {
                             href={`tel:${phone.phoneNumber}`}
                             style={{
                               textDecoration: 'none',
-                              color: '#1976d2'
+                              color: 'var(--color-info)'
                             }}
                           >
                             {phone.phoneNumber}
@@ -167,7 +204,10 @@ const Perfil = () => {
                                 setOpenModalPhoneUpdate(true)
                               }}
                             >
-                              <EditIcon fontSize="small" />
+                              <EditIcon 
+                              fontSize="small"
+                              sx={{color:"var(--color-info)"}} 
+                              />
                             </IconButton>
                             <IconButton
                               onClick={async () => {
@@ -228,7 +268,11 @@ const Perfil = () => {
                 {userData?.addresses?.length > 0 ? (
                   userData.addresses.map((address) => (
                     <Grid item xs={12} sm={6} md={4} key={address.idAddress}>
-                      <Card sx={{ p: 2 }}>
+                      <Card  sx={{ 
+                        p: 2,
+                        backgroundColor: 'transparent',
+                        boxShadow: 'var(--box-shadow)' // opcional: quita también la sombra si no la querés
+                        }}>
                         <Stack spacing={1}>
                           <Typography variant="subtitle1" fontWeight="bold">
                             {address.street}, {address.number}
@@ -253,7 +297,10 @@ const Perfil = () => {
                                 setOpenModalDireccionUpdate(true)
                               }}
                             >
-                              <EditIcon fontSize="small" />
+                              <EditIcon 
+                              fontSize="small" 
+                              sx={{color:"var(--color-info)"}} 
+                              />
                             </IconButton>
                             <IconButton
                               onClick={async () => {

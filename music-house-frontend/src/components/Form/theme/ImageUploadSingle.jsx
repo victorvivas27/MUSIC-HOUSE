@@ -47,7 +47,7 @@ const ImageUploadSingle = ({ onImageChange, initialImage = null }) => {
         onDragOver={(e) => e.preventDefault()}
         sx={{
           textAlign: 'center',
-          border: '2px dashed #aaa',
+          border: '2px dashed var(--color-primario)',
           borderRadius: 2,
           p: 2,
           mt: 2,

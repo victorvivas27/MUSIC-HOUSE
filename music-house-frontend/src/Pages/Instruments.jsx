@@ -135,7 +135,6 @@ export const Instruments = () => {
       {(loading || loadedImages < rows.length) && page === 0 && (
         <Loader title="Cargando instrumentos" fullSize={true} />
       )}
-
       <MainWrapper>
         <Paper
           sx={{
@@ -143,7 +142,8 @@ export const Instruments = () => {
             display: { xs: 'none', lg: 'initial' },
             margin: 10,
             borderRadius: 4,
-            boxShadow: 'var(--box-shadow)'
+            boxShadow: 'var(--box-shadow)',
+            backgroundColor: 'var(--background-claro)'
           }}
         >
           <ArrowBack />
@@ -235,7 +235,8 @@ export const Instruments = () => {
                             opacity: selected.length > 0 ? 0 : 1,
                             pointerEvents:
                               selected.length > 0 ? 'none' : 'auto',
-                            transition: 'opacity 0.5s ease-in-out'
+                            transition: 'opacity 0.5s ease-in-out',
+                            ...flexRowContainer,
                           }}
                         >
                           <Tooltip title="Editar">
@@ -245,10 +246,9 @@ export const Instruments = () => {
                                 event.stopPropagation()
                               }}
                             >
-                              <EditIcon />
+                              <EditIcon sx={{color:"var(--color-info)"}}/>
                             </IconButton>
                           </Tooltip>
-
                           <Tooltip title="Eliminar">
                             <IconButton
                               onClick={(event) => {
@@ -256,7 +256,7 @@ export const Instruments = () => {
                                 event.stopPropagation()
                               }}
                             >
-                              <DeleteIcon />
+                              <DeleteIcon sx={{color:"var(--color-error)"}} />
                             </IconButton>
                           </Tooltip>
                         </Box>

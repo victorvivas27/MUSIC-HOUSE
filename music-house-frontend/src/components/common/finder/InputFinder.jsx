@@ -32,15 +32,15 @@ export const InputFinder = ({ value, setValue, onKeyUp, onKeyDown, inputRef, col
       sx={{
         position: 'relative',
         display: 'flex',
-        alignItems: 'center',
-        height: '45px',
-        backgroundColor: expanded ? 'var(--color-secundario-80)' : 'var(--background-transparente-dark)',
+        height: '2.5rem',
+        backgroundColor: expanded ? 'var(--color-secundario-80)' : 'var(--color-secundario-50)',
+        border:"1px solid var(--texto-primario)",
         borderRadius: '30px',
         overflow: 'hidden',
         padding: expanded ? '0 10px' : '0',
         boxShadow: expanded ? '0 0 8px 2px var(--color-primario)' : 'none',
         transition: 'all 0.4s ease',
-        width: expanded ? { xs: '280px', md: '450px' } : '55px',
+        width: expanded ? { xs: '280px', md: '450px' } : '60px',
       }}
     >
       <IconButton

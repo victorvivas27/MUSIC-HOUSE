@@ -111,7 +111,6 @@ export const Header = () => {
 
   return (
     <HeaderWrapper
-      isHome={isHome}
       backgroundImageUrl={background}
       sx={{
         transition: 'top 1.2s',
@@ -127,7 +126,6 @@ export const Header = () => {
               aria-controls="menu-appbar"
               aria-haspopup="true"
               onClick={handleOpenNavMenu}
-              color="inherit"
             >
               {authGlobal ? (
                 <Avatar
@@ -276,11 +274,9 @@ export const Header = () => {
           <Box
             sx={{
               flexGrow: 1,
-              display: {
-                xs: 'none',
-                md: 'flex'
-              },
-              alignItems: 'center'
+              display: { xs: 'none', md: 'flex' },
+              alignItems: 'center',
+              gap: '8px'
             }}
           >
             {pagesDesktop.map((page, index) => {
@@ -289,42 +285,40 @@ export const Header = () => {
                 (page.user && isUser) ||
                 (page.anonymous && !(isUser || isUserAdmin)) ||
                 page.any
+
               const isActive = location.pathname === page.to
+
               return (
                 shouldShow && (
                   <Button
                     key={`menu-option-${index}`}
+                    component={Link}
+                    to={page.to}
                     sx={{
                       textTransform: 'none',
                       display: 'flex',
                       alignItems: 'center',
-                      border: isActive
-                        ? '2px solid var(--color-exito)'
-                        : '2px solid transparent',
+                      borderRadius: '8px',
+                      border: '2px solid',
+                      borderColor: isActive ? 'primary.main' : 'transparent',
                       backgroundColor: isActive
-                        ? 'rgba(255, 255, 255, 0.1)'
-                        : 'transparent',
-                      '&:hover': {
-                        backgroundColor: 'rgba(255, 255, 255, 0.1)'
-                      },
+                        ? 'var(--background-claro)'
+                        : 'var( --background-transparente)',
+                      color: 'var(--texto-primario)',
                       height: 50,
-                      margin: 1
+                      px: 2,
+                      gap: 1,
+                      transition: 'all 0.2s ease-out',
+                      '&:hover': {
+                        borderColor: 'primary.main',
+                        transform: 'translateY(-1px)',
+                        boxShadow: 'var(--box-shadow)',
+                        color: 'var(--color-primario)'
+                      }
                     }}
                   >
-                    <Link
-                      to={page.to}
-                      className="nav-link"
-                      style={{
-                        display: 'flex',
-                        alignItems: 'center',
-                        gap: 8,
-                        textDecoration: 'none',
-                        color: 'var(--color-primario)'
-                      }}
-                    >
-                      {page.icon}
-                      {page.text}
-                    </Link>
+                    {page.icon}
+                    {page.text}
                   </Button>
                 )
               )
@@ -366,7 +360,27 @@ export const Header = () => {
                     }
                   }}
                 >
-                  <Tooltip title="Opciones" arrow>
+                  <Tooltip
+                    title="Opciones"
+                    arrow
+                    placement="left"
+                    slotProps={{
+                      tooltip: {
+                        sx: {
+                          bgcolor: 'var(--texto-primario)',
+                          color: 'var(--color-primario)',
+                          fontSize: 13,
+                          px: 2,
+                          py: 1
+                        }
+                      },
+                      arrow: {
+                        sx: {
+                          color: 'var(--texto-primario)'
+                        }
+                      }
+                    }}
+                  >
                     <Chip
                       avatar={
                         <Avatar

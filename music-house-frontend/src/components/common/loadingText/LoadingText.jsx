@@ -1,20 +1,26 @@
 import PropTypes from 'prop-types'
 import './LoadingText.css' 
 
-const LoadingText = ({ text = 'Cargando' }) => {
+const LoadingText = ({ 
+  text ='Cargando', 
+  color='var(--color-info)' ,
+  fontSize="1rem"
+}) => {
   return (
     <span className="loading-text">
-    <span className="loading-label">{text}</span>
-    <span style={{ color: 'red' }} className="dot">.</span>
-    <span style={{ color: 'blue' }} className="dot">.</span>
-    <span style={{ color: 'red' }} className="dot">.</span>
-    <span style={{ color: 'blue' }} className="dot">.</span>
-    <span style={{ color: 'red' }} className="dot">.</span>
-  </span>
+      <span className="loading-label" style={{color,fontSize}}>{text}</span>
+      <span style={{ color: 'red' }} className="dot">.</span>
+      <span style={{ color: 'blue' }} className="dot">.</span>
+      <span style={{ color: 'red' }} className="dot">.</span>
+      <span style={{ color: 'blue' }} className="dot">.</span>
+      <span style={{ color: 'red' }} className="dot">.</span>
+    </span>
   )
 }
 
 export default LoadingText
 LoadingText.propTypes = {
-  text: PropTypes.string
+  text: PropTypes.string,
+  color: PropTypes.string,
+  fontSize: PropTypes.string
 }

@@ -1,4 +1,5 @@
 import axios from 'axios';
+axios.defaults.withCredentials = true;
 import { handleApiError } from './handleApiError';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -77,6 +78,24 @@ export const UsersApi = {
       handleApiError(error);
     }
   },
+  getCurrentUser: async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/auth/me`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+  logOut: async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/auth/logout`)
+      return response.data
+    } catch (error) {
+      handleApiError(error)
+    }
+  },
 };
 
 export const searchUserName = 
@@ -88,4 +107,6 @@ async (name="", page = 0, size = 5, sort = "name,asc") => {
   } catch (error) {
     handleApiError(error);
   }
+
+  
 };

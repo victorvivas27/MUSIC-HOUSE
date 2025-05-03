@@ -152,7 +152,8 @@ export const Theme = () => {
           display: { xs: 'none', lg: 'initial' },
           margin: 10,
           borderRadius: 4,
-          boxShadow: 'var(--box-shadow)'
+          boxShadow: 'var(--box-shadow)',
+           backgroundColor: 'var(--background-claro)'
         }}
       >
         <ArrowBack />
@@ -243,7 +244,8 @@ export const Theme = () => {
                         style={{
                           opacity: selected.length > 0 ? 0 : 1,
                           pointerEvents: selected.length > 0 ? 'none' : 'auto',
-                          transition: 'opacity 0.5s ease-in-out'
+                          transition: 'opacity 0.5s ease-in-out',
+                             ...flexRowContainer,
                         }}
                       >
                         <Tooltip title="Editar">
@@ -253,7 +255,7 @@ export const Theme = () => {
                               event.stopPropagation()
                             }}
                           >
-                            <EditIcon />
+                            <EditIcon sx={{color:"var(--color-info)"}} />
                           </IconButton>
                         </Tooltip>
 
@@ -264,7 +266,7 @@ export const Theme = () => {
                               event.stopPropagation()
                             }}
                           >
-                            <DeleteIcon />
+                            <DeleteIcon sx={{color:"var(--color-error)"}} />
                           </IconButton>
                         </Tooltip>
                       </Box>

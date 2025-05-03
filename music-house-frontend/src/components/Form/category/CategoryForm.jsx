@@ -36,7 +36,7 @@ export const CategoryForm = ({ initialFormData, onSubmit, loading }) => {
               boxShadow: "var(--box-shadow)",
               display: 'flex',
               flexDirection: 'column',
-              marginBottom:10
+              backgroundColor:"var(--background-claro)"
             }}
           >
             <FormControl fullWidth>
@@ -76,7 +76,7 @@ export const CategoryForm = ({ initialFormData, onSubmit, loading }) => {
                     <LoadingText text={title} />
                     <CircularProgress
                       size={30}
-                      sx={{ ml: 1, color: 'var(--color-azul)' }}
+                      sx={{ ml: 1, color: 'var(--color-info)' }}
                     />
                   </>
                 ) : (

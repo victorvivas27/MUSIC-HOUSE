@@ -4,7 +4,7 @@ import {
   FormControlLabel,
   Checkbox,
   styled,
-  Grid,
+  Grid
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import PropTypes from 'prop-types'
@@ -71,7 +71,6 @@ export const UserForm = ({
   useEffect(() => {
     // Solo setear preview si viene de backend como string
     if (typeof initialFormData.picture === 'string') {
-    
       setPreview((prev) => prev ?? initialFormData.picture)
     }
   }, [initialFormData.picture, preview])
@@ -101,12 +100,9 @@ export const UserForm = ({
           <form
             onSubmit={handleSubmit}
             style={{
-              backgroundColor: 'rgba(255, 255, 255, 0.13)',
-              backdropFilter: 'blur(4px)',
-              WebkitBackdropFilter: 'blur(4px)',
+              backgroundColor: 'var(--background-claro)',
               borderRadius: '12px',
               marginBottom: '20px',
-              boxShadow: 'var(--box-shadow)',
               padding: '24px',
               width: '100%',
               maxWidth: '1100px',
@@ -227,19 +223,23 @@ export const UserForm = ({
                     <CustomButton type="submit" disabled={loading}>
                       {buttonText}
                     </CustomButton>
+                    {combinedLoading && (
+                      <LoaderOverlay
+                        containerProps={{
+                          justifyContent: 'end'
+                        }}
+                        texto={buttonTextLoading}
+                        fontSize="1.5rem"
+                        circularProgressProps={{
+                          thickness: 2
+                        }}
+                      />
+                    )}
 
                     {!initialFormData.idUser && !isUserAdmin && (
-                      <Link
-                        href=""
-                        underline="always"
-                        onClick={onSwitch}
-                        sx={{
-                          color: 'var(--texto-primario)',
-                          marginTop: { xs: '40px', md: '20px' }
-                        }}
-                      >
+                      <Link onClick={onSwitch}>
                         <ParagraphResponsive
-                          sx={{ fontWeight: '600', color: 'var(--color-azul)' }}
+                          sx={{ color: 'var(--color-info)' }}
                         >
                           Ya tengo una cuenta <ContactSupportRoundedIcon />
                         </ParagraphResponsive>
@@ -252,11 +252,6 @@ export const UserForm = ({
           </form>
         )}
       </Formik>
-      {combinedLoading && (
-       
-          <LoaderOverlay texto={buttonTextLoading} />
-       
-      )}
     </>
   )
 }

@@ -9,7 +9,6 @@ import { UsersApi } from '@/api/users'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { updateAddress } from '@/api/addresses'
 import { updatePhone } from '@/api/phones'
-import { Loader } from '@/components/common/loader/Loader'
 import {
   BoxFormUnder,
   BoxLogoSuperior,
@@ -169,12 +168,7 @@ const EditUser = ({ onSwitch }) => {
       setIsSubmitting(false)
     }, 1100)
   }
-
-  const isLoadingData = !formData && !isSubmittingRef.current
-
-  if (isLoadingData) return <Loader title="Un momento por favor..." />
-
-  return (
+return (
     <MainCrearUsuario container bgLoaded={bgLoaded}>
        <FullScreenLoader bgLoaded={bgLoaded} text="Cargando" />
       <>

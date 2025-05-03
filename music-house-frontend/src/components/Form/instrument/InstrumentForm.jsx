@@ -59,10 +59,11 @@ const InstrumentForm = ({
               minWidth: '1100px',
               p: 4,
               borderRadius: 4,
-              boxShadow: "var(--box-shadow)",
+              boxShadow: 'var(--box-shadow)',
               display: 'flex',
               flexDirection: 'column',
-              marginBottom:10
+              marginBottom: 10,
+              backgroundColor: 'var(--background-claro)'
             }}
           >
             <Grid container spacing={4}>
@@ -166,8 +167,7 @@ const InstrumentForm = ({
                     label="🎭 Selecciona una temática"
                     name="idTheme"
                     selectedValue={values.idTheme}
-                    onChange={(e) =>
-                       setFieldValue('idTheme', e.target.value)}
+                    onChange={(e) => setFieldValue('idTheme', e.target.value)}
                     fetchDataFn={getTheme}
                     fetchSingleItemFn={getThemeById}
                     getId={(item) => item.idTheme}
@@ -203,10 +203,9 @@ const InstrumentForm = ({
 
             <Box
               sx={{
-                border: '1px dashed #aaa',
+                border: '2px dashed var(--color-primario)',
                 borderRadius: 2,
-                padding: 2,
-                backgroundColor: '#fff'
+                padding: 2
               }}
             >
               <ImageUploadMultiple
@@ -241,7 +240,27 @@ const InstrumentForm = ({
                       alignItems: 'center'
                     }}
                   >
-                    <Tooltip title={charac.name}>
+                    <Tooltip
+                      title={charac.name}
+                      arrow
+                      placement="top"
+                      slotProps={{
+                        tooltip: {
+                          sx: {
+                            bgcolor: 'black',
+                            color: 'white',
+                            fontSize: 13,
+                            px: 2,
+                            py: 1
+                          }
+                        },
+                        arrow: {
+                          sx: {
+                            color: 'black'
+                          }
+                        }
+                      }}
+                    >
                       <img
                         src={charac.image}
                         alt={charac.name}
@@ -249,10 +268,8 @@ const InstrumentForm = ({
                           width: '90px',
                           height: '90px',
                           objectFit: 'cover',
-                          border: '2px solid #ccc',
                           borderRadius: '8px',
                           padding: '4px',
-                          backgroundColor: '#fff',
                           boxShadow: 'var(--box-shadow)',
                           cursor: 'pointer',
                           transition: 'transform 0.2s'
@@ -273,17 +290,18 @@ const InstrumentForm = ({
                 ))}
               </Box>
             </Box>
-
             <ArrowBack />
-
             <ContainerBottom>
               <CustomButton type="submit" disabled={loading}>
                 {loading ? (
                   <>
-                    <LoadingText text={titleDelLoader} />
+                    <LoadingText
+                     text={titleDelLoader}
+
+                     />
                     <CircularProgress
                       size={25}
-                      sx={{ color: 'var(--color-azul)', ml: 1 }}
+                      sx={{ color: 'var(--color-info)', ml: 1 }}
                     />
                   </>
                 ) : (

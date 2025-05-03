@@ -26,7 +26,7 @@ export const UserLayout = () => {
           <Outlet />
         </Box>
         <Footer />
-        <WhatsAppContact />
+        <WhatsAppContact/>
       </Box>
     </ThemeProvider>
   )

@@ -46,7 +46,7 @@ export const flexRowContainer = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  flexWrap: "wrap"
+ 
 
 
 };
@@ -59,36 +59,25 @@ export const flexColumnContainer = {
 };
 
 export const paginationStyles = {
-  '& .MuiTablePagination-toolbar': {
-    backgroundColor: 'lightgray',
-    padding: '10px'
-  },
   '& .MuiTablePagination-selectLabel': {
+    fontSize: 20,
     fontWeight: 'bold',
-    color: 'var(--color-azul)',
     textShadow: '0 1px 2px var(--color-primario)',
   },
   '& .MuiTablePagination-input': {
-    fontSize: '16px',
+    fontSize: '20px',
     color: 'var(--color-error)'
   },
   '& .MuiTablePagination-displayedRows': {
     fontStyle: 'italic',
-    fontSize: 15,
+    fontSize: 20,
     color: 'var(--color-exito)'
   },
-  '& .MuiTablePagination-actions': {
-    color: 'var(--texto-inverso-black)',
-    '& button': {
-      borderRadius: '50%',
-      margin: 1,
-      backgroundColor: 'var(--color-primario)',
-      transition: '0.3s',
-      '&:hover': {
-        backgroundColor: 'var(--color-primario)',
-        color: 'var(--color-secundario)'
-      }
-    }
+  '& .MuiTablePagination-actions button': {
+   color: 'var( --texto-primario)',
+  },
+  '& .MuiSvgIcon-root': {
+    fontSize: '2rem', 
   }
 }
 

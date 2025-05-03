@@ -67,32 +67,28 @@ export const ContainerForm = styled(Grid, {
 })(({ theme, sx = {} }) => ({
   ...flexColumnContainer,
   width: '99vw',
-  height: '80vh',
+  height: '50vh',
   padding: theme.spacing(1),
   borderRadius: '16px',
-  backgroundColor: 'rgba(255, 255, 255, 0.13)',
-  backdropFilter: 'blur(4px)',
-  WebkitBackdropFilter: 'blur(4px)',
-  boxShadow: 'var(--box-shadow)',
-
-  [theme.breakpoints.up('sm')]: {
-    width: '67vw',
-    height: '70vh',
+  backgroundColor: 'var( --background-claro)',
+[theme.breakpoints.up('sm')]: {
+    width: '95vw',
+    height: '50vh',
     marginBottom:10
   },
   [theme.breakpoints.up('md')]: {
     width: '68vw',
-    height: '70vh',
+    height: '50vh',
     marginBottom:10
   },
   [theme.breakpoints.up('lg')]: {
-    width: '69vw',
-    height: '70vh',
+    width: '60vw',
+    height: '50vh',
     marginBottom:10
   },
   [theme.breakpoints.up('xl')]: {
-    width: '70vw',
-    height: '80vh',
+    width: '50vw',
+    height: '50vh',
     marginBottom:10
   },
 
@@ -102,8 +98,8 @@ export const ContainerForm = styled(Grid, {
 export const TitleResponsive = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
-  color: 'var(--texto-inverso-darck)',
-  textShadow: '0 1px 2px var(--color-primario)',
+  color: 'var( --color-primario)',
+  textShadow: '0 4px 4px var( --texto-primario)',
   fontWeight: 350,
   fontSize: '1rem',
 
@@ -245,13 +241,28 @@ export const MainCrearUsuario = styled(Grid, {
   position: 'relative'
 }))
 
-export const MainWrapper = styled(Box)(() => ({
+export const MainWrapper = styled(Box)(({ theme }) => ({
   display: 'flex',
   justifyContent: 'flex-start',
   alignItems: 'center',
   width: '100vw',
-  marginTop: 300,
-  marginBottom: 50
+  marginBottom: 150,
+
+ 
+  marginTop: 180, 
+
+  [theme.breakpoints.up('sm')]: {
+    marginTop: 220
+  },
+  [theme.breakpoints.up('md')]: {
+    marginTop: 260
+  },
+  [theme.breakpoints.up('lg')]: {
+    marginTop: 300
+  },
+  [theme.breakpoints.up('xl')]: {
+    marginTop: 340
+  }
 }))
 
 export const InstrumentDetailWrapper = styled(Box)(() => ({
@@ -261,8 +272,8 @@ export const InstrumentDetailWrapper = styled(Box)(() => ({
   alignItems: 'center',
   width: '98vw',
   margin: 'auto',
-  marginTop: 310,
-  marginBottom: 50
+  marginTop:400,
+  marginBottom: 100
 }))
 
 export const PageWrapper = styled(Grid)(({ theme }) => ({

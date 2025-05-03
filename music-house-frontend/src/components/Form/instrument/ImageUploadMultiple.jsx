@@ -46,11 +46,11 @@ const ImageUploadMultiple = ({ onImagesChange, initialImages = [] }) => {
         <Box
         sx={{
           textAlign: 'center',
-          border: '2px dashed #aaa',
+          border: '2px dashed var(--color-primario)',
           borderRadius: 2,
           p: 2,
           mt: 2,
-          backgroundColor: '#fafafa',
+         
           cursor: 'pointer'
         }}
         onDrop={(e) => {
@@ -110,8 +110,7 @@ const ImageUploadMultiple = ({ onImagesChange, initialImages = [] }) => {
                     position: 'absolute',
                     top: 0,
                     right: 0,
-                    backgroundColor: 'rgba(255,255,255,0.8)',
-                    borderRadius: '50%'
+               borderRadius: '50%'
                   }}
                 >
                   <Delete color="error" />

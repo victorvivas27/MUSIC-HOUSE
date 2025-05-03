@@ -12,16 +12,10 @@ import { ErrorMessage, Field, Form, Formik } from 'formik'
 import { ThemeValidationSchema } from '@/validations/theme'
 import ImageUploadSingle from './ImageUploadSingle'
 
-
 export const ThemeForm = ({ initialFormData, onSubmit, loading }) => {
- 
   const title = initialFormData.idTheme
     ? 'Editar Temática'
     : 'Registrar Temática'
-
-
- 
-
   return (
     <Formik
       initialValues={initialFormData}
@@ -41,10 +35,11 @@ export const ThemeForm = ({ initialFormData, onSubmit, loading }) => {
               minWidth: '1100px',
               p: 4,
               borderRadius: 4,
-              boxShadow: "var(--box-shadow)",
+              boxShadow: 'var(--box-shadow)',
               display: 'flex',
               flexDirection: 'column',
-              marginBottom:10
+              marginBottom: 10,
+              backgroundColor: 'var(--background-claro)'
             }}
           >
             {/* Nombre */}
@@ -82,10 +77,9 @@ export const ThemeForm = ({ initialFormData, onSubmit, loading }) => {
             {/* Imagen */}
             <Box
               sx={{
-                border: '1px dashed #aaa',
+                border: '2px dashed var(--color-primario)',
                 borderRadius: 2,
-                padding: 2,
-                backgroundColor: '#fafafa'
+                padding: 2
               }}
             >
               <ImageUploadSingle
@@ -106,7 +100,7 @@ export const ThemeForm = ({ initialFormData, onSubmit, loading }) => {
             </Box>
 
             {/* Botón */}
-            <ContainerBottom>
+            <ContainerBottom sx={{ marginTop: 2 }}>
               <ArrowBack />
               <CustomButton disabled={loading} type="submit">
                 {loading ? (
@@ -114,7 +108,7 @@ export const ThemeForm = ({ initialFormData, onSubmit, loading }) => {
                     <LoadingText text={title} />
                     <CircularProgress
                       size={24}
-                      sx={{ ml: 1, color: 'var(--color-azul)' }}
+                      sx={{ ml: 1, color: 'var(--color-info)' }}
                     />
                   </>
                 ) : (

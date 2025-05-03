@@ -56,10 +56,21 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
      * @return El token JWT si está presente en el encabezado de autorización, de lo contrario, null.
      */
     private String extractTokenFromRequest(HttpServletRequest request) {
-        String authHeader = request.getHeader(AUTHORIZATION_HEADER);
-        if (StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_PREFIX)) {
-            return authHeader.substring(BEARER_PREFIX.length());
+        // 1️⃣ Buscar en Header Authorization: Bearer ...
+        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
+            return authHeader.substring(7); // Quita "Bearer "
         }
+
+        // 2️⃣ Buscar en cookie 'jwt'
+        if (request.getCookies() != null) {
+            for (var cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+
         return null;
     }
 

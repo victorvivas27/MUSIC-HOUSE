@@ -7,7 +7,6 @@ import {
   TableContainer,
   TablePagination,
   TableRow,
-  Typography,
   Paper,
   IconButton,
   Tooltip,
@@ -36,9 +35,10 @@ import {
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
 import ArrowBack from '@/components/utils/ArrowBack'
-import { paginationStyles } from '@/components/styles/styleglobal'
+import { flexRowContainer, paginationStyles } from '@/components/styles/styleglobal'
 import SearchNameCategory from '@/components/common/search/SearchINameCategory'
 import { usePaginationControl } from '@/hook/usePaginationControl'
+import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded'
 
 export const Categories = () => {
   const [order, setOrder] = useState('asc')
@@ -134,8 +134,6 @@ export const Categories = () => {
     }
   }
 
-  
-
   return (
     <>
       {state.loading && page === 0 && <Loader title="Cargando categorías" />}
@@ -146,7 +144,8 @@ export const Categories = () => {
             margin: 10,
             display: { xs: 'none', lg: 'initial' },
             borderRadius: 4,
-            boxShadow: 'var(--box-shadow)'
+            boxShadow: 'var(--box-shadow)',
+            backgroundColor: 'var(--background-claro)'
           }}
         >
           <ArrowBack />
@@ -157,6 +156,7 @@ export const Categories = () => {
             handleAdd={handleAdd}
             numSelected={selected.length}
             handleConfirmDelete={() => handleConfirmDelete()}
+           
           />
           <SearchNameCategory />
           <TableContainer>
@@ -195,7 +195,6 @@ export const Categories = () => {
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
-                          color="primary"
                           checked={isItemSelected}
                           inputProps={{ 'aria-labelledby': labelId }}
                         />
@@ -224,7 +223,8 @@ export const Categories = () => {
                             opacity: selected.length > 0 ? 0 : 1,
                             pointerEvents:
                               selected.length > 0 ? 'none' : 'auto',
-                            transition: 'opacity 0.5s ease-in-out'
+                            transition: 'opacity 0.5s ease-in-out',
+                               ...flexRowContainer,
                           }}
                         >
                           <Tooltip title="Editar">
@@ -234,7 +234,7 @@ export const Categories = () => {
                                 event.stopPropagation()
                               }}
                             >
-                              <EditIcon />
+                              <EditIcon sx={{color:"var(--color-info)"}} />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Eliminar">
@@ -244,7 +244,7 @@ export const Categories = () => {
                                 event.stopPropagation()
                               }}
                             >
-                              <DeleteIcon />
+                              <DeleteIcon sx={{color:"var(--color-error)"}} />
                             </IconButton>
                           </Tooltip>
                         </Box>
@@ -288,18 +288,28 @@ export const Categories = () => {
         <Box
           sx={{
             display: { xs: 'flex', lg: 'none' },
-            height: '100vh'
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100vh',
+            bgcolor: 'var(--color-secundario)',
+            color: 'var(--texto-inverso)',
+            textAlign: 'center',
+            px: 4
           }}
         >
-          <Typography
-            gutterBottom
-            variant="h6"
-            component="h6"
-            textAlign="center"
-            sx={{ paddingTop: 30, fontWeight: 'bold' }}
-          >
+          <WarningAmberRoundedIcon
+            sx={{ fontSize: 64, mb: 2, color: 'var(--color-primario)' }}
+          />
+          <TitleResponsive>
             Funcionalidad no disponible en esta resolución
-          </Typography>
+          </TitleResponsive>
+          <Box
+            component="p"
+            sx={{ mt: 1, fontSize: '1rem', color: 'var(--texto-inverso)' }}
+          >
+            Por favor, utiliza un dispositivo con pantalla más grande.
+          </Box>
         </Box>
       </MainWrapper>
     </>

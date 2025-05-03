@@ -29,12 +29,17 @@ const FullScreenLoader = ({ bgLoaded, text = "Cargando" }) => {
       >
         <Box sx={{ mb: 2 }}>
           <CircularProgress 
-            size={40} 
-            thickness={1}
+            size={70} 
+            thickness={2}
             sx={{ color: 'var(--color-primario)' }}
           />
         </Box>
-        <LoadingText text={text} />
+        <LoadingText 
+        fontSize="1.5rem"
+        text={text}
+        color="var(--color-info)"
+        />
+        
       </Box>
     );
   };

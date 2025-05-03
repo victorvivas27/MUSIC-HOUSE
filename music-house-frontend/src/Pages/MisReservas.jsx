@@ -38,7 +38,7 @@ const MisReservas = () => {
   const { showConfirm, showLoading, showSuccess, showError } = useAlert()
 
   const getAllReservations = useCallback(async () => {
-    if (!idUser) return // ← protección adicional
+    if (!idUser) return
     setLoadingState((prev) => ({ ...prev, initial: true }))
     try {
       const response = await getReservationById(idUser)
@@ -105,7 +105,6 @@ const MisReservas = () => {
         p: 2,
         borderRadius: 4,
         margin: 1,
-        boxShadow: 'var(--box-shadow)',
         opacity: loadingState.deleting ? 0.7 : 1,
         transition: 'opacity 0.3s ease'
       }}
@@ -135,10 +134,8 @@ const MisReservas = () => {
                 sx={{
                   maxWidth: { xs: 180, sm: 200, md: 220, lg: 230, xl: 250 },
                   borderRadius: 4,
-                  boxShadow: 'var(--box-shadow)',
                   overflow: 'hidden',
                   position: 'relative',
-                  backgroundColor: 'background.paper',
                   margin: 1,
                   display: 'flex',
                   flexDirection: 'column'
@@ -158,7 +155,7 @@ const MisReservas = () => {
                   <CustomTooltip
                     title={
                       <Typography sx={{ fontFamily: 'Roboto', fontSize: 10 }}>
-                        <strong>✅ Más info</strong>
+                        <strong>✅Más info</strong>
                       </Typography>
                     }
                     arrow
@@ -205,9 +202,9 @@ const MisReservas = () => {
                   onClick={() => handleExpandClick(reserva.idReservation)}
                   endIcon={
                     expandedId === reserva.idReservation ? (
-                      <ExpandLessIcon sx={{ color: 'var(--color-azul)' }} />
+                      <ExpandLessIcon sx={{ color: 'var(--color-info)' }} />
                     ) : (
-                      <ExpandMoreIcon sx={{ color: 'var( --color-azul)' }} />
+                      <ExpandMoreIcon sx={{ color: 'var( --color-info)' }} />
                     )
                   }
                 >
@@ -236,7 +233,7 @@ const MisReservas = () => {
                     <Typography
                       variant="subtitle2"
                       sx={{
-                        fontWeight: 400,
+                        fontWeight: 300,
                         fontSize: { xs: '0.6rem', sm: '0.8rem' },
                         mb: 1,
                         textOverflow: 'ellipsis',
@@ -289,9 +286,26 @@ const MisReservas = () => {
 
       {/* Sin reservas */}
       {reservas.length === 0 && !loadingState.initial && (
-        <Typography mt={6} textAlign="center" sx={{ color: '#757575' }}>
-          No tienes reservas activas.
-        </Typography>
+        <Box
+          sx={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+            justifyContent: 'center',
+            mt: 8,
+            mb: 10,
+            minHeight: '30vh',
+            borderRadius: 4,
+            px: 4,
+            py: 6,
+            textAlign: 'center'
+          }}
+        >
+          <TitleResponsive>🎷No tienes reservas activas🎻</TitleResponsive>
+          <TitleResponsive>
+          📯Aquí aparecerán las reservas cuando alquiles un instrumento 🎸
+          </TitleResponsive>
+        </Box>
       )}
     </Box>
   )

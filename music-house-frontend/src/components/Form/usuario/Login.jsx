@@ -31,7 +31,7 @@ import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
 
 const Login = ({ onSwitch }) => {
   const navigate = useNavigate()
-  const { setAuthData } = useAuth()
+  const { fetchUser} = useAuth()
   const { state } = useAppStates()
   const [showPassword, setShowPassword] = useState(false)
   const { showSuccess, showError } = useAlert()
@@ -45,14 +45,13 @@ const Login = ({ onSwitch }) => {
     },
     validationSchema: loginValidationSchema,
     onSubmit: async (values) => {
-      setLoading(true )
+      setLoading(true)
 
       try {
         const response = await UsersApi.loginUser(values)
 
-        if (response?.result?.token) {
-          setAuthData({ token: response.result.token })
-          setLoading(false)
+        if (response?.statusCode === 200) {
+          await fetchUser() 
           showSuccess(`✅ ${response.message}`)
 
           setTimeout(() => {
@@ -60,10 +59,10 @@ const Login = ({ onSwitch }) => {
           }, 1300)
         } else {
           showError(`❌ ${response.message}`)
-          setLoading(false)
         }
       } catch (error) {
         showError(`❌ ${getErrorMessage(error)}`)
+      } finally {
         setLoading(false)
       }
     }

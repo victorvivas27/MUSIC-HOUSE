@@ -23,7 +23,7 @@ const NewUser = ({ onSwitch }) => {
     idRol: ''
   }
 
-  const { setAuthData } = useAuth()
+  const {  fetchUser } = useAuth()
   const navigate = useNavigate()
   const { showError } = useAlert()
   const { isUserAdmin } = useAuth()
@@ -45,27 +45,25 @@ const NewUser = ({ onSwitch }) => {
 
       const response = await UsersApi.registerUser(formDataToSend)
 
-      if (response?.result?.token) {
-      showSuccess(`✅${response.message}`)
+    if (response?.statusCode === 201) {
+      showSuccess(`✅ ${response.message}`)
 
-        setTimeout(() => {
-          if (isUserAdmin) {
-            navigate(-1)
-          } else {
-            setAuthData({ token: response.result.token })
-            navigate('/')
-          }
-        }, 100)
-      }
-    } catch (error) {
-      showError(`❌ ${getErrorMessage(error)}`)
-      setLoading(false)
-    } finally {
-      setTimeout(() => {
-        setLoading(false)
+      setTimeout(async () => {
+        if (isUserAdmin) {
+          navigate(-1)
+        } else {
+          await fetchUser() 
+          navigate('/')
+        }
       }, 100)
     }
+  } catch (error) {
+    showError(`❌ ${getErrorMessage(error)}`)
+    setLoading(false)
+  } finally {
+    setTimeout(() => setLoading(false), 100)
   }
+}
 
   return (
     <>

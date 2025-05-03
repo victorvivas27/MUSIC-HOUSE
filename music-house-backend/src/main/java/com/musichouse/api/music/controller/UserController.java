@@ -15,15 +15,12 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
-import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -35,13 +32,24 @@ import java.util.UUID;
 
 
 @RestController
-@AllArgsConstructor
 @RequestMapping("/api/users")
 public class UserController {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
     private final ObjectMapper objectMapper;
-    private Validator validator;
+    private final Validator validator;
+    @Value("${cookie.secure}")
+    private Boolean cookieSecure;
+
+    @Value("${cookie.same-site:Lax}") // por defecto Lax
+    private String cookieSameSite;
+
+    public UserController(UserService userService, ObjectMapper objectMapper, Validator validator) {
+        this.userService = userService;
+        this.objectMapper = objectMapper;
+        this.validator = validator;
+    }
+
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public HttpEntity<ApiResponse<TokenDtoExit>> createUser(
@@ -81,8 +89,17 @@ public class UserController {
         // 5. Crear usuario
         TokenDtoExit tokenDtoExit = userService.createUser(userDtoEntrance, file);
 
+        ResponseCookie cookie = ResponseCookie.from("jwt", tokenDtoExit.getToken())
+                .httpOnly(true)
+                .secure(cookieSecure) // ⬅️ cambia según entorno
+                .sameSite(cookieSameSite)
+                .path("/")
+                .maxAge(60 * 60) // 1 hora
+                .build();
+
 
         return ResponseEntity.status(HttpStatus.CREATED)
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
                 .body(ApiResponse.<TokenDtoExit>builder()
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
@@ -100,17 +117,25 @@ public class UserController {
         try {
             TokenDtoExit tokenDtoExit = userService.loginUserAndCheckEmail(loginDtoEntrance);
 
-            return ResponseEntity.ok(ApiResponse.<TokenDtoExit>builder()
-                    .status(HttpStatus.OK)
-                    .statusCode(HttpStatus.OK.value())
-                    .message("Inicio de sesión exitoso.")
-                    .error(null)
-                    .result(tokenDtoExit)
-                    .build());
+            ResponseCookie cookie = ResponseCookie.from("jwt", tokenDtoExit.getToken())
+                    .httpOnly(true)
+                    .secure(cookieSecure)
+                    .sameSite(cookieSameSite)
+                    .path("/")
+                    .maxAge(60 * 60)
+                    .build();
 
+            return ResponseEntity.ok()
+                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                    .body(ApiResponse.<TokenDtoExit>builder()
+                            .status(HttpStatus.OK)
+                            .statusCode(HttpStatus.OK.value())
+                            .message("Inicio de sesión exitoso.")
+                            .error(null)
+                            .result(tokenDtoExit)
+                            .build());
 
         } catch (AuthenticationException e) {
-
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
                     .body(ApiResponse.<TokenDtoExit>builder()
                             .status(HttpStatus.UNAUTHORIZED)
@@ -119,7 +144,6 @@ public class UserController {
                             .error(e.getMessage())
                             .result(null)
                             .build());
-
         }
     }
 

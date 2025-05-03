@@ -1,45 +1,43 @@
 /* 📌 Reseteo avanzado para mayor compatibilidad entre navegadores */
 :root {
   /* 🖌️ 🎨 Colores */
-  --calendario-fondo-no-disponible: #EE4116;
-  --calendario-color-no-disponible: #747272c9;
+  /* 🎯 Colores base */
+  --color-primario: #FBC02D;         /* Amarillo vibrante */
+  --color-secundario: #5C5C5C;       /* Gris oscuro neutro */
 
-  --background-color: #232323;
+  /* 🟡 Estados activos y variantes */
+  --color-primario-hover: #FFD700;   /* Amarillo más claro (hover) */
+  --color-primario-active: #D4A10F;  /* Versión oscura para active */
 
-  --color-primario: #FBC02D;
-  --color-primario-active: #eb38288d;
-  --color-secundario: #5C5C5C;
-  --color-secundario-80: #5C5C5CCC; /* 80% */
-  --color-secundario-50: #5C5C5C80; /* 50% */
-  --color-secundario-30: #5C5C5C4D; /* 30% */
-  --color-secundario-10: #5C5C5C1A; /* 10% */
+  /* ⚪️ Transparencias del secundario */
+  --color-secundario-80: #5C5C5CCC;
+  --color-secundario-50: #5C5C5C80;
+  --color-secundario-30: #5C5C5C4D;
+  --color-secundario-10: #5C5C5C1A;
 
-  --color-exito: #28A745;
-  --color-advertencia: #FFC107;
-  --color-error: #DC3545;
-  --color-azul: #1976D2;
-  --color-suave: #444;
-  --color-oscuro-suave: #333;
+  /* ✅ Estados */
+  --color-exito: #28A745;            /* Verde éxito */
+  --color-error: #DC3545;            /* Rojo error */
+  --color-info: #1976D2;             /* Azul informativo */
 
-  --texto-primario: #000000;
-  --texto-secundario: #ffffff;
-  --texto-inverso-black: #000000;
-  --texto-inverso-white: #ffffff;
-  --texto-primario-dark: #060606;
-  --texto-secundario-dark: #BDBDBD;
+  /* 🌗 Texto */
+  --texto-primario: #000000;         /* Negro */
+  --texto-secundario: #BDBDBD;       /* Gris claro */
+  --texto-inverso: #ffffff;          /* Blanco */
 
-  --background-dark: #ffffff;
-  --background-transparente-dark: #5c5c5cab;
+  /* 🎨 Fondos */
+  --background-claro: #ffffffb7;
+  --background-oscuro: #1E1E1E;
+  --background-transparente: #5c5c5c7e;
   --background-disabled: #86762e7a;
 
-  --color-primario-dark: #FFD700;
-  --font-family: "Big Shoulders", sans-serif;
-
-  --box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
-                rgba(0, 0, 0, 0.12) 0px -12px 30px,
-                rgba(0, 0, 0, 0.12) 0px 4px 6px,
-                rgba(0, 0, 0, 0.17) 0px 12px 13px,
-                rgba(0, 0, 0, 0.09) 0px -3px 5px;
+  /* 🌟 Sombras */
+  --box-shadow: 
+    rgba(0, 0, 0, 0.25) 0px 54px 55px,
+    rgba(0, 0, 0, 0.12) 0px -12px 30px,
+    rgba(0, 0, 0, 0.12) 0px 4px 6px,
+    rgba(0, 0, 0, 0.17) 0px 12px 13px,
+    rgba(0, 0, 0, 0.09) 0px -3px 5px;
 }
 
 /* 📌 Global Reset y Mejoras */

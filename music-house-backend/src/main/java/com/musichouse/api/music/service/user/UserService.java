@@ -111,6 +111,10 @@ public class UserService implements UserInterface {
 
         return TokenDtoExit.builder()
                 .idUser(userSaved.getIdUser())
+                .name(userSaved.getName())
+                .lastName(userSaved.getLastName())
+                .email(userSaved.getEmail())
+                .roles(userSaved.getRoles().stream().map(Enum::name).toList())
                 .token(token)
                 .build();
     }
@@ -134,6 +138,10 @@ public class UserService implements UserInterface {
 
         return TokenDtoExit.builder()
                 .idUser(user.getIdUser())
+                .name(user.getName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .roles(user.getRoles().stream().map(Enum::name).toList())
                 .token(token)
                 .build();
     }

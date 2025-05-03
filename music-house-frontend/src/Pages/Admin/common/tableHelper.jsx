@@ -110,7 +110,7 @@ export const EnhancedTableHead = (props) => {
                 )}
               </TableSortLabel>
             ) : (
-              headCell.label // Solo texto plano si no se puede ordenar
+              headCell.label 
             )}
           </TableCell>
         ))}
@@ -161,13 +161,16 @@ export const EnhancedTableToolbar = (props) => {
       {numSelected > 0 ? (
         <Tooltip title="Eliminar EL Total Seleccionado">
           <IconButton onClick={handleConfirmDelete}>
-            <DeleteIcon />
+            <DeleteIcon sx={{color:"var(--color-error)"}} />
           </IconButton>
         </Tooltip>
       ) : (
         <Tooltip title={props.titleAdd}>
           <IconButton onClick={props.handleAdd}>
-            <AddIcon />
+            <AddIcon  sx={{
+              color:"var(--color-exito)",
+              fontSize:40
+              }}/>
           </IconButton>
         </Tooltip>
       )}

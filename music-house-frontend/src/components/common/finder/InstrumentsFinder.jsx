@@ -6,7 +6,7 @@ import ListItemText from '@mui/material/ListItemText'
 import Close from '@mui/icons-material/Close'
 import { IconButton } from '@mui/material'
 import { InputFinder } from './InputFinder'
-import {  useLocation, useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 
 import { searchInstrumentsByName } from '@/api/instruments'
 import { createPortal } from 'react-dom'
@@ -27,7 +27,7 @@ export const Finder = () => {
 
   const handleNavigate = (idInstrument) => {
     navigate(`/instrument/${idInstrument}`)
-    clearFinder() 
+    clearFinder()
   }
 
   const fetchInstruments = async (pattern, currentPage = 0) => {
@@ -37,7 +37,11 @@ export const Finder = () => {
       return
     }
     try {
-      const response = await searchInstrumentsByName(pattern, currentPage, pageSize)
+      const response = await searchInstrumentsByName(
+        pattern,
+        currentPage,
+        pageSize
+      )
       const content = response?.result?.content || []
       const totalPages = response?.result?.totalPages || 1
 
@@ -129,7 +133,6 @@ export const Finder = () => {
         padding: '.5rem',
         display: 'flex',
         flexDirection: 'column',
-        alignItems: 'center',
         width: '100%'
       }}
     >
@@ -139,99 +142,104 @@ export const Finder = () => {
         value={searchPattern}
         setValue={setSearchPattern}
         inputRef={inputRef}
-        collapsed={!showSugests} 
+        collapsed={!showSugests}
       />
 
-      {showSugests && found && createPortal(
-        <Box
-          sx={{
-            position: 'fixed',
-            top: position.top,
-            left: position.left,
-            width: position.width,
-            backgroundColor: 'var(--color-secundario-80)',
-            borderRadius: '8px',
-            boxShadow: 'var(--box-shadow)',
-            zIndex: 99999,
-            maxHeight: '300px',
-            overflowY: 'auto',
-            animation: 'fadeSlideDown 0.4s ease forwards'
-          }}
-        >
+      {showSugests &&
+        found &&
+        createPortal(
           <Box
             sx={{
-              display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'center',
-              px: 2,
-              py: 1,
-              backgroundColor: 'var(--color-primario)',
-              borderBottom: '1px solid #ccc',
-              borderTopLeftRadius: '8px',
-              borderTopRightRadius: '8px'
+              position: 'fixed',
+              top: position.top,
+              left: position.left,
+              width: position.width,
+              backgroundColor: 'var(--color-secundario-50)',
+              borderRadius: '8px',
+              boxShadow: 'var(--box-shadow)',
+              zIndex: 99999,
+              maxHeight: '300px',
+              overflowY: 'auto',
+              animation: 'fadeSlideDown 0.4s ease forwards'
             }}
           >
-            <strong style={{ fontSize: '0.95rem' }}>
-              Resultados de búsqueda
-            </strong>
-            <IconButton
-              sx={{ width: 30, height: 30 }}
-              size="small"
-              onClick={clearFinder}
+            <Box
+              sx={{
+                display: 'flex',
+                justifyContent: 'space-between',
+                alignItems: 'center',
+                px: 2,
+                py: 1,
+                backgroundColor: 'var(--color-primario)',
+                borderBottom: '1px solid #ccc',
+                borderTopLeftRadius: '8px',
+                borderTopRightRadius: '8px'
+              }}
             >
-              <Close sx={{ fontSize: 22, color: 'var(--color-error)' }} />
-            </IconButton>
-          </Box>
-
-          <List>
-            {instruments.map((instrument, index) => {
-              const isLast = index === instruments.length - 1
-              return (
-                <ListItem
-                key={instrument.idInstrument || index}
-                ref={isLast ? lastElementObserver : null}
-                onClick={() => handleNavigate(instrument.idInstrument)} // ✅
-                sx={{
-                  cursor: 'pointer',
-                  transition: 'background-color 0.2s ease',
-                  '&:hover': {
-                    backgroundColor: 'var(--color-secundario)'
-                  },
-                  px: 2,
-                  py: 1
-                }}
+              <strong style={{ fontSize: '0.95rem' }}>
+                Resultados de búsqueda
+              </strong>
+              <IconButton
+                sx={{ width: 30, height: 30 }}
+                size="small"
+                onClick={clearFinder}
               >
-                <Box
-                  sx={{
-                    width: '100%',
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: 1,
-                    color: 'var(--color-primario)',
-                    fontWeight: 500,
-                  }}
-                >
-                  <img
-                    src={instrument.imageUrls?.[0]?.imageUrl || '/src/assets/instrumento_general_03.jpg'}
-                    alt={instrument.name}
-                    width={40}
-                    height={40}
-                    style={{ objectFit: 'cover', borderRadius: '4px' }}
-                  />
-                  <ListItemText
-                    primary={instrument.name}
-                    primaryTypographyProps={{
-                      fontSize: '0.95rem'
+                <Close sx={{ fontSize: 22, color: 'var(--color-error)' }} />
+              </IconButton>
+            </Box>
+
+            <List>
+              {instruments.map((instrument, index) => {
+                const isLast = index === instruments.length - 1
+                return (
+                  <ListItem
+                    key={instrument.idInstrument || index}
+                    ref={isLast ? lastElementObserver : null}
+                    onClick={() => handleNavigate(instrument.idInstrument)} // ✅
+                    sx={{
+                      cursor: 'pointer',
+                      transition: 'background-color 0.2s ease',
+                      '&:hover': {
+                        backgroundColor: 'var(--color-secundario)'
+                      },
+                      px: 2,
+                      py: 1
                     }}
-                  />
-                </Box>
-              </ListItem>
-              )
-            })}
-          </List>
-        </Box>,
-        document.body // 📢 Aquí enviamos el menú al body
-      )}
+                  >
+                    <Box
+                      sx={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        gap: 1,
+                        color: 'var(--color-primario)',
+                        fontWeight: 500
+                      }}
+                    >
+                      <img
+                        src={
+                          instrument.imageUrls?.[0]?.imageUrl ||
+                          '/src/assets/instrumento_general_03.jpg'
+                        }
+                        alt={instrument.name}
+                        width={40}
+                        height={40}
+                        style={{ objectFit: 'cover', borderRadius: '4px' }}
+                      />
+                      <ListItemText
+                        primary={instrument.name}
+                        primaryTypographyProps={{
+                          fontSize: '0.95rem'
+                        }}
+                      />
+                    </Box>
+                  </ListItem>
+                )
+              })}
+            </List>
+          </Box>,
+          document.body // 📢 Aquí enviamos el menú al body
+        )}
     </Box>
   )
 }

@@ -7,6 +7,8 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
@@ -70,19 +72,11 @@ public class JwtService {
 
         JwtClaims jwtClaims = JwtClaims.builder()
                 .id(user.getIdUser().toString())
-                .roles(roles)
-                .name(user.getName())
-                .lastName(user.getLastName())
                 .build();
 
         Map<String, Object> claims = new HashMap<>();
         claims.put("id", jwtClaims.getId());
-        claims.put("roles", jwtClaims.getRoles());
-        claims.put("email", user.getEmail());
-        claims.put("name", jwtClaims.getName());
-        claims.put("lastName", jwtClaims.getLastName());
-
-        return generateToken(claims, user.getIdUser().toString());
+        return generateToken(claims, user.getEmail());
     }
 
     /**
@@ -144,12 +138,7 @@ public class JwtService {
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
         final String username = getUsernameFromToken(token);
-        @SuppressWarnings("unchecked") final List<String> roles =
-                getClaim(token, claims -> claims.get("roles", List.class));
-        return username.equals(userDetails.getUsername())
-                && !isTokenExpired(token)
-                && roles != null
-                && !roles.isEmpty();
+        return username.equals(userDetails.getUsername()) && !isTokenExpired(token);
     }
 
     /**
@@ -197,5 +186,33 @@ public class JwtService {
      */
     private boolean isTokenExpired(String token) {
         return getExpiration(token).before(new Date());
+    }
+
+    public String extractJwtFromRequest(HttpServletRequest request) {
+        if (request.getCookies() != null) {
+            for (Cookie cookie : request.getCookies()) {
+                if ("jwt".equals(cookie.getName())) {
+                    return cookie.getValue();
+                }
+            }
+        }
+        return null;
+
+
+    }
+
+    /**
+     * Valida si un token es válido (estructura correcta y no expirado).
+     *
+     * @param token el token JWT a validar
+     * @return true si el token es válido, false si está mal formado o expirado
+     */
+    public boolean validateToken(String token) {
+        try {
+            Claims claims = extractClaims(token);
+            return claims.getExpiration().after(new Date());
+        } catch (Exception e) {
+            return false;
+        }
     }
 }

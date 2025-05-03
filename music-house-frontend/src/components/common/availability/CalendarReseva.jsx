@@ -143,7 +143,7 @@ const CalendarReserva = ({ instrument }) => {
           bgcolor: isReserved
             ? 'var( --color-primario-active) !important'
             : isSelected
-              ? 'var(--color-azul) !important'
+              ? 'var(--color-info) !important'
               : isAvailable
                 ? 'var(--color-exito) !important'
                 : 'var(--calendario-color-no-disponible) !important',

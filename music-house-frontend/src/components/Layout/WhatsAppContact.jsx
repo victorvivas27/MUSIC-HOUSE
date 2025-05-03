@@ -1,109 +1,118 @@
-import { Box, Typography, keyframes } from '@mui/material'
-import  { useState, useRef, useEffect } from 'react'
+import { Box, Typography, keyframes, useMediaQuery, useTheme} from '@mui/material'
+import  { useEffect, useState } from 'react'
 import logo from '../../assets/whatsAppLogo.png'
+import { useAuth } from '@/hook/useAuth'
 
-// Define keyframes for the slide-in animation
 const slideIn = keyframes`
-  from {
-    
+  0% {
     opacity: 0;
-    transform: translateX(-20px);
-
+    transform: translateX(-10px);
   }
-  to {
-
+  100% {
     opacity: 1;
     transform: translateX(0);
   }
 `
 
 export const WhatsAppContact = () => {
+  const { isUserAdmin } = useAuth()
+  const [expanded, setExpanded] = useState(false)
+  const theme = useTheme()
+  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
   const phoneNumber = '+56986841970'
   const whatsappUrl = `https://wa.me/${phoneNumber}`
-  const [hover, setHover] = useState(false)
-  const elementRef = useRef(null)
-  const [userRole, setUserRole] = useState('')
-  const [isAdmin, setIsAdmin] = useState(false)
-  const handleMouseEnter = () => {
-    setHover(true)
-   
+  useEffect(() => {
+    if (isMobile && expanded) {
+      const timer = setTimeout(() => setExpanded(false), 5000)
+      return () => clearTimeout(timer)
+    }
+  }, [expanded, isMobile])
+
+  if (isUserAdmin) return null
+
+  const iconSize = isMobile ? 28 : 35
+  const collapsedWidth = iconSize + 15
+  const expandedWidth = isMobile ? 210 : 240
+
+  const handleClick = () => {
+    if (isMobile) {
+      if (!expanded) {
+        setExpanded(true)
+      } else {
+        window.open(whatsappUrl, '_blank')
+      }
+    } else {
+      window.open(whatsappUrl, '_blank')
+    }
   }
 
-  useEffect(() => {
-    const checkUser = () => {
-      const user = JSON.parse(localStorage.getItem('user'))
-      if (user && user.roles && user.roles.length > 0) {
-        setUserRole(user.roles[0].rol)
-        if (user.roles[0].rol === 'ADMIN') {
-          setIsAdmin(true)
-        } else if (user.roles[0].rol === 'USER') {
-          setIsAdmin(false)
-        }
-      }
-    }
-
-    checkUser()
-  }, [])
+  const handleMouseEnter = () => {
+    if (!isMobile) setExpanded(true)
+  }
 
   const handleMouseLeave = () => {
-    setHover(false)
-  }
-  if (isAdmin) {
-    return null
+    if (!isMobile) setExpanded(false)
   }
 
   return (
     <Box
-      ref={elementRef}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       sx={{
-        position: 'fixed',
-        bottom: 16,
-        right: 16,
-        width: hover ? '170px' : '70px',
-        height: '70px',
-        borderRadius: '70px 70px 70px 20px',
+        width: expanded ? expandedWidth : collapsedWidth,
+        height: collapsedWidth,
+        borderRadius: '60px 60px 60px 20px',
         boxShadow: 3,
         p: 1,
-        justifyContent: 'center',
-        zIndex: 1000,
-        display: 'flex',
-        alignItems: 'center',
         cursor: 'pointer',
-        transition: 'width ease-in-out 0.3s',
-        backgroundColor: hover ? '#00e676' : '#00c853'
+        zIndex: 1000,
+        transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
+        backgroundColor: expanded ? '#00e676' : '#00c853',
+        position: 'fixed',
+        bottom: 50,
+        right: 20,
+       '&:active': {
+          transform: 'scale(0.95)'
+        }
       }}
     >
-      <a
-        href={whatsappUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{
+      <Box
+        sx={{
           display: 'flex',
           alignItems: 'center',
-          textDecoration: 'none'
+          width: '100%',
+          justifyContent: expanded ? 'flex-start' : 'center',
+          paddingLeft: expanded ? '10px' : '0'
         }}
       >
         <img
           src={logo}
-          alt="logo de whatsapp"
-          style={{ width: 45, height: 45 }}
+          alt="WhatsApp"
+          style={{ 
+            width: iconSize, 
+            height: iconSize,
+            transition: 'transform 0.3s ease',
+            transform: expanded ? 'scale(1.1)' : 'scale(1)'
+          }}
         />
-        {hover && (
+        {expanded && (
           <Typography
             sx={{
-              ml: 1,
-              flex: 1,
+              ml: 2,
               color: '#fff',
-              animation: `${slideIn} 0.3s ease-in-out`,
-              textDecoration: 'none'
+              animation: `${slideIn} 0.4s ease-out forwards`,
+              whiteSpace: 'nowrap',
+              fontWeight: 600,
+              fontSize: isMobile ? '0.95rem' : '1.05rem',
+              letterSpacing: '0.5px',
             }}
           >
-            Quiero contactarme
+            ¿Necesitas ayuda?
           </Typography>
         )}
-      </a>
+      </Box>
     </Box>
   )
 }

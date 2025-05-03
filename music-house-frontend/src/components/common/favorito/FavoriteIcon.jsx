@@ -1,5 +1,5 @@
 import { Favorite, FavoriteBorder } from '@mui/icons-material'
-import { Box, Tooltip } from '@mui/material'
+import { Box,} from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
@@ -42,37 +42,28 @@ const FavoriteIcon = ({ idInstrument }) => {
   }
 
   return (
-    <Tooltip
-      title={isFavorite ? 'Quitar de favoritos' : 'Agregar a favoritos'}
-      arrow
+    <Box
+      onClick={handleToggleFavorite}
+      sx={{
+       cursor: 'pointer',
+  }}
     >
-      <Box
-        onClick={handleToggleFavorite}
+      {isFavorite ? (
+        <Favorite
+          color="error"
+          sx={{ fontSize: { xs: 26, sm: 28, md: 30, lg: 32, xl: 35 } }}
+          className="pulse"
+        />
+      ) : (
+        <FavoriteBorder
         sx={{
-          cursor: 'pointer',
-          minWidth: 'auto',
-          alignItems: 'center',
-          justifyContent: 'center'
-        }}
-      >
-        {isFavorite ? (
-          <Favorite
-            color="error"
-            sx={{  fontSize: { xs: 18, sm: 20, md: 22, lg: 23, xl: 24 } }}
-            className="pulse"
-          />
-        ) : (
-          <FavoriteBorder
-            color="action"
-            sx={{
-              fontSize: { xs: 18, sm: 20, md: 22, lg: 23, xl: 24 },
-              transition: 'transform 0.2s ease-in-out',
-              '&:hover': { transform: 'scale(1.1)' }
-            }}
-          />
-        )}
-      </Box>
-    </Tooltip>
+            fontSize: { xs: 26, sm: 28, md: 30, lg: 32, xl: 35 },
+            transition: 'transform 0.2s ease-in-out',
+            '&:hover': { transform: 'scale(1.1)' }
+          }}
+        />
+      )}
+    </Box>
   )
 }
 

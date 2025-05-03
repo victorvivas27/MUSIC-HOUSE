@@ -83,12 +83,11 @@ export const Instrument = () => {
             <ParagraphResponsive
               sx={{
                 color: 'var( --texto-secundario)',
-                width: '97%',
-                
+                width: '97%'
               }}
             >
               {instrumentSelected?.description}
-            </ParagraphResponsive  >
+            </ParagraphResponsive>
 
             <Divider sx={{ width: '100%', my: 2 }} />
 
@@ -139,9 +138,8 @@ export const Instrument = () => {
                 lg: '30%',
                 xl: '25%'
               },
-
-              boxShadow: 'var(--box-shadow)',
-              borderRadius: 3
+              borderRadius: 3,
+              bgcolor: 'var( --background-claro)',
             }}
           >
             {/* Nombre del instrumento */}
@@ -150,15 +148,35 @@ export const Instrument = () => {
                 textAlign: 'center',
                 textTransform: 'uppercase',
                 letterSpacing: '3px',
-                padding: 1,
-                color: 'var( --texto-secundario)',
+                
               }}
             >
               {instrumentSelected?.name}
             </TitleResponsive>
             {/* Fin Nombre del instrumento */}
 
-            <Tooltip title="Ver más imágenes">
+            <Tooltip
+              title="Ver más imágenes"
+              arrow
+              placement="left"
+              slotProps={{
+                tooltip: {
+                  sx: {
+                    bgcolor: 'var(--color-primario)',
+                    color: 'var(--texto-primario)',
+                    fontWeight: 'bold',
+                    px: 2,
+                    py: 1,
+                    fontSize: '0.9rem',
+                    borderRadius: 2,
+                    boxShadow: 'var(--box-shadow)'
+                  }
+                },
+                arrow: {
+                  sx: { color: 'var(--color-primario)' }
+                }
+              }}
+            >
               <Button
                 onClick={() => setShowGallery(true)}
                 disableRipple
@@ -188,25 +206,13 @@ export const Instrument = () => {
         {/* Fin Contenedor de la imagen,de los datos y del iciono de favoritos */}
 
         {/*Aqui comienzan las caracteristicas*/}
-        <Box
-          sx={{
-            width: {
-              sm: '87%',
-              md: '88%',
-              lg: '89%',
-              xl: '90%'
-            },
-
-            margin: 1
-          }}
-        >
-          <Divider sx={{ width: '100%' }} />
+        <Box>
           <TitleResponsive
             sx={{
               letterSpacing: '1px',
               textTransform: 'uppercase',
               textAlign: 'center',
-              color: 'var( --texto-secundario)',
+              color: 'var(--texto-secundario)'
             }}
           >
             Características
@@ -214,51 +220,92 @@ export const Instrument = () => {
 
           <Box
             sx={{
+              width: '99vw',
               display: 'flex',
               flexWrap: 'wrap',
               justifyContent: 'space-evenly'
             }}
           >
             {state?.characteristics?.map((characteristic) => {
+              const hasCharacteristic =
+                instrumentSelected?.characteristics[characteristic.id] === 'si'
+
               return (
-                <Box
+                <Tooltip
                   key={characteristic.id}
-                  sx={{
-                    ...flexRowContainer
+                  title={characteristic.name}
+                  arrow
+                  placement="top"
+                  slotProps={{
+                    tooltip: {
+                      sx: {
+                        bgcolor: 'var(--color-primario)',
+                        color: 'var(--texto-primario)',
+                        fontWeight: 'bold',
+                        px: 2,
+                        py: 1,
+                        fontSize: '0.9rem',
+                        borderRadius: 2,
+                        boxShadow: 'var(--box-shadow)'
+                      }
+                    },
+                    arrow: {
+                      sx: { color: 'var(--color-primario)' }
+                    }
                   }}
                 >
-                  <Tooltip title={characteristic.name}>
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      margin: 1,
+                      width: {
+                        xs: '65px',
+                        sm: '71px',
+                        md: '72px',
+                        lg: '73px',
+                        xl: '74px'
+                      },
+
+                      backgroundColor: 'var(--color-primario)',
+                      borderRadius: 1,
+                      overflow: 'hidden'
+                    }}
+                  >
                     <Box
                       component="img"
                       src={characteristic.image}
-                      sx={{
-                        width: {
-                          xs: '30%',
-                          sm: '32%',
-                          md: '35%',
-                          lg: '38%',
-                          xl: '40%'
-                        },
-                        backgroundColor: 'var(--color-primario)',
-                        borderRadius: 4,
-                        margin: 1
-                      }}
+                      alt={characteristic.name}
                     />
-                  </Tooltip>
 
-                  {instrumentSelected?.characteristics[characteristic.id] ===
-                  'si' ? (
-                    <Si size={18} color="var(--color-azul)" />
-                  ) : (
-                    <No size={18} color="var(--color-error)" />
-                  )}
-                </Box>
+                    {/* Ícono en esquina inferior derecha */}
+                    <Box
+                      sx={{
+                        position: 'absolute',
+                        margin: 1,
+                        right: 29,
+                        top: -2
+                      }}
+                    >
+                      {hasCharacteristic ? (
+                        <Si color="var(--color-info)" />
+                      ) : (
+                        <No color="var(--color-error)" />
+                      )}
+                    </Box>
+                  </Box>
+                </Tooltip>
               )
             })}
           </Box>
         </Box>
         {/*Fin de las caracteristicas */}
-
+        <Divider
+          sx={{
+            width: '100%',
+            mb: 2,
+            borderColor: 'var( --texto-secundario)'
+          }}
+        />
         {/*Inicio del calendario ADMIN*/}
         {isUserAdmin && (
           <Box
@@ -276,7 +323,7 @@ export const Instrument = () => {
             <TitleResponsive
               sx={{
                 textTransform: 'uppercase',
-                color: 'var( --texto-secundario)',
+                color: 'var( --texto-secundario)'
               }}
             >
               📅 Calendario para agregar Disponibilidad
@@ -318,23 +365,22 @@ export const Instrument = () => {
               }}
             >
               {/* 🔹 Precio por día */}
-              <TitleResponsive sx={{  color: 'var( --texto-secundario)',}}>
+              <TitleResponsive sx={{ color: 'var(--texto-secundario)' }}>
                 Valor por día de alquiler:{' '}
-                <TitleResponsive
+                <Typography
                   sx={{
-                    color: 'var(--color-azul)',
+                    color: 'var(--color-info)',
                     fontWeight: 'bold',
-                    fontSize: '1rem',
-                    backgroundColor: 'rgba(251, 193, 45, 0.75)', 
+                    fontSize: '2rem',
+                    backgroundColor: 'rgba(251, 193, 45, 0.75)',
                     padding: '2px 6px',
                     borderRadius: '8px',
                     display: 'inline-block',
-                    boxShadow: '0 1px 4px rgba(0,0,0,0.1)',
                     letterSpacing: '0.5px'
                   }}
                 >
                   $ {instrumentSelected?.rentalPrice}
-                </TitleResponsive>
+                </Typography>
               </TitleResponsive>
               {/* 🔹Fin  Precio por día */}
 

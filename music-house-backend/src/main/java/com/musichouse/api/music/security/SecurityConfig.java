@@ -33,7 +33,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authRequest -> authRequest
                         // Rutas públicas
                         .requestMatchers("/api/users/**").permitAll()
-
+                        .requestMatchers("/api/auth/me").authenticated()
+                        .requestMatchers("/api/auth/**").authenticated()
                         // Rutas de dirección (todas las operaciones)
                         .requestMatchers("/api/address/**").permitAll()
                         // Rutas de teléfono (todas las operaciones)

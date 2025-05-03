@@ -92,13 +92,16 @@ const CalendarAdmin = ({ instrument }) => {
         onClick={() => handleDayClick(day)}
         sx={{
           bgcolor: isPastDate
-            ? 'var(--calendario-color-no-disponible) !important'
+            ? 'var( --color-secundario-50) !important'
             : isAvailable
               ? 'var( --color-exito) !important'
-              : 'var( --calendario-fondo-no-disponible)!important',
+              : 'var(--color-error)!important',
+
           color: isPastDate
-            ? 'var( --color-primario-active) !important'
-            : '#ffffff !important'
+            ? 'var( --texto-primario) !important'
+            : isAvailable
+            ? 'var( --texto-primario) !important'
+            : 'var( --color-primario)!important',
         }}
       />
     )
@@ -149,9 +152,9 @@ const CalendarAdmin = ({ instrument }) => {
               sx={{
                 width: '25px',
                 height: '25px',
-                backgroundColor: 'var(--calendario-color-no-disponible)',
+                backgroundColor: 'var(--color-secundario-50)',
                 borderRadius: '50%',
-                border: '1px solid var(--calendario-color-no-disponible)',
+                border: '1px solid var(--color-primario)',
               
               }}
             />
@@ -168,10 +171,9 @@ const CalendarAdmin = ({ instrument }) => {
                 width: '25px',
                 height: '25px',
                 backgroundColor:
-                  'var( --calendario-fondo-no-disponible)!important',
+                  'var(--color-error)!important',
                 borderRadius: '50%',
-                border:
-                  '1px solid var( --calendario-fondo-no-disponible)!important'
+              
               }}
             />
             <Typography
