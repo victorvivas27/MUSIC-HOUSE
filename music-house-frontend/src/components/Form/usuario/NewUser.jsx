@@ -8,7 +8,7 @@ import { UsersApi } from '@/api/users'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { useState } from 'react'
 
-const NewUser = ({ onSwitch }) => {
+const NewUser = ({ onSwitch,isAdminCreating }) => {
   const initialFormData = {
     name: '',
     picture: '',
@@ -26,7 +26,7 @@ const NewUser = ({ onSwitch }) => {
   const {  fetchUser } = useAuth()
   const navigate = useNavigate()
   const { showError } = useAlert()
-  const { isUserAdmin } = useAuth()
+  
   const [loading, setLoading] = useState(false)
   const { showSuccess } = useAlert()
 
@@ -49,7 +49,7 @@ const NewUser = ({ onSwitch }) => {
       showSuccess(`✅ ${response.message}`)
 
       setTimeout(async () => {
-        if (isUserAdmin) {
+        if (isAdminCreating) {
           navigate(-1)
         } else {
           await fetchUser() 
@@ -80,5 +80,6 @@ const NewUser = ({ onSwitch }) => {
 export default NewUser
 
 NewUser.propTypes = {
-  onSwitch: PropTypes.func
+  onSwitch: PropTypes.func,
+  isAdminCreating: PropTypes.bool
 }

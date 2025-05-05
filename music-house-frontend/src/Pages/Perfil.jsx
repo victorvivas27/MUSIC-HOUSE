@@ -51,9 +51,9 @@ const Perfil = () => {
   const [mainImageLoaded, setMainImageLoaded] = useState(false)
 
   const fetchUser = useCallback(async () => {
-    if (!idUser) return
+    
     try {
-      const response = await UsersApi.getUserById(idUser)
+      const response = await UsersApi.getOwnProfile()
       if (response?.result) setUserData(response.result)
       else throw new Error()
     } catch (err) {
@@ -62,7 +62,7 @@ const Perfil = () => {
     } finally {
       setLoading(false)
     }
-  }, [idUser, error])
+  }, [ error])
 
   useEffect(() => {
     fetchUser()
@@ -360,7 +360,6 @@ const Perfil = () => {
         <ModalUpdateUser
           open={openModalUser}
           handleCloseModalUser={() => setOpenModalUser(false)}
-          idUser={idUser}
           refreshUserData={fetchUser}
           userData={userData}
         />

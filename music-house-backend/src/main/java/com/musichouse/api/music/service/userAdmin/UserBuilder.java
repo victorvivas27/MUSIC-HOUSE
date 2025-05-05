@@ -1,4 +1,4 @@
-package com.musichouse.api.music.service.user;
+package com.musichouse.api.music.service.userAdmin;
 
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
 import com.musichouse.api.music.entity.Roles;

@@ -22,7 +22,6 @@ import LoaderOverlay from '../loader/LoaderOverlay'
 const ModalUpdateUser = ({
   open,
   handleCloseModalUser,
-  idUser,
   refreshUserData,
   userData
 }) => {
@@ -87,15 +86,12 @@ const ModalUpdateUser = ({
     try {
       const formDataToSend = new FormData()
       const { picture, ...userWithoutEmail } = formData
-      const userWithId = { ...userWithoutEmail, idUser }
-
-      formDataToSend.append('user', JSON.stringify(userWithId))
-
+      formDataToSend.append('user', JSON.stringify(userWithoutEmail))
       if (picture instanceof File) {
         formDataToSend.append('file', picture)
       }
 
-      await UsersApi.updateUser(formDataToSend)
+      await UsersApi.updateOwnProfile(formDataToSend)
 
       refreshUserData()
       setTimeout(() => {
@@ -106,7 +102,7 @@ const ModalUpdateUser = ({
           'El usuario ha sido modificado con éxito.',
           () => {}
         )
-      }, 4500)
+      }, 500)
     } catch (error) {
       setError(`❌ ${getErrorMessage(error)}`)
       setLoading(false)
@@ -256,8 +252,8 @@ const ModalUpdateUser = ({
           <LoaderOverlay
             texto={'Guardando datos'}
             containerProps={{
-              borderRadius: '8px', 
-              background: 'rgba(255, 255, 255, 0.8)' 
+              borderRadius: '8px',
+              background: 'rgba(255, 255, 255, 0.8)'
             }}
           />
         )}
@@ -269,7 +265,7 @@ const ModalUpdateUser = ({
 ModalUpdateUser.propTypes = {
   open: PropTypes.bool.isRequired,
   handleCloseModalUser: PropTypes.func.isRequired,
-  idUser: PropTypes.string.isRequired,
+
   refreshUserData: PropTypes.func.isRequired,
   userData: PropTypes.object
 }

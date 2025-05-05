@@ -50,6 +50,11 @@ const LoaderOverlay = forwardRef(
           ...restContainerProps
         }}
       >
+          <LoadingText 
+          text={texto} 
+          color={colorTex}
+          fontSize={fontSize}
+          />
         <Box sx={{ mb: 2 }}>
           <CircularProgress
             size={size}
@@ -58,11 +63,6 @@ const LoaderOverlay = forwardRef(
             {...restCircularProgressProps}
           />
         </Box>
-        <LoadingText 
-        text={texto} 
-        color={colorTex}
-        fontSize={fontSize}
-        />
       </Box>
     )
   }

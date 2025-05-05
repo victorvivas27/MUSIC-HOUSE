@@ -225,10 +225,10 @@ export const UserForm = ({
                     </CustomButton>
                     {combinedLoading && (
                       <LoaderOverlay
+                        texto={buttonTextLoading}
                         containerProps={{
                           justifyContent: 'end'
                         }}
-                        texto={buttonTextLoading}
                         fontSize="1.5rem"
                         circularProgressProps={{
                           thickness: 2

@@ -38,6 +38,17 @@ export const UsersApi = {
     }
   },
 
+  getOwnProfile: async () => {
+    try {
+      const response = await axios.get(`${BASE_URL}/users/me`, {
+        withCredentials: true,
+      });
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+
 
   registerUser: async (formData) => {
     try {
@@ -72,6 +83,19 @@ export const UsersApi = {
         headers: {
           'Content-Type': 'multipart/form-data',
         },
+      });
+      return response.data;
+    } catch (error) {
+      handleApiError(error);
+    }
+  },
+  updateOwnProfile: async (formData) => {
+    try {
+      const response = await axios.put(`${BASE_URL}/users/me`, formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+        withCredentials: true, 
       });
       return response.data;
     } catch (error) {

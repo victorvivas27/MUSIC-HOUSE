@@ -41,7 +41,6 @@ export const Header = () => {
   const {
     authGlobal,
     logOut,
-    idUser,
     isUserAdmin,
     isUser,
     userName,
@@ -234,7 +233,7 @@ export const Header = () => {
                   <MenuItem
                     key={'menu-nav-user-profile'}
                     onClick={() => {
-                      navigate(`/perfil/${idUser}`)
+                      navigate(`/perfil`)
                       handleCloseUserMenu()
                     }}
                   >
@@ -466,7 +465,7 @@ export const Header = () => {
                     onClick={() => {
                       setIsMenuUserOpen(false)
                       setAnchorElUser(null)
-                      navigate(`/perfil/${idUser}`)
+                      navigate(`/perfil`)
                     }}
                   >
                     <AssignmentIndRoundedIcon

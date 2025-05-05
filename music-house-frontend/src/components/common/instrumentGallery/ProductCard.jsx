@@ -18,10 +18,11 @@ import { CustomTooltip } from '../customTooltip/CustomTooltip'
 import FavoriteIcon from '../favorito/FavoriteIcon'
 
 import ImageWithLoader from '../imageWithLoader/ImageWithLoader'
+import { slugify } from '@/components/utils/slugify'
 
 const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
   const { isUser } = useAuth()
-
+  const slug = slugify(name)
   return (
     <Card
       sx={{
@@ -79,7 +80,7 @@ const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
         }
         arrow
       >
-        <Link to={`/instrument/${id}`}>
+       <Link to={`/instrument/${id}/${slug}`}>
           <ImageWithLoader
             src={imageUrl}
             variant="circular"

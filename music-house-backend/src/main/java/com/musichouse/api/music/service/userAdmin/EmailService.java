@@ -1,4 +1,4 @@
-package com.musichouse.api.music.service.user;
+package com.musichouse.api.music.service.userAdmin;
 
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.infra.MailManager;

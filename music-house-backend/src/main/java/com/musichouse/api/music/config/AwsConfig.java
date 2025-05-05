@@ -22,7 +22,7 @@ public class AwsConfig {
 
     public AmazonS3 createS3Client() {
         if (accessKeyId.isBlank() || accessSecretKey.isBlank() || region.isBlank()) {
-            System.out.println("⚠️ AWS credentials are missing. Cannot create S3 client.");
+
             return null;
         }
         BasicAWSCredentials credentials = new BasicAWSCredentials(accessKeyId, accessSecretKey);

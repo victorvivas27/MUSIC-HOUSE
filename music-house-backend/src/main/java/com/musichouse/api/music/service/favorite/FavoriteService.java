@@ -13,7 +13,7 @@ import com.musichouse.api.music.repository.FavoriteRepository;
 import com.musichouse.api.music.repository.InstrumentRepository;
 import com.musichouse.api.music.repository.UserRepository;
 import com.musichouse.api.music.service.instrument.InstrumentValidator;
-import com.musichouse.api.music.service.user.UserValidator;
+import com.musichouse.api.music.service.userAdmin.UserValidator;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;

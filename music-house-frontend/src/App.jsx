@@ -44,11 +44,11 @@ export const App = () => {
                 </Route>
                 <Route element={<UserLayout />}>
                   <Route path="/" element={<Home />} />
-                  <Route path="/perfil/:id" element={<Perfil />} />
                   <Route path="/about" element={<About />} />
                  
-                  <Route path="/instrument/:id" element={<Instrument />} />
+                  <Route path="/instrument/:id/:slug?" element={<Instrument />} />
                   <Route element={<ProtectedRoute />}>
+                  <Route path="/perfil" element={<Perfil />} />
                     <Route path="/favorites" element={<Favorites />} />
                     <Route path="/reservations" element={<MisReservas />} />
                     

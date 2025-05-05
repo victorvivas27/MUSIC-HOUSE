@@ -3,7 +3,7 @@ import './LoadingText.css'
 
 const LoadingText = ({ 
   text ='Cargando', 
-  color='var(--color-info)' ,
+  color='var( --texto-primario)' ,
   fontSize="1rem"
 }) => {
   return (

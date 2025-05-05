@@ -3,7 +3,6 @@ package com.musichouse.api.music.dto.dto_modify;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.musichouse.api.music.entity.Roles;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -18,7 +17,7 @@ import java.util.UUID;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserDtoModify {
 
-    @NotNull(message = "El idUser es obligatorio")
+    //@NotNull(message = "El idUser es obligatorio")
     private UUID idUser;
 
 
@@ -36,7 +35,7 @@ public class UserDtoModify {
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
 
-   
+
     @Size(min = 1, message = "Debe haber al menos un rol asignado")
     private List<Roles> roles;
 

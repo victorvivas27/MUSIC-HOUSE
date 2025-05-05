@@ -21,7 +21,7 @@ export const CrearUsuario = () => {
             display: { xs: isUserAdmin ? 'none' : 'flex', lg: 'flex' }
           }}
         >
-          <NewUser />
+          <NewUser isAdminCreating={true}/>
         </BoxFormUnder>
       </>
       <Box

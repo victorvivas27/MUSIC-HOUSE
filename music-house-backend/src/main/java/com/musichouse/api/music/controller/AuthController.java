@@ -4,7 +4,7 @@ import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.security.JwtService;
-import com.musichouse.api.music.service.user.UserValidator;
+import com.musichouse.api.music.service.userAdmin.UserValidator;
 import com.musichouse.api.music.util.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -29,7 +29,7 @@ public class AuthController {
     @Value("${cookie.secure}")
     private Boolean cookieSecure;
 
-    @Value("${cookie.same-site:Lax}") // por defecto Lax
+    @Value("${cookie.same-site:Lax}")
     private String cookieSameSite;
 
     /**

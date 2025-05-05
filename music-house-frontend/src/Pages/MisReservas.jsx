@@ -25,6 +25,7 @@ import {
   ParagraphResponsive,
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
+import { slugify } from '@/components/utils/slugify'
 
 const MisReservas = () => {
   const [reservas, setReservas] = useState([])
@@ -127,6 +128,7 @@ const MisReservas = () => {
           const end = new Date(reserva.endDate)
           const diffTime = Math.abs(end - start)
           const rentalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
+          const slug = slugify(reserva.instrumentName)
 
           return (
             <Grid item key={reserva.idReservation} xs={6} sm={4} md={3} lg={2}>
@@ -161,7 +163,7 @@ const MisReservas = () => {
                     arrow
                   >
                     <Link
-                      to={`/instrument/${reserva.idInstrument}`}
+                      to={`/instrument/${reserva.idInstrument}/${slug}`}
                       style={{ textDecoration: 'none' }}
                     >
                       <ImageWithLoader

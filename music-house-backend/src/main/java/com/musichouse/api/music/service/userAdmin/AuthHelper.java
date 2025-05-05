@@ -1,4 +1,4 @@
-package com.musichouse.api.music.service.user;
+package com.musichouse.api.music.service.userAdmin;
 
 import lombok.AllArgsConstructor;
 import org.springframework.security.authentication.AuthenticationManager;

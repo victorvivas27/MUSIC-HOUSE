@@ -15,9 +15,11 @@ export const AuthProvider = ({ children }) => {
   const [userLastName, setUserLastName] = useState(null)
   const [userRoles, setUserRoles] = useState([])
   const navigate = useNavigate()
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true) 
 
   const fetchUser = async () => {
     try {
+      setIsLoadingAuth(true) 
       const response = await UsersApi.getCurrentUser()
       const user = response.result
       if (user) {
@@ -37,6 +39,8 @@ export const AuthProvider = ({ children }) => {
       setUserName(null)
       setUserLastName(null)
       setUserRoles([])
+    }finally {
+      setIsLoadingAuth(false) 
     }
   }
 useEffect(() => {
@@ -68,7 +72,8 @@ useEffect(() => {
         userLastName,
         userRoles,
         logOut,
-        fetchUser
+        fetchUser,
+        isLoadingAuth // 🆕
       }}
     >
       {children}

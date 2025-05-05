@@ -9,7 +9,7 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.interfaces.PhoneInterface;
 import com.musichouse.api.music.repository.PhoneRepository;
 import com.musichouse.api.music.repository.UserRepository;
-import com.musichouse.api.music.service.user.UserValidator;
+import com.musichouse.api.music.service.userAdmin.UserValidator;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;

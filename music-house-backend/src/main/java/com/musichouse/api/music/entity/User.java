@@ -1,6 +1,7 @@
 package com.musichouse.api.music.entity;
 
 import com.musichouse.api.music.abstracts.Person;
+import com.musichouse.api.music.util.RoleConstants;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -99,7 +100,7 @@ public class User extends Person implements UserDetails {
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles.stream()
-                .map(role -> new SimpleGrantedAuthority("ROLE_" + role.name()))
+                .map(role -> new SimpleGrantedAuthority(RoleConstants.ROLE + role.name()))
                 .collect(Collectors.toSet());
     }
 
