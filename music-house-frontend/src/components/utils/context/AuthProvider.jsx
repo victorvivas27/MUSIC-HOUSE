@@ -21,8 +21,8 @@ export const AuthProvider = ({ children }) => {
     console.log('📦 Document.cookie:', document.cookie)
     console.log('🌐 Intentando obtener usuario con cookie JWT...')
     try {
-      console.log('✅ Usuario autenticado:', response.result)
       const response = await UsersApi.getCurrentUser()
+      console.log('✅ Usuario autenticado:', response.result)
       const user = response.result
       if (user) {
         setAuthGlobal(true)
