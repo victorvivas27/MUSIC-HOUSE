@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react'
 import PropTypes from 'prop-types'
 import { useNavigate } from 'react-router-dom'
 import { AuthContext } from './AuthContext'
-import { ADMIN,USER } from '../roles/constants'
+import { ADMIN, USER } from '../roles/constants'
 
 import { UsersApi } from '@/api/users'
 
@@ -15,11 +15,13 @@ export const AuthProvider = ({ children }) => {
   const [userLastName, setUserLastName] = useState(null)
   const [userRoles, setUserRoles] = useState([])
   const navigate = useNavigate()
-  const [isLoadingAuth, setIsLoadingAuth] = useState(true) 
 
   const fetchUser = async () => {
+    console.log('%c🔍 Verificando cookies...', 'color: orange')
+    console.log('📦 Document.cookie:', document.cookie)
+    console.log('🌐 Intentando obtener usuario con cookie JWT...')
     try {
-      setIsLoadingAuth(true) 
+      console.log('✅ Usuario autenticado:', response.result)
       const response = await UsersApi.getCurrentUser()
       const user = response.result
       if (user) {
@@ -32,18 +34,17 @@ export const AuthProvider = ({ children }) => {
         setUserRoles(user.roles || [])
       }
     } catch (error) {
-     setAuthGlobal(false)
+      console.error('❌ Error al obtener usuario:', error)
+      setAuthGlobal(false)
       setIsUserAdmin(false)
       setIsUser(false)
       setIdUser(null)
       setUserName(null)
       setUserLastName(null)
       setUserRoles([])
-    }finally {
-      setIsLoadingAuth(false) 
     }
   }
-useEffect(() => {
+  useEffect(() => {
     fetchUser()
   }, [])
 
@@ -72,8 +73,7 @@ useEffect(() => {
         userLastName,
         userRoles,
         logOut,
-        fetchUser,
-        isLoadingAuth // 🆕
+        fetchUser
       }}
     >
       {children}
