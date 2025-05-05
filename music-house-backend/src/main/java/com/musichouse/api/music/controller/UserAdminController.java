@@ -44,7 +44,7 @@ public class UserAdminController {
     @Value("${cookie.secure}")
     private Boolean cookieSecure;
 
-    @Value("${cookie.same-site:Lax}") // por defecto Lax
+    @Value("${cookie.same-site}")
     private String cookieSameSite;
 
     public UserAdminController(UserServiceAdmin userService, ObjectMapper objectMapper, Validator validator, JwtService jwtService) {
