@@ -10,8 +10,7 @@ import PropTypes from 'prop-types'
 const initialState = {
   favorites: [],
   loading: false,
-
-  characteristics: [
+ characteristics: [
     { name: 'Estuche', image: instrumentCase, id: 'instrumentCase' },
     { name: 'Soporte', image: support, id: 'support' },
     { name: 'Afinador', image: tuner, id: 'tuner' },
@@ -24,7 +23,8 @@ const initialState = {
   categories: { content: [], totalElements: 0 },
   themes: { content: [], totalElements: 0 },
   users: { content: [], totalElements: 0 },
-  instruments: { content: [], totalElements: 0 }
+  instruments: { content: [], totalElements: 0 },
+  reservas:{ content: [], totalElements: 0 }
 }
 
 const ContextGlobal = createContext()
@@ -109,6 +109,16 @@ const appReducer = (state, action) => {
         ...state,
         users: action.payload
       }
+      case actions.UPDATE_RESERVATION:
+        return {
+          ...state,
+          reservas: action.payload?.content
+            ? action.payload
+            : {
+                content: Array.isArray(action.payload) ? action.payload : [],
+                totalElements: 0
+              }
+        }
 
     default:
       return state

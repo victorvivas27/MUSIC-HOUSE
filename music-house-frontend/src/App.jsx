@@ -26,6 +26,7 @@ import { EditarCategoria } from "./Pages/Admin/EditarCategoria"
 import CrearUsuario from "./Pages/CrearUsuario"
 import { ServerError } from "./Pages/ServerError"
 import { NotFoundPage } from "./Pages/NotFound"
+import Reservationes from "./Pages/Admin/Reservationes"
 
 
 
@@ -59,12 +60,11 @@ export const App = () => {
                     <Route path="/instruments" element={<Instruments />} />
                     <Route path="/usuarios" element={<Usuarios />} />
                     <Route path="/categories" element={<Categories />} />
+                    <Route path="/reservations-user" element={<Reservationes />} />
                     <Route path="/theme" element={<Theme />} />
                     <Route path="/agregarTheme" element={<AgregarTheme />} />
                     <Route path="/editarTheme/:id" element={<EditarTheme />} />
-                    <Route
-                      path="/agregarInstrumento"
-                      element={<AgregarInstrumento />}
+                    <Route path="/agregarInstrumento" element={<AgregarInstrumento />}
                     />
                     <Route
                       path="/editarInstrumento/:id"

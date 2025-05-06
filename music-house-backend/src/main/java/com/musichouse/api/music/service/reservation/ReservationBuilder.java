@@ -52,6 +52,7 @@ public class ReservationBuilder {
                 .idInstrument(instrument.getIdInstrument())
                 .startDate(reservation.getStartDate())
                 .endDate(reservation.getEndDate())
+                .cancelled(reservation.isCancelled())
                 .totalPrice(totalPrice)
                 .name(user.getName())
                 .lastName(user.getLastName())

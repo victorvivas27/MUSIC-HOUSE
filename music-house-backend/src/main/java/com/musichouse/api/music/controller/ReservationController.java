@@ -10,12 +10,13 @@ import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 
@@ -48,39 +49,41 @@ public class ReservationController {
 
 
     // 🔹 BUSCAR RESERVAS POR ID DE USUARIO
-    @GetMapping("/{userId}")
-    public ResponseEntity<ApiResponse<List<ReservationDtoExit>>> getReservationsByUserId(@PathVariable UUID userId)
+    @GetMapping("/user/{userId}")
+    public ResponseEntity<ApiResponse<Page<ReservationDtoExit>>> getReservationsByUserId(
+            @PathVariable UUID userId,
+            Pageable pageable)
             throws ResourceNotFoundException {
 
-        List<ReservationDtoExit> reservationDtoExits = reservationService.getReservationByUserId(userId);
+        Page<ReservationDtoExit> reservationDtoExits = reservationService.getReservationByUserId(userId, pageable);
 
-        return ResponseEntity.ok(ApiResponse.<List<ReservationDtoExit>>builder()
+        return ResponseEntity.ok(ApiResponse.<Page<ReservationDtoExit>>builder()
                 .status(HttpStatus.OK)
                 .statusCode(HttpStatus.OK.value())
-                .message("Reservas encontradas con éxito para el usuario con ID: " + userId)
+                .message("Reservas encontradas con éxito")
                 .error(null)
                 .result(reservationDtoExits)
                 .build());
 
     }
 
-    // 🔹 ELIMINAR RESERVA
-    @DeleteMapping("/{idInstrument}/{idUser}/{idReservation}")
-    public ResponseEntity<ApiResponse<Void>> deleteReservation(
+    // 🔹 CANCELAR RESERVA (SOLO USUARIO, no elimina si está dentro de las 24hs)
+    @PatchMapping("/cancel/{idInstrument}/{idUser}/{idReservation}")
+    public ResponseEntity<ApiResponse<ReservationDtoExit>> cancelReservation(
             @PathVariable UUID idInstrument,
             @PathVariable UUID idUser,
-            @PathVariable UUID idReservation)
-            throws ResourceNotFoundException {
+            @PathVariable UUID idReservation) throws ResourceNotFoundException {
 
-        reservationService.deleteReservation(idInstrument, idUser, idReservation);
+        ReservationDtoExit reservation = reservationService.cancelReservation(idInstrument, idUser, idReservation);
 
-        return ResponseEntity.ok(ApiResponse.<Void>builder()
-                .status(HttpStatus.OK)
-                .statusCode(HttpStatus.OK.value())
-                .message("Reserva eliminada con éxito.")
-                .error(null)
-                .result(null)
-                .build());
-
+        return ResponseEntity.ok(
+                ApiResponse.<ReservationDtoExit>builder()
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Reserva cancelada correctamente.")
+                        .error(null)
+                        .result(reservation)
+                        .build()
+        );
     }
 }

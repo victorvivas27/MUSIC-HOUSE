@@ -2,73 +2,77 @@ import { useEffect, useState } from 'react'
 import { Typography, Box, CircularProgress } from '@mui/material'
 import { useAppStates } from '@/components/utils/global.context'
 import { useAuth } from '@/hook/useAuth'
-import {  getFavoritesByUserId } from '@/api/favorites'
+import { getFavoritesByUserId } from '@/api/favorites'
 import { actions } from '@/components/utils/actions'
 import { Loader } from '@/components/common/loader/Loader'
-import { MainWrapper, ProductsWrapper } from '@/components/styles/ResponsiveComponents'
+import {
+  MainWrapper,
+  ProductsWrapper
+} from '@/components/styles/ResponsiveComponents'
 import ArrowBack from '@/components/utils/ArrowBack'
 import ProductCard from '@/components/common/instrumentGallery/ProductCard'
-
+import { getErrorMessage } from '@/api/getErrorMessage'
+import useAlert from '@/hook/useAlert'
 
 export const Favorites = () => {
   const [loadingState, setLoadingState] = useState({
     initial: true,
     more: false
-  });
-  const [page, setPage] = useState(0);
-  const [hasMore, setHasMore] = useState(true);
-  const pageSize = 3;
-  const { state, dispatch } = useAppStates();
-  const { favorites } = state;
-  const { idUser } = useAuth();
+  })
+  const [page, setPage] = useState(0)
+  const [hasMore, setHasMore] = useState(true)
+  const pageSize = 2
+  const { state, dispatch } = useAppStates()
+  const { favorites } = state
+  const { idUser } = useAuth()
+  const { showError } = useAlert()
 
   const fetchFavorites = async (pageToLoad = 0) => {
-    setLoadingState(prev => ({
+    setLoadingState((prev) => ({
       ...prev,
       [pageToLoad === 0 ? 'initial' : 'more']: true
-    }));
-    
+    }))
+
     try {
-      const response = await getFavoritesByUserId(idUser, pageToLoad, pageSize);
-      const data = response?.result;
+      const response = await getFavoritesByUserId(idUser, pageToLoad, pageSize)
+      const data = response?.result
 
       dispatch({
         type: actions.UPDATE_FAVORITES,
-        payload: pageToLoad === 0
-          ? data.content
-          : [...favorites, ...data.content]
-      });
+        payload:
+          pageToLoad === 0 ? data.content : [...favorites, ...data.content]
+      })
 
-      setHasMore(!data.last);
+      setHasMore(!data.last)
     } catch (error) {
-      console.error("Error loading favorites:", error);
+      showError(`❌${getErrorMessage(error)}`)
     } finally {
-      setLoadingState(prev => ({
+      setLoadingState((prev) => ({
         ...prev,
         [pageToLoad === 0 ? 'initial' : 'more']: false
-      }));
+      }))
     }
-  };
+  }
 
   useEffect(() => {
-    fetchFavorites(0);
-  }, [idUser]);
+    fetchFavorites(0)
+  }, [idUser])
 
   const handleLoadMore = () => {
-    const nextPage = page + 1;
-    setPage(nextPage);
-    fetchFavorites(nextPage);
-  };
+    const nextPage = page + 1
+    setPage(nextPage)
+    fetchFavorites(nextPage)
+  }
 
   if (loadingState.initial) {
     return (
-      <Loader 
-        title="Cargando tus favoritos..." 
+      <Loader
+        title="Cargando tus favoritos..."
         fullSize={true}
         overlayColor="rgba(255, 255, 255, 0.8)"
         progressColor="var(--color-primario)"
       />
-    );
+    )
   }
 
   return (
@@ -95,7 +99,6 @@ export const Favorites = () => {
         >
           🎵 Tus Favoritos
         </Typography>
-      
       </Box>
 
       <ProductsWrapper
@@ -125,13 +128,21 @@ export const Favorites = () => {
               fontStyle: 'italic'
             }}
           >
-            No se han encontrado favoritos. ¡Explora instrumentos y agrega algunos! 🎸🎺
+            No se han encontrado favoritos. ¡Explora instrumentos y agrega
+            algunos! 🎸🎺
           </Typography>
         )}
       </ProductsWrapper>
 
       {hasMore && (
-        <Box sx={{ textAlign: 'center', mt: 2, position: 'relative', minHeight: 50 }}>
+        <Box
+          sx={{
+            textAlign: 'center',
+            mt: 2,
+            position: 'relative',
+            minHeight: 50
+          }}
+        >
           {!loadingState.more ? (
             <button
               onClick={handleLoadMore}
@@ -150,14 +161,14 @@ export const Favorites = () => {
             </button>
           ) : (
             <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              <CircularProgress 
-                size={24} 
-                sx={{ color: 'var(--color-primario)' }} 
+              <CircularProgress
+                size={24}
+                sx={{ color: 'var(--color-primario)' }}
               />
             </Box>
           )}
         </Box>
       )}
     </MainWrapper>
-  );
-};
+  )
+}

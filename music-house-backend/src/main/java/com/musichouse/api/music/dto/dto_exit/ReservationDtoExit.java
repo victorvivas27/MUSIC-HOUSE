@@ -25,6 +25,8 @@ public class ReservationDtoExit {
 
     private LocalDate endDate;
 
+    private boolean cancelled;
+
     private BigDecimal totalPrice;
 
     private String name;
@@ -41,6 +43,7 @@ public class ReservationDtoExit {
 
 
     private String imageUrl;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Santiago")
     private LocalDateTime registDate;
 

@@ -265,3 +265,98 @@ export const headCellsTheme = [
     disableSort: true
   }
 ]
+
+export const headCellsReservation = [
+  {
+    id: 'index',
+    numeric: true,
+    disablePadding: false,
+    label: 'N°',
+    disableSort: true
+  },
+  {
+    id: 'imageUrl',
+    numeric: false,
+    disablePadding: false,
+    label: 'Imagen',
+    disableSort: true
+  },
+  {
+    id: 'instrumentName',
+    numeric: false,
+    disablePadding: false,
+    label: 'Instrumento'
+  },
+  {
+    id: 'name',
+    numeric: false,
+    disablePadding: false,
+    label: 'Nombre',
+    disableSort: true
+  },
+  {
+    id: 'lastName',
+    numeric: false,
+    disablePadding: false,
+    label: 'Apellido',
+    disableSort: true
+  },
+  {
+    id: 'email',
+    numeric: false,
+    disablePadding: false,
+    label: 'Email',
+    disableSort: true
+  },
+  {
+    id: 'city',
+    numeric: false,
+    disablePadding: false,
+    label: 'Ciudad',
+    disableSort: true
+  },
+  {
+    id: 'country',
+    numeric: false,
+    disablePadding: false,
+    label: 'País',
+    disableSort: true
+  },
+  {
+    id: 'startDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Inicio'
+  },
+  {
+    id: 'endDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Fin'
+  },
+  {
+    id: 'totalPrice',
+    numeric: true,
+    disablePadding: false,
+    label: 'Total'
+  },
+  {
+    id: 'registDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Registro'
+  },
+  {
+    id: 'modifiedDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Modificado'
+  },
+  {
+    id: 'actions',
+    numeric: false,
+    disablePadding: false,
+    label: 'Acciones',
+    disableSort: true
+  }
+]

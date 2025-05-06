@@ -7,12 +7,13 @@ import {
   IconButton,
   Grid,
   Button,
-  Collapse
+  Collapse,
+  CircularProgress,
 } from '@mui/material'
-import DeleteIcon from '@mui/icons-material/Delete'
+import CancelIcon from '@mui/icons-material/Cancel'
 import { useAuth } from '@/hook/useAuth'
 import useAlert from '@/hook/useAlert'
-import { deleteReservation, getReservationById } from '@/api/reservations'
+import { cancelReservation, getReservationById } from '@/api/reservations'
 import { getErrorMessage } from '@/api/getErrorMessage'
 
 import { Loader } from '@/components/common/loader/Loader'
@@ -26,61 +27,89 @@ import {
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
 import { slugify } from '@/components/utils/slugify'
+import { useAppStates } from '@/components/utils/global.context'
+import { actions } from '@/components/utils/actions'
 
 const MisReservas = () => {
-  const [reservas, setReservas] = useState([])
   const [loadingState, setLoadingState] = useState({
     initial: true,
     deleting: false
   })
   const [expandedId, setExpandedId] = useState(null)
-
+  const [page, setPage] = useState(0)
+  const [hasMore, setHasMore] = useState(true)
+  const pageSize = 2
   const { idUser } = useAuth()
   const { showConfirm, showLoading, showSuccess, showError } = useAlert()
+  const { state, dispatch } = useAppStates()
 
-  const getAllReservations = useCallback(async () => {
-    if (!idUser) return
-    setLoadingState((prev) => ({ ...prev, initial: true }))
-    try {
-      const response = await getReservationById(idUser)
-      setReservas(response.result || [])
-    } catch (error) {
-      setReservas([])
-      showError(`Error al cargar reservas: ${getErrorMessage(error)}`)
-    } finally {
-      setLoadingState((prev) => ({ ...prev, initial: false }))
-    }
-  }, [idUser, showError])
+  const getAllReservations = useCallback(
+    async (pageToLoad = 0) => {
+      setLoadingState((prev) => ({
+        ...prev,
+        [pageToLoad === 0 ? 'initial' : 'more']: true
+      }))
+
+      try {
+        const response = await getReservationById(idUser, pageToLoad, pageSize)
+        const data = response?.result
+
+        dispatch({
+          type: actions.UPDATE_RESERVATION,
+          payload:
+            pageToLoad === 0
+              ? data
+              : {
+                  ...data,
+                  content: [...(state.reservas?.content || []), ...data.content]
+                }
+        })
+
+        setHasMore(!data.last)
+      } catch (error) {
+        showError(`❌${getErrorMessage(error)}`)
+      } finally {
+        setLoadingState((prev) => ({
+          ...prev,
+          [pageToLoad === 0 ? 'initial' : 'more']: false
+        }))
+      }
+    },
+    [dispatch, idUser, showError, state.reservas]
+  )
 
   useEffect(() => {
-    getAllReservations()
-  }, [getAllReservations])
+    getAllReservations(0)
+  }, [idUser])
 
-  const handleDelete = async (idReservation) => {
-    const reserva = reservas.find((r) => r.idReservation === idReservation)
-    if (!reserva) return
+  const handleLoadMore = () => {
+    const nextPage = page + 1
+    setPage(nextPage)
+    getAllReservations(nextPage)
+  }
 
+  const handleCancel = async (reserva) => {
     const isConfirmed = await showConfirm(
-      '¿Eliminar reserva?',
-      'Esta acción no se puede deshacer.'
+      '¿Cancelar reserva?',
+      'Recuerda que solo puedes cancelar la reserva dentro de las 24 horas previas al inicio. Esta acción no se puede deshacer.'
     )
     if (!isConfirmed) return
 
-    setLoadingState((prev) => ({ ...prev, deleting: true }))
-    showLoading('Eliminando reserva...')
+    setLoadingState((prev) => ({ ...prev, cancelling: true }))
+    showLoading('Cancelando reserva...')
 
     try {
-      await deleteReservation(
+      await cancelReservation(
         reserva.idInstrument,
         reserva.idUser,
         reserva.idReservation
       )
-      showSuccess('✅ Reserva eliminada correctamente')
+      showSuccess('✅ Reserva cancelada correctamente')
       await getAllReservations()
     } catch (error) {
       showError(`❌ ${getErrorMessage(error)}`)
     } finally {
-      setLoadingState((prev) => ({ ...prev, deleting: false }))
+      setLoadingState((prev) => ({ ...prev, cancelling: false }))
     }
   }
 
@@ -123,7 +152,7 @@ const MisReservas = () => {
       </TitleResponsive>
 
       <Grid container spacing={2} justifyContent="center">
-        {reservas.map((reserva) => {
+        {(state.reservas?.content || []).map((reserva) => {
           const start = new Date(reserva.startDate)
           const end = new Date(reserva.endDate)
           const diffTime = Math.abs(end - start)
@@ -156,11 +185,12 @@ const MisReservas = () => {
                 >
                   <CustomTooltip
                     title={
-                      <Typography sx={{ fontFamily: 'Roboto', fontSize: 10 }}>
+                      <Typography sx={{ fontSize: 20 }}>
                         <strong>✅Más info</strong>
                       </Typography>
                     }
-                    arrow
+                     placement="top"
+                    
                   >
                     <Link
                       to={`/instrument/${reserva.idInstrument}/${slug}`}
@@ -176,27 +206,60 @@ const MisReservas = () => {
                       />
                     </Link>
                   </CustomTooltip>
-                  <IconButton
-                    onClick={() => handleDelete(reserva.idReservation)}
-                    color="error"
-                    size="small"
-                    sx={{
-                      position: 'absolute',
-                      top: { xs: 1, sm: -1, md: 1, lg: -1 },
-                      left: { xs: 1, sm: -1, md: 1, lg: -1 },
-                      '&:hover': { backgroundColor: '#ffe5e5' },
-                      boxShadow: 2
-                    }}
-                  >
-                    <DeleteIcon
+                  {/* Mostrar leyenda si la reserva está cancelada */}
+                  {reserva.cancelled && (
+                    <Box
                       sx={{
-                        fontSize: {
-                          xs: 18,
-                          sm: 20
-                        }
+                        position: 'absolute',
+                        top: 0,
+                        right: 8,
+                        backgroundColor: '#d32f2f',
+                        color: 'white',
+                        px: 1,
+                        py: 0.5,
+                        fontSize: '1rem',
+                        borderBottomLeftRadius: '4px',
+                        zIndex: 1
                       }}
-                    />
-                  </IconButton>
+                    >
+                      Reserva Cancelada
+                    </Box>
+                  )}
+
+                  {/* Mostrar botón de cancelar solo si NO está cancelada */}
+                  {!reserva.cancelled && (
+                    <CustomTooltip
+                     
+                      title={
+                        <Typography sx={{ fontSize: 13}}>
+                          <strong>❗Cancelar reserva (solo hasta 24h antes del inicio)</strong>
+                        </Typography>
+                      }
+                      placement="top"
+                    >
+                      <IconButton
+                        onClick={() => handleCancel(reserva)}
+                        color="error"
+                        size="small"
+                        sx={{
+                          position: 'absolute',
+                          top: { xs: 1, sm: -1, md: 1, lg: -1 },
+                          left: { xs: 1, sm: -1, md: 1, lg: -1 },
+                          '&:hover': { backgroundColor: '#ffe5e5' },
+                          boxShadow: 2
+                        }}
+                      >
+                        <CancelIcon
+                          sx={{
+                            fontSize: {
+                              xs: 18,
+                              sm: 20
+                            }
+                          }}
+                        />
+                      </IconButton>
+                    </CustomTooltip>
+                  )}
                 </Box>
 
                 {/* Expandir */}
@@ -287,7 +350,7 @@ const MisReservas = () => {
       </Grid>
 
       {/* Sin reservas */}
-      {reservas.length === 0 && !loadingState.initial && (
+      {state.reservas?.content?.length === 0 && !loadingState.initial && (
         <Box
           sx={{
             display: 'flex',
@@ -305,8 +368,43 @@ const MisReservas = () => {
         >
           <TitleResponsive>🎷No tienes reservas activas🎻</TitleResponsive>
           <TitleResponsive>
-          📯Aquí aparecerán las reservas cuando alquiles un instrumento 🎸
+            📯Aquí aparecerán las reservas cuando alquiles un instrumento 🎸
           </TitleResponsive>
+        </Box>
+      )}
+      {hasMore && !loadingState.more && (
+        <Box
+          sx={{
+            textAlign: 'center',
+            mt: 2,
+            position: 'relative',
+            minHeight: 50
+          }}
+        >
+          {!loadingState.more ? (
+            <button
+              onClick={handleLoadMore}
+              style={{
+                padding: '10px 20px',
+                fontSize: '1rem',
+                borderRadius: '8px',
+                backgroundColor: 'var(--color-primario)',
+                color: 'white',
+                border: 'none',
+                cursor: 'pointer',
+                transition: 'all 0.3s ease'
+              }}
+            >
+              Cargar más reservas
+            </button>
+          ) : (
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              <CircularProgress
+                size={24}
+                sx={{ color: 'var(--color-primario)' }}
+              />
+            </Box>
+          )}
         </Box>
       )}
     </Box>

@@ -66,6 +66,9 @@ public class Reservation {
     @Column(nullable = false, precision = 10, scale = 2)
     private BigDecimal totalPrice;
 
+    @Column(nullable = false)
+    private boolean cancelled = false;
+
     /**
      * Anotación que marca el campo como una fecha de creación automática.
      * Hibernate asigna automáticamente la fecha y hora actual al insertar la entidad en la base de datos.

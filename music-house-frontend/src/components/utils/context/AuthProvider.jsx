@@ -17,12 +17,10 @@ export const AuthProvider = ({ children }) => {
   const navigate = useNavigate()
 
   const fetchUser = async () => {
-    console.log('%c🔍 Verificando cookies...', 'color: orange')
-    console.log('📦 Document.cookie:', document.cookie)
-    console.log('🌐 Intentando obtener usuario con cookie JWT...')
+   
     try {
       const response = await UsersApi.getCurrentUser()
-      console.log('✅ Usuario autenticado:', response.result)
+     
       const user = response.result
       if (user) {
         setAuthGlobal(true)
@@ -34,7 +32,7 @@ export const AuthProvider = ({ children }) => {
         setUserRoles(user.roles || [])
       }
     } catch (error) {
-      console.error('❌ Error al obtener usuario:', error)
+    
       setAuthGlobal(false)
       setIsUserAdmin(false)
       setIsUser(false)

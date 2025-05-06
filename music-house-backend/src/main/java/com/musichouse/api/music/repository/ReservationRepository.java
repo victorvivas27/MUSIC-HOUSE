@@ -3,6 +3,8 @@ package com.musichouse.api.music.repository;
 import com.musichouse.api.music.entity.Instrument;
 import com.musichouse.api.music.entity.Reservation;
 import com.musichouse.api.music.entity.User;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -18,7 +20,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
     Reservation findByUserAndInstrument(User user, Instrument instrument);
 
     @Query("SELECT f FROM Reservation f WHERE f.user.id = :userId")
-    List<Reservation> findByUserId(@Param("userId") UUID userId);
+    Page<Reservation> findByUserId(@Param("userId") UUID userId, Pageable pageable);
 
 
     @Query("SELECT COUNT(r) > 0 FROM Reservation r WHERE r.instrument.id = :idInstrument")
@@ -31,4 +33,9 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
             @Param("instrumentId") UUID instrumentId,
             @Param("startDate") LocalDate startDate,
             @Param("endDate") LocalDate endDate);
+
+    @Query("SELECT r FROM Reservation r WHERE r.instrument.idInstrument = :instrumentId AND r.cancelled = false")
+    List<Reservation> findByInstrumentIdInstrumentAndCancelledFalse(@Param("instrumentId") UUID instrumentId);
+
+ 
 }

@@ -24,6 +24,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -111,29 +113,68 @@ public class ReservationService implements ReservationInterface {
 
 
     @Override
-    public List<ReservationDtoExit> getReservationByUserId(UUID userId) {
-        List<Reservation> reservations = reservationRepository.findByUserId(userId);
+    public Page<ReservationDtoExit> getReservationByUserId(UUID userId, Pageable pageable) {
+        Page<Reservation> reservations = reservationRepository.findByUserId(userId, pageable);
 
-        return reservations.stream()
-                .map(reservationBuilder::buildDtoFromEntity)
-                .toList();
+        return reservations.map(reservation ->
+                reservationBuilder.buildDtoReservationExit(
+                        reservation,
+                        reservation.getUser(),
+                        reservation.getInstrument(),
+                        reservation.getTotalPrice()
+                )
+        );
     }
 
 
-    @Override
-    public void deleteReservation(UUID idInstrument, UUID idUser, UUID idReservation) throws ResourceNotFoundException {
+    @CacheEvict(value = "availableDates", key = "#idInstrument")
+    public ReservationDtoExit cancelReservation(UUID idInstrument, UUID idUser, UUID idReservation)
+            throws ResourceNotFoundException {
 
-        User user = userValidator.validateUserId(idUser);
+        Reservation reservation = reservationRepository.findById(idReservation)
+                .orElseThrow(() -> new ResourceNotFoundException("Reserva no encontrada."));
 
-        Instrument instrument = instrumentValidator.validateInstrumentId(idInstrument);
+        if (!reservation.getUser().getIdUser().equals(idUser)) {
+            throw new ResourceNotFoundException("No tienes permiso para cancelar esta reserva.");
+        }
 
-        Reservation reservation = reservationValidator.validateReservationId(idReservation);
+        if (!reservation.getInstrument().getIdInstrument().equals(idInstrument)) {
+            throw new ResourceNotFoundException("La reserva no pertenece a este instrumento.");
+        }
 
-        reservationValidator.validateUserAndInstrumentMatchReservation(reservation, idUser, idInstrument);
+        if (reservation.isCancelled()) {
+            throw new IllegalStateException("La reserva ya fue cancelada.");
+        }
 
-        telegramService.enviarMensajeDeCancelacion(user.getTelegramChatId(), user.getName(), user.getLastName());
+        // Marcar como cancelada
+        reservation.setCancelled(true);
+        reservationRepository.save(reservation);
 
-        reservationRepository.delete(reservation);
+        // Si la cancelación es dentro de las 24h, liberar las fechas
+        long hoursBefore = java.time.Duration.between(
+                java.time.LocalDate.now().atStartOfDay(),
+                reservation.getStartDate().atStartOfDay()
+        ).toHours();
+
+        if (hoursBefore <= 24) {
+            List<AvailableDate> datesToFree = availableDateRepository
+                    .findByInstrumentIdInstrumentAndDateAvailableBetween(
+                            idInstrument,
+                            reservation.getStartDate(),
+                            reservation.getEndDate()
+                    );
+
+            for (AvailableDate date : datesToFree) {
+                date.setAvailable(true);
+                availableDateRepository.save(date);
+            }
+        }
+
+        return reservationBuilder.buildDtoReservationExit(
+                reservation,
+                reservation.getUser(),
+                reservation.getInstrument(),
+                reservation.getTotalPrice()
+        );
     }
-
 }

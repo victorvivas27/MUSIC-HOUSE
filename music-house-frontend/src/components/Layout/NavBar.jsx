@@ -84,5 +84,11 @@ export const pagesDesktop = [
     text: 'Mis reservas',
     icon: <CalendarMonthIcon sx={{ color: '#ff9800' }} />,
     user: true
+  }, // naranja
+  {
+    to: '/reservations-user',
+    text: 'Reservas Usuario',
+    icon: <CalendarMonthIcon sx={{ color: '#ff9800' }} />,
+    admin: true
   } // naranja
 ]

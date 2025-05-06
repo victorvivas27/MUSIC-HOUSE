@@ -97,7 +97,7 @@ const CalendarReserva = ({ instrument }) => {
   const fetchReservedDates = useCallback(async () => {
     try {
       const res = await getReservationById(idUser)
-      const reservas = res.result || []
+      const reservas = res.result?.content || []
       const instrumentRes = reservas.filter(
         (r) => r.idInstrument === idInstrument
       )

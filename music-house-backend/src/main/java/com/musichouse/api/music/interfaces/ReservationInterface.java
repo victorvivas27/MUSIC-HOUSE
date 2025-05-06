@@ -4,9 +4,10 @@ import com.musichouse.api.music.dto.dto_entrance.ReservationDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.ReservationDtoExit;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import jakarta.mail.MessagingException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.io.IOException;
-import java.util.List;
 import java.util.UUID;
 
 public interface ReservationInterface {
@@ -15,10 +16,8 @@ public interface ReservationInterface {
             throws ResourceNotFoundException, MessagingException, IOException;
 
 
-    public List<ReservationDtoExit> getReservationByUserId(UUID userId)
+    public Page<ReservationDtoExit> getReservationByUserId(UUID userId, Pageable pageable)
             throws ResourceNotFoundException;
 
 
-    void deleteReservation(UUID idInstrument, UUID idUser, UUID idReservation)
-            throws ResourceNotFoundException;
 }

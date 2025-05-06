@@ -74,11 +74,11 @@ const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
 
       <CustomTooltip
         title={
-          <Typography sx={{ fontFamily: 'Roboto', fontSize: 10 }}>
+          <Typography sx={{fontSize: 20 }}>
             <strong>✅ Más info</strong>
           </Typography>
         }
-        arrow
+        placement="top"
       >
        <Link to={`/instrument/${id}/${slug}`}>
           <ImageWithLoader

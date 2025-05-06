@@ -134,8 +134,10 @@ public class SecurityConfig {
                          * - POST y GET accesibles a usuarios autenticados.
                          * - DELETE solo para ADMIN.
                          */
-                        .requestMatchers(HttpMethod.GET, "/api/reservations/**").authenticated()
-                        .requestMatchers(HttpMethod.POST, "/api/reservations/**").authenticated()
+                        .requestMatchers(HttpMethod.GET, "/api/reservations/user/**").hasRole(RoleConstants.USER)
+                        .requestMatchers(HttpMethod.POST, "/api/reservations/**").hasRole(RoleConstants.USER)
+                        .requestMatchers(HttpMethod.PATCH, "/api/reservations/**").hasRole(RoleConstants.USER)
+                        .requestMatchers(HttpMethod.GET, "/api/reservations/**").hasRole(RoleConstants.ADMIN)
                         .requestMatchers(HttpMethod.DELETE, "/api/reservations/**").hasRole(RoleConstants.ADMIN)
 
                         /**
