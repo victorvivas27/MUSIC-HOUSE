@@ -3,7 +3,7 @@ import axios from 'axios';
 import { handleApiError } from './handleApiError';
 const BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
-export const getReservations = async (page=0,size=10,sort="startDate,asc") => {
+export const getReservations = async (page=0,size=10,sort="instrumentName,asc") => {
   try {
     const response = await axios
     .get(`${BASE_URL}/reservations?page=${page}&size=${size}&sort=${sort}`);
