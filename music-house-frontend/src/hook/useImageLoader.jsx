@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 
 
-const useImageLoader = (imageUrl, delay = 500) => {
+const useImageLoader = (imageUrl, delay = 100) => {
 
     const [loaded, setLoaded] = useState(false)
 

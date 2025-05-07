@@ -1,4 +1,4 @@
-import { Favorite, FavoriteBorder } from '@mui/icons-material'
+import { Favorite } from '@mui/icons-material'
 import { Box,} from '@mui/material'
 import { useParams } from 'react-router-dom'
 import { useEffect, useState } from 'react'
@@ -50,14 +50,18 @@ const FavoriteIcon = ({ idInstrument }) => {
     >
       {isFavorite ? (
         <Favorite
-          color="error"
-          sx={{ fontSize: { xs: 26, sm: 28, md: 30, lg: 32, xl: 35 } }}
+         
+          sx={{ 
+             color:'var( --color-primario)',
+            fontSize: { xs: 26, sm: 28, md: 30, lg: 32, xl: 40 } }}
           className="pulse"
         />
       ) : (
-        <FavoriteBorder
+        <Favorite
+       
         sx={{
-            fontSize: { xs: 26, sm: 28, md: 30, lg: 32, xl: 35 },
+          color: 'var( --color-secundario)',
+            fontSize: { xs: 26, sm: 28, md: 30, lg: 32, xl: 40 },
             transition: 'transform 0.2s ease-in-out',
             '&:hover': { transform: 'scale(1.1)' }
           }}

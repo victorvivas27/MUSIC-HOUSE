@@ -6,7 +6,6 @@ import { useAuth } from '@/hook/useAuth'
 import { getInstrumentById } from '@/api/instruments'
 
 import {
-  InstrumentDetailWrapper,
   ParagraphResponsive,
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
@@ -35,6 +34,7 @@ export const Instrument = () => {
   const [instrument, setInstrument] = useState()
   const [showGallery, setShowGallery] = useState(false)
   const { isUser, isUserAdmin } = useAuth()
+
   useEffect(() => {
     getInstrumentById(id)
       .then((instrument) => {
@@ -55,9 +55,17 @@ export const Instrument = () => {
   const onClose = () => {
     setShowGallery(false)
   }
+
   return (
     <>
-      <InstrumentDetailWrapper>
+      <Box
+        sx={{
+          marginTop: { xs: 25, sm: 30, md: 35, lg: 40, xl: 45 },
+          paddingX: 2,
+          maxWidth: '1500px',
+          marginX: 'auto'
+        }}
+      >
         <ArrowBack />
         {/*Contenedor de la imagen,de los datos y del iciono de favoritos */}
         <Box
@@ -131,15 +139,15 @@ export const Instrument = () => {
           {/*Comienzo Imagen del instrumento */}
           <Box
             sx={{
+              overflow: 'hidden',
+              minHeight: 480,
               width: {
                 xs: '60%',
                 sm: '65%',
                 md: '31%',
                 lg: '30%',
-                xl: '25%'
-              },
-              borderRadius: 3,
-              bgcolor: 'var( --background-claro)',
+                xl: '32%'
+              }
             }}
           >
             {/* Nombre del instrumento */}
@@ -147,8 +155,7 @@ export const Instrument = () => {
               sx={{
                 textAlign: 'center',
                 textTransform: 'uppercase',
-                letterSpacing: '3px',
-                
+                letterSpacing: '3px'
               }}
             >
               {instrumentSelected?.name}
@@ -168,8 +175,7 @@ export const Instrument = () => {
                     px: 2,
                     py: 1,
                     fontSize: '0.9rem',
-                    borderRadius: 2,
-                    boxShadow: 'var(--box-shadow)'
+                    borderRadius: 2
                   }
                 },
                 arrow: {
@@ -187,7 +193,7 @@ export const Instrument = () => {
                   alt={instrumentSelected?.name}
                   variant="rectangular"
                   width="100%"
-                  height="auto"
+                  height="100%"
                   borderRadius="0.5rem"
                 />
               </Button>
@@ -405,7 +411,7 @@ export const Instrument = () => {
         <ScreenModal isOpen={showGallery} onClose={onClose}>
           <InstrumentGallery itemData={instrumentSelected?.imageUrls} />
         </ScreenModal>
-      </InstrumentDetailWrapper>
+      </Box>
     </>
   )
 }

@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }) => {
   const [userLastName, setUserLastName] = useState(null)
   const [userRoles, setUserRoles] = useState([])
   const navigate = useNavigate()
+  const [isLoadingAuth, setIsLoadingAuth] = useState(true)
 
   const fetchUser = async () => {
    
@@ -40,6 +41,8 @@ export const AuthProvider = ({ children }) => {
       setUserName(null)
       setUserLastName(null)
       setUserRoles([])
+    } finally {
+      setIsLoadingAuth(false) 
     }
   }
   useEffect(() => {
@@ -71,7 +74,8 @@ export const AuthProvider = ({ children }) => {
         userLastName,
         userRoles,
         logOut,
-        fetchUser
+        fetchUser,
+        isLoadingAuth,
       }}
     >
       {children}

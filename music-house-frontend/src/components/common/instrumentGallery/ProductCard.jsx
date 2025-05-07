@@ -31,19 +31,11 @@ const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        justifyContent: 'space-between',
-        backgroundColor: 'background.paper',
         borderRadius: 4,
-        boxShadow: 'var(--box-shadow)',
-        padding: 2,
-        gap: 1,
         transition: 'all 0.3s ease',
-        position: 'relative',
-        overflow: 'hidden',
         '&:hover': {
           transform: 'translateY(-5px)',
-          boxShadow: 8,
-          backgroundColor: 'background.default'
+          boxShadow: 8
         },
         margin: 1
       }}
@@ -54,19 +46,15 @@ const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
           justifyContent: 'space-between',
           alignItems: 'center',
           height: 50,
-          width: '100%',
-          padding: 0
+          width: '100%'
         }}
         avatar={
-          <Avatar
-            sx={{ bgcolor: red[500], width: 30, height: 30 }}
-            aria-label="product"
-          >
+          <Avatar sx={{ bgcolor: red[500], width: 30, height: 30 }}>
             {name.charAt(0)}
           </Avatar>
         }
         action={
-          <IconButton aria-label="settings">
+          <IconButton>
             <MoreVertIcon />
           </IconButton>
         }
@@ -74,13 +62,13 @@ const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
 
       <CustomTooltip
         title={
-          <Typography sx={{fontSize: 20 }}>
+          <Typography sx={{ fontSize: 20 }}>
             <strong>✅ Más info</strong>
           </Typography>
         }
         placement="top"
       >
-       <Link to={`/instrument/${id}/${slug}`}>
+        <Link to={`/instrument/${id}/${slug}`}>
           <ImageWithLoader
             src={imageUrl}
             variant="circular"
@@ -93,32 +81,31 @@ const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
       {/* ✅ Título debajo de la imagen */}
       <Box
         sx={{
-          width: '110%',
+          width: '100%',
           minHeight: { xs: 40, sm: 60, md: 70 },
           display: 'flex',
           justifyContent: 'center',
           alignItems: 'center',
-          px: 2,
+
           borderRadius: 2,
-          boxShadow: 3,
+
           textAlign: 'center'
         }}
       >
         <Typography
-          variant="subtitle2"
           sx={{
             fontWeight: 400,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
             textOverflow: 'ellipsis',
             fontSize: {
-              xs: '0.5rem',   
-              sm: '0.6rem',   
-              md: '0.7rem',  
-              lg: '0.8rem',   
-              xl: '0.9rem'    
+              xs: '0.5rem',
+              sm: '0.6rem',
+              md: '0.7rem',
+              lg: '0.8rem',
+              xl: '0.9rem'
             },
-           
+
             fontStyle: 'italic'
           }}
         >
@@ -152,8 +139,7 @@ const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
               variant="subtitle2"
               sx={{
                 fontWeight: 600,
-                fontSize: { xs: '0.8rem', sm: '0.9rem' },
-                color: 'text.primary'
+                fontSize: { xs: '0.8rem', sm: '0.9rem' }
               }}
             >
               ${rentalPrice}

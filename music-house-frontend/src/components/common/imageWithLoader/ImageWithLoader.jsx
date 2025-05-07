@@ -1,12 +1,24 @@
 import PropTypes from 'prop-types'
 
-import { Box, CircularProgress, keyframes} from '@mui/material'
+import { Box, keyframes } from '@mui/material'
 import useImageLoader from '@/hook/useImageLoader'
-import LoadingText from '../loadingText/LoadingText'
+
 import { useState } from 'react'
 const fadeOut = keyframes`
-  0% { opacity: 1; }
+  0% { opacity: 1; visibility: visible; }
+  80% { opacity: 0.2; }
   100% { opacity: 0; visibility: hidden; }
+`
+const animatedGradient = keyframes`
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 `
 
 const ImageWithLoader = ({
@@ -19,7 +31,7 @@ const ImageWithLoader = ({
   borderRadius = '50%',
   fallbackSrc = '/src/assets/instrumento_general_03.jpg',
   delay = 10,
-  showText = false,
+
   onLoad = () => {},
   onError = () => {}
 }) => {
@@ -30,7 +42,7 @@ const ImageWithLoader = ({
     <Box
       sx={{
         width,
-        height,
+        height: height === 'auto' && !loaded ? '300px' : height,
         position: 'relative',
         overflow: 'hidden',
         borderRadius: variant === 'circular' ? '50%' : borderRadius
@@ -56,9 +68,9 @@ const ImageWithLoader = ({
           borderRadius: variant === 'circular' ? '50%' : borderRadius,
           border,
           boxShadow: 'var(--box-shadow)',
-          display: loaded ? 'block' : 'none',
+          opacity: loaded ? 1 : 0,
           transition: 'opacity 0.8s ease-in-out',
-          opacity: loaded ? 1 : 0
+          display: 'block'
         }}
       />
 
@@ -71,7 +83,8 @@ const ImageWithLoader = ({
           width: '100%',
           height: '100%',
           background:
-            'linear-gradient(135deg, rgba(30, 30, 30, 0.74), rgba(45, 45, 45, 0.67))',
+            'linear-gradient(135deg, rgba(0, 0, 0, 0.4), rgba(54, 52, 52, 0.52))',
+          backgroundSize: '200% 200%',
           backdropFilter: 'blur(4px)',
           display: 'flex',
           flexDirection: 'column',
@@ -79,18 +92,11 @@ const ImageWithLoader = ({
           justifyContent: 'center',
           borderRadius: variant === 'circular' ? '50%' : borderRadius,
           zIndex: 2,
-          animation: loaded ? `${fadeOut} 1s ease-out forwards` : 'none'
+          animation: loaded
+            ? `${fadeOut} 1s ease-out forwards`
+            : `${animatedGradient} 6s ease-in-out infinite`
         }}
-      >
-        <Box sx={{ mb: 1 }}>
-          <CircularProgress
-            size={40}
-            thickness={1}
-            sx={{ color: 'var(--color-primario)' }}
-          />
-        </Box>
-        {showText && <LoadingText text="Cargando imagen" />}
-      </Box>
+      />
     </Box>
   )
 }

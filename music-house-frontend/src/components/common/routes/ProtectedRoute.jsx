@@ -3,10 +3,14 @@ import PropTypes from 'prop-types'
 import { useAuth } from '@/hook/useAuth'
 import { ROLE_ADMIN, ROLE_USER } from '@/components/utils/roles/constants'
 
-export const ProtectedRoute = ({ redirectPath = '/autentificacion', role, children }) => {
-  const { authGlobal, isUserAdmin, isUser} = useAuth()
+import AuthLoadingSplash from '../loader/AuthLoadingSplash'
+
+export const ProtectedRoute = ({ redirectPath = '/autentificacion', role, children}) => {
+  const { authGlobal, isUserAdmin, isUser,isLoadingAuth } = useAuth()
   
- 
+  if (isLoadingAuth) {
+    return <AuthLoadingSplash delay={12000} />
+  }
   if (!authGlobal) {
     return <Navigate to={redirectPath} replace />
   }
@@ -26,5 +30,6 @@ export const ProtectedRoute = ({ redirectPath = '/autentificacion', role, childr
 ProtectedRoute.propTypes = {
   redirectPath: PropTypes.string,
   role: PropTypes.string,
-  children: PropTypes.node
+  children: PropTypes.node,
+  isLoadingAuth:PropTypes.bool
 }

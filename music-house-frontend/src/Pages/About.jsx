@@ -39,12 +39,14 @@ export const About = () => {
           sx={{
             display: 'flex',
             flexDirection: 'column',
-        
+
             gap: 1
           }}
         >
           <Box>
-            <TitleResponsive  sx={{ color: 'var(--color-primario)' }}>🎶 Bienvenido a Music House</TitleResponsive>
+            <TitleResponsive sx={{ color: 'var(--color-primario)' }}>
+              🎶 Bienvenido a Music House
+            </TitleResponsive>
             <ParagraphResponsive sx={{ color: 'var(--color-primario)' }}>
               Donde cada nota cobra vida. Nos dedicamos a ofrecer experiencias
               musicales auténticas a través del alquiler de instrumentos de alta
@@ -54,7 +56,7 @@ export const About = () => {
           </Box>
 
           <Box>
-            <CustomTypography >
+            <CustomTypography>
               <TitleResponsive>🎸 Nuestra Propuesta</TitleResponsive>
             </CustomTypography>
 
@@ -93,7 +95,8 @@ export const About = () => {
                 marginX: 'auto',
                 borderRadius: 2,
                 overflow: 'hidden',
-                boxShadow: 3
+                zIndex: 0,
+                minHeight: 300
               }}
             >
               <ImageWithLoader
@@ -101,7 +104,7 @@ export const About = () => {
                 alt="Músicos en escena"
                 variant="rectangular"
                 width="100%"
-                height="auto"
+                height={{ xs: 250, sm: 300, md: 350, lg: 400 }}
                 borderRadius="0.5rem"
               />
             </Box>

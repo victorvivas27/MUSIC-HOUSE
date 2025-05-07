@@ -265,16 +265,7 @@ export const MainWrapper = styled(Box)(({ theme }) => ({
   }
 }))
 
-export const InstrumentDetailWrapper = styled(Box)(() => ({
-  display: 'flex',
-  justifyContent: 'center',
-  flexDirection: 'column',
-  alignItems: 'center',
-  width: '98vw',
-  margin: 'auto',
-  marginTop:400,
-  marginBottom: 100
-}))
+
 
 export const PageWrapper = styled(Grid)(({ theme }) => ({
   display: 'flex',

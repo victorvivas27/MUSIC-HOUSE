@@ -20,13 +20,13 @@ import { Loader } from '@/components/common/loader/Loader'
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore'
 import ExpandLessIcon from '@mui/icons-material/ExpandLess'
 import { CustomTooltip } from '@/components/common/customTooltip/CustomTooltip'
-import { Link } from 'react-router-dom'
+
 import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
 import {
   ParagraphResponsive,
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
-import { slugify } from '@/components/utils/slugify'
+
 import { useAppStates } from '@/components/utils/global.context'
 import { actions } from '@/components/utils/actions'
 
@@ -157,7 +157,7 @@ const MisReservas = () => {
           const end = new Date(reserva.endDate)
           const diffTime = Math.abs(end - start)
           const rentalDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24))
-          const slug = slugify(reserva.instrumentName)
+        
 
           return (
             <Grid item key={reserva.idReservation} xs={6} sm={4} md={3} lg={2}>
@@ -183,19 +183,8 @@ const MisReservas = () => {
                     margin: 1
                   }}
                 >
-                  <CustomTooltip
-                    title={
-                      <Typography sx={{ fontSize: 20 }}>
-                        <strong>✅Más info</strong>
-                      </Typography>
-                    }
-                     placement="top"
-                    
-                  >
-                    <Link
-                      to={`/instrument/${reserva.idInstrument}/${slug}`}
-                      style={{ textDecoration: 'none' }}
-                    >
+               
+                  
                       <ImageWithLoader
                         src={
                           reserva.imageUrl || '/images/default-placeholder.png'
@@ -204,8 +193,8 @@ const MisReservas = () => {
                         width={{ xs: 100, sm: 110, md: 120, lg: 130, xl: 140 }}
                         height={{ xs: 100, sm: 110, md: 120, lg: 130, xl: 140 }}
                       />
-                    </Link>
-                  </CustomTooltip>
+                    
+                 
                   {/* Mostrar leyenda si la reserva está cancelada */}
                   {reserva.cancelled && (
                     <Box
@@ -231,7 +220,7 @@ const MisReservas = () => {
                     <CustomTooltip
                      
                       title={
-                        <Typography sx={{ fontSize: 13}}>
+                        <Typography sx={{ fontSize: 15 }}>
                           <strong>❗Cancelar reserva (solo hasta 24h antes del inicio)</strong>
                         </Typography>
                       }

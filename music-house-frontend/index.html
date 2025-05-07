@@ -1,38 +1,128 @@
 <!doctype html>
-<html lang="en"> <!-- Define el idioma de la página como inglés -->
+<html lang="en">
 
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
 
-  <!-- Open Graph Meta Tags para WhatsApp, Facebook, etc -->
+  <!-- Open Graph -->
   <meta property="og:title" content="Music House - Alquiler de instrumentos musicales" />
   <meta property="og:description" content="Descubre y reserva instrumentos musicales en línea. ¡Explora nuestra colección!" />
   <meta property="og:image" content="https://music-house-78.s3.us-east-1.amazonaws.com/Leonardo_Phoenix_10_Modern_circular_music_logo_light_pastel_br_2.jpg" />
   <meta property="og:url" content="https://music-house-frontend.onrender.com/" />
   <meta property="og:type" content="website" />
 
-  <!-- Librería animate.css para animaciones en SweetAlert2 -->
+  <!-- Animate.css -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
-  <!-- Preconexión con Google Fonts -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-
-  <!-- Fuentes de Google -->
   <link href="https://fonts.googleapis.com/css2?family=Playpen+Sans:wght@100..800&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Winky+Sans:ital,wght@0,300..900;1,300..900&display=swap" rel="stylesheet">
 
   <!-- Favicon -->
   <link rel="icon" href="https://music-house-78.s3.us-east-1.amazonaws.com/Leonardo_Phoenix_10_Modern_circular_music_logo_light_pastel_br_2.jpg" type="image/x-icon" />
+
+  <!-- 🎨 Estilos globales -->
+  <style>
+    :root {
+      --color-primario: #FBC02D;
+      --background-image: url('https://music-house-78.s3.us-east-1.amazonaws.com/Leonardo_Phoenix_10_Highresolution_wideangle_photo_of_a_stylis_0.jpg');
+    }
+  
+    #global-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: var(--background-image);
+      background-size: cover;
+      background-position: center;
+      animation: fadeIn 0.3s ease-in-out;
+    }
+  
+    .loader-overlay {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.61); /* igual al body::after */
+      z-index: 1;
+    }
+  
+    .spinner {
+      width: 60px;
+      height: 60px;
+      border: 6px solid rgba(255, 255, 255, 0.2);
+      border-top-color: var(--color-primario);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      z-index: 2;
+    }
+  
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  
+    .fade-out-soft {
+      animation: desaparecerSuave 1s ease-in forwards;
+    }
+  
+    @keyframes desaparecerSuave {
+      0% {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+      30% {
+        opacity: 0.9;
+        transform: translateY(4px) scale(0.98);
+      }
+      60% {
+        opacity: 0.7;
+        transform: translateY(6px) scale(0.96);
+      }
+      80% {
+        opacity: 0.3;
+        transform: translateY(8px) scale(0.95);
+      }
+      100% {
+        opacity: 0;
+        transform: translateY(10px) scale(0.93);
+      }
+    }
+  </style>
 
   <title>Music House</title>
 </head>
 
 <body>
-  <div id="root"></div> <!-- Contenedor principal donde React renderiza la aplicación -->
+  <!-- ⏳ Loader visual al iniciar -->
+  <div id="global-loader">
+    <div class="loader-overlay"></div>
+    <div class="spinner"></div>
+  </div>
 
-  <!-- 📌 Importa el archivo principal de JavaScript que inicia la aplicación en React -->
+  <!-- Contenedor React -->
+  <div id="root"></div>
+
+  <!-- Script para ocultar loader al cargar -->
+  <script>
+    window.addEventListener('DOMContentLoaded', () => {
+      const loader = document.getElementById('global-loader')
+      if (loader) {
+        setTimeout(() => {
+          loader.classList.add('fade-out-soft')
+          setTimeout(() => {
+            loader.style.display = 'none'
+          }, 800) // coincide con duración de fade-out
+        }, 600)
+      }
+    })
+  </script>
+
+  <!-- React app -->
   <script type="module" src="/src/main.jsx"></script>
 </body>
 

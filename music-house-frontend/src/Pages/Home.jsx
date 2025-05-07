@@ -13,34 +13,37 @@ import AutoScrollCarousel from '@/components/common/autoScrollCarousel/AutoScrol
 import ProductCard from '@/components/common/instrumentGallery/ProductCard'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import useAlert from '@/hook/useAlert'
+import SmartLoader from '@/components/common/smartLoader/SmartLoader'
 
 export const Home = () => {
   const { state, dispatch } = useAppStates()
   const { showError } = useAlert()
   const [page, setPage] = useState(0)
   const [pageSize] = useState(5)
-
+  const [isFetchingMore, setIsFetchingMore] = useState(false)
   const observer = useRef()
   const lastElementRef = useCallback(
     (node) => {
-      if (state.loading) return
+      if (isFetchingMore) return
       if (observer.current) observer.current.disconnect()
+
       observer.current = new IntersectionObserver((entries) => {
         if (
           entries[0].isIntersecting &&
           state.instruments?.content?.length < state.instruments?.totalElements
         ) {
-          setPage((prevPage) => prevPage + 1)
+          setPage((prev) => prev + 1)
         }
       })
+
       if (node) observer.current.observe(node)
     },
-    [state.loading, state.instruments]
+    [isFetchingMore, state.instruments]
   )
 
   useEffect(() => {
     const fetchData = async () => {
-      dispatch({ type: actions.SET_LOADING, payload: true })
+      if (page > 0) setIsFetchingMore(true)
 
       try {
         const instrumentsRes = await getInstruments(page, pageSize)
@@ -59,7 +62,7 @@ export const Home = () => {
       } catch (error) {
         showError(`❌ ${getErrorMessage(error)}`)
       } finally {
-        dispatch({ type: actions.SET_LOADING, payload: false })
+        setIsFetchingMore(false)
       }
     }
 
@@ -70,9 +73,14 @@ export const Home = () => {
 
   return (
     <>
-      {state.loading && page === 0 && (
-        <Loader title="Un momento por favor" />
+      {page === 0 && (
+        <SmartLoader
+          title="Un momento por favor"
+          storageKey="hasVisitedHome"
+          
+        />
       )}
+
       <MainWrapper>
         <AutoScrollCarousel themes={state.themes?.content || []} />
       </MainWrapper>
@@ -99,10 +107,14 @@ export const Home = () => {
         {/* Observador para scroll infinito */}
         <div ref={lastElementRef} style={{ height: '1px' }} />
 
-        {/* Loader al final al hacer scroll */}
-        {state.loading && page > 0 && (
+        {isFetchingMore && page > 0 && (
           <div style={{ textAlign: 'center', padding: '1rem' }}>
-            <Loader title="Cargando más instrumentos..." fullSize={false} />
+            <Loader
+              title="Cargando más instrumentos..."
+              fullSize={false}
+              overlayColor="transparent"
+              blur="0"
+            />
           </div>
         )}
       </ProductsWrapper>
