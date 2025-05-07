@@ -137,7 +137,7 @@ export const Header = () => {
                     textTransform: 'uppercase',
                     backgroundColor: 'var(--color-secundario)',
                     color: 'var(--color-primario)',
-                    boxShadow: 'var(--box-shadow)',
+                  
                     border: '2px solid var(--color-primario)'
                   }}
                 >
@@ -148,17 +148,17 @@ export const Header = () => {
               ) : (
                 <Box
                   sx={{
-                    width: '3rem',
-                    height: '3rem',
+                    width: '2.5rem',
+                    height: '2.5rem',
                     backgroundColor: 'var(--color-primario)',
-                    borderRadius: '0.4rem',
+                    borderRadius: '0.3rem',
                     display: 'flex',
                     alignItems: 'center',
                     justifyContent: 'center',
-                    boxShadow: 'var(--box-shadow)'
+                  
                   }}
                 >
-                  <MenuIcon sx={{ fontSize: '2rem', color: 'white' }} />
+                  <MenuIcon sx={{ fontSize: '2.5rem', color: 'var( --color-secundario)' }} />
                 </Box>
               )}
             </IconButton>
@@ -180,7 +180,7 @@ export const Header = () => {
               hideBackdrop
               sx={{
                 '& .MuiPaper-root': {
-                  width: '200px',
+                 
                   backgroundColor: 'var(--color-secundario-80)',
                   borderRadius: '1rem',
                   padding: '0.5rem',
@@ -226,7 +226,7 @@ export const Header = () => {
                 <Box>
                   <Divider
                     sx={{
-                      width: '80%',
+                      width: '90%',
                       marginLeft: 'auto',
                       marginRight: 'auto'
                     }}
@@ -253,7 +253,7 @@ export const Header = () => {
                 <Box>
                   <Divider
                     sx={{
-                      width: '80%',
+                      width: '90%',
                       marginLeft: 'auto',
                       marginRight: 'auto'
                     }}
@@ -299,7 +299,7 @@ export const Header = () => {
                       display: 'flex',
                       alignItems: 'center',
                       borderRadius: '8px',
-                      border: '2px solid',
+                      border: '2px solid red',
                       borderColor: isActive ? 'primary.main' : 'transparent',
                       backgroundColor: isActive
                         ? 'var(--background-claro)'
