@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Loader } from '@/components/common/loader/Loader'
+import PropTypes from 'prop-types'
 
 const AuthLoadingSplash = ({ delay = 1000 }) => {
   const [show, setShow] = useState(true)
@@ -21,6 +22,10 @@ const AuthLoadingSplash = ({ delay = 1000 }) => {
       blur="5px"
     />
   )
+}
+AuthLoadingSplash.propTypes = {
+  delay: PropTypes.number,
+ 
 }
 
 export default AuthLoadingSplash
