@@ -6,6 +6,7 @@ export const UpperStyledToolbar = styled(Toolbar)(({ theme }) => ({
   flexDirection: 'row-reverse',
   paddingTop: theme.spacing(1),
   paddingBottom: theme.spacing(1),
+  
 
   [theme.breakpoints.up('md')]: {
     flexDirection: 'row'

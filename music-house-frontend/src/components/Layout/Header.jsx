@@ -21,7 +21,7 @@ import {
   LowerStyledToolbar
 } from './StyledToolbar'
 import { Logo } from '../Images/Logo'
-import { LogoWrapper } from './LogoWrapper'
+
 import { MenuWrapper, MenuUserWrapper } from './MenuWrapper'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useHeaderVisibility } from '../utils/context/HeaderVisibilityGlobal'
@@ -30,6 +30,7 @@ import AssignmentIndRoundedIcon from '@mui/icons-material/AssignmentIndRounded'
 import background from '../../assets/background.svg'
 import { useAuth } from '../../hook/useAuth'
 import { pagesDesktop, pagesMobile } from './NavBar'
+import { ContainerLogo } from '../styles/ResponsiveComponents'
 
 export const Header = () => {
   const [prevScroll, setPrevScroll] = useState(0)
@@ -324,9 +325,9 @@ export const Header = () => {
             })}
           </Box>
           <Link to="/">
-            <LogoWrapper variant="h5" noWrap>
+            <ContainerLogo >
               <Logo />
-            </LogoWrapper>
+            </ContainerLogo>
           </Link>
         </UpperStyledToolbar>
         <MiddleStyledToolbar

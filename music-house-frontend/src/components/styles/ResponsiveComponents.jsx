@@ -126,9 +126,10 @@ export const TitleResponsive = styled(Typography, {
 export const ContainerLogo = styled(Box, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
-  height: 'auto',
+ 
   width: 50,
   margin: 12,
+ 
 
   [theme.breakpoints.up('sm')]: {
     width: 60
@@ -140,7 +141,7 @@ export const ContainerLogo = styled(Box, {
     width: 80
   },
   [theme.breakpoints.up('xl')]: {
-    width: 90
+    width:170
   },
 
   ...sx

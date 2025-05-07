@@ -31,7 +31,7 @@ export const HeaderWrapper = styled(AppBar, {
     height: '4rem'
   },
 
-  height: height || 160, // valor base
+  height: height || 160, 
   [theme.breakpoints.up('sm')]: {
     height: height || 200
   },
