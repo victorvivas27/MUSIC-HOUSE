@@ -3,7 +3,7 @@
   /* 🖌️ 🎨 Colores */
   /* 🎯 Colores base */
   --color-primario: #FBC02D;         /* Amarillo vibrante */
-  --color-secundario: #5C5C5C;       /* Gris oscuro neutro */
+  --color-secundario: #00a3c8;       /* Gris oscuro neutro */
 
   /* 🟡 Estados activos y variantes */
   --color-primario-hover: #FFD700;   /* Amarillo más claro (hover) */
@@ -282,3 +282,21 @@ body::after {
   }
 }
 
+@keyframes text-focus-in {
+  0% {
+    filter: blur(12px);
+    opacity: 0;
+  }
+  100% {
+    filter: blur(0px);
+    opacity: 1;
+  }
+}
+
+.text-focus-in {
+  animation: text-focus-in 1s ease-out 0.5s both;
+}
+
+.MuiRating-root {
+  width: 100% !important;
+}

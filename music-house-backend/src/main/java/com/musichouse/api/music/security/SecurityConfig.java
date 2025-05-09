@@ -148,6 +148,13 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.GET, "/api/privacy-policy/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/privacy-policy/**").hasRole(RoleConstants.ADMIN)
 
+                        /**
+                         * Feedback del usuario
+                         *
+                         */
+                        .requestMatchers(HttpMethod.GET, "/api/feedback/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/feedback/**").hasRole(RoleConstants.USER)
+
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

@@ -71,56 +71,48 @@ export const ContainerForm = styled(Grid, {
   padding: theme.spacing(1),
   borderRadius: '16px',
   backgroundColor: 'var( --background-claro)',
-[theme.breakpoints.up('sm')]: {
+  [theme.breakpoints.up('sm')]: {
     width: '95vw',
     height: '50vh',
-    marginBottom:10
+    marginBottom: 10
   },
   [theme.breakpoints.up('md')]: {
     width: '68vw',
     height: '50vh',
-    marginBottom:10
+    marginBottom: 10
   },
   [theme.breakpoints.up('lg')]: {
     width: '60vw',
     height: '50vh',
-    marginBottom:10
+    marginBottom: 10
   },
   [theme.breakpoints.up('xl')]: {
     width: '50vw',
     height: '50vh',
-    marginBottom:10
+    marginBottom: 10
   },
 
   ...sx
 }))
 
-export const TitleResponsive = styled(Typography, {
-  shouldForwardProp: (prop) => prop !== 'sx'
-})(({ theme, sx = {} }) => ({
-  color: 'var( --color-primario)',
-  textShadow: '0 4px 4px var( --texto-primario)',
+export const TitleResponsive = styled(Typography)(({ theme }) => ({
+  color: 'var(--color-primario)',
+  textShadow: '0 4px 4px var(--texto-primario)',
   fontWeight: 350,
   fontSize: '1rem',
 
   [theme.breakpoints.up('sm')]: {
-    fontWeight: 350,
     fontSize: '1.1rem'
   },
   [theme.breakpoints.up('md')]: {
-    fontWeight: 400,
     fontSize: '1.2rem'
   },
   [theme.breakpoints.up('lg')]: {
-    fontWeight: 450,
     fontSize: '1.4rem'
   },
   [theme.breakpoints.up('xl')]: {
-    fontWeight: 500,
     fontSize: '2rem'
-  },
-
-  ...sx
+  }
 }))
 
 export const ContainerLogo = styled(Box, {
@@ -248,8 +240,7 @@ export const MainWrapper = styled(Box)(({ theme }) => ({
   width: '100vw',
   marginBottom: 150,
 
- 
-  marginTop: 180, 
+  marginTop: 180,
 
   [theme.breakpoints.up('sm')]: {
     marginTop: 220
@@ -264,8 +255,6 @@ export const MainWrapper = styled(Box)(({ theme }) => ({
     marginTop: 340
   }
 }))
-
-
 
 export const PageWrapper = styled(Grid)(({ theme }) => ({
   display: 'flex',

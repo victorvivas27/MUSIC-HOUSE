@@ -18,6 +18,7 @@ import { flexRowContainer } from '../styles/styleglobal'
 
 
 export const Footer = () => {
+ 
   return (
     <Box
       component="footer"
@@ -32,14 +33,13 @@ export const Footer = () => {
         mt: 6
       }}
     >
-      
       <Box
         sx={{
           borderTop: '1px solid var( --texto-secundario)',
           display: 'flex',
           flexDirection: { xs: 'column', md: 'row' },
           ...flexRowContainer,
-          justifyContent:'space-evenly',
+          justifyContent: 'space-evenly',
           margin: 'auto',
           gap: 4
         }}
@@ -109,6 +109,8 @@ export const Footer = () => {
             </Button>
           </Stack>
         </Box>
+
+       
       </Box>
 
       {/* Copyright */}

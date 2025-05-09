@@ -20,6 +20,7 @@ import FavoriteIcon from '../favorito/FavoriteIcon'
 import ImageWithLoader from '../imageWithLoader/ImageWithLoader'
 import { slugify } from '@/components/utils/slugify'
 
+
 const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
   const { isUser } = useAuth()
   const slug = slugify(name)
@@ -147,6 +148,7 @@ const ProductCard = ({ name, imageUrl, id, rentalPrice }) => {
           </>
         )}
       </CardActions>
+     
     </Card>
   )
 }

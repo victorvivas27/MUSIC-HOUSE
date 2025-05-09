@@ -151,4 +151,10 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ApiResponse<Void>> handleBusinessRuleException(BusinessRuleException e) {
         return buildResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
+
+    // 🔹 Feedback User
+    @ExceptionHandler(FeedbackAlreadyExistsException.class)
+    public ResponseEntity<ApiResponse<Void>> feedbackAlreadyExistsException(FeedbackAlreadyExistsException e) {
+        return buildResponse(HttpStatus.CONFLICT, e.getMessage());
+    }
 }
