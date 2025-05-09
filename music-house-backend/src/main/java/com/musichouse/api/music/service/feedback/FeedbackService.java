@@ -4,6 +4,7 @@ import com.musichouse.api.music.dto.dto_entrance.FeedbackDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.FeedbackDtoExit;
 import com.musichouse.api.music.entity.Feedback;
 import com.musichouse.api.music.entity.User;
+import com.musichouse.api.music.exception.CategoryAssociatedException;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.repository.FeedbackRepository;
 import com.musichouse.api.music.service.userAdmin.UserValidator;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -33,9 +36,10 @@ public class FeedbackService {
 
         String email = authentication.getName();
 
+
         User user = userValidator.validateUserExistsByEmail(email);
 
-        feedbackValidator.feedbackExistByUser(user);
+        //feedbackValidator.feedbackExistByUser(user);
 
         Feedback feedback = feedbackBuilder.fromDto(feedbackDtoEntrance, user);
 
@@ -51,4 +55,13 @@ public class FeedbackService {
         return feedbackPage.map(feedbackBuilder::fromDtoExit);
     }
 
+
+    @CacheEvict(value = "feedbacks", allEntries = true)
+    public void deleteFeedback(UUID idFeedback)
+            throws ResourceNotFoundException, CategoryAssociatedException {
+
+        Feedback feedbackToDelete = feedbackValidator.validateFeedbackId(idFeedback);
+
+        feedbackRepository.deleteById(idFeedback);
+    }
 }

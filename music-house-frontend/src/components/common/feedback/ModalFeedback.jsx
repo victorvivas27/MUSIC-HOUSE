@@ -6,18 +6,31 @@ import {
   Button,
   TextField,
   Box,
-  Typography
+  Typography,
+  CircularProgress
 } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 import PropTypes from 'prop-types'
 import { submitFeedback } from '@/api/feedback'
 import { useState } from 'react'
-import { toast } from 'react-toastify'
 import StarIcon from '@mui/icons-material/Star'
 import StarBorderIcon from '@mui/icons-material/StarBorder'
-const ModalFeedback = ({ open, onClose }) => {
+import { getErrorMessage } from '@/api/getErrorMessage'
+import useAlert from '@/hook/useAlert'
+import {
+  ContainerBottom,
+  CustomButton
+} from '@/components/styles/ResponsiveComponents'
+import LoadingText from '../loadingText/LoadingText'
+import { useAppStates } from '@/components/utils/global.context'
+import { actions } from '@/components/utils/actions'
+
+const ModalFeedback = ({ open, onClose, onSubmitSuccess }) => {
   const [submitting, setSubmitting] = useState(false)
+  const { showSuccess, showError } = useAlert()
+  const [loading, setLoading] = useState(false)
+  const { dispatch } = useAppStates()
 
   const formik = useFormik({
     initialValues: {
@@ -36,13 +49,20 @@ const ModalFeedback = ({ open, onClose }) => {
     onSubmit: async (values) => {
       try {
         setSubmitting(true)
-        await submitFeedback(values)
-        toast.success('¡Gracias por tu opinión!')
+        setLoading(true)
+        const response = await submitFeedback(values)
+        if (response?.result) {
+          dispatch({ type: actions.APPEND_FEEDBACK, payload: response.result })
+        }
+        showSuccess(`✅ ${response.message}`)
+        onSubmitSuccess?.()
         onClose()
-      } catch (err) {
-        toast.error('Hubo un error al enviar tu feedback')
+      } catch (error) {
+        showError(`❌ ${getErrorMessage(error)}`)
+        setLoading(false)
       } finally {
         setSubmitting(false)
+        setLoading(false)
       }
     }
   })
@@ -205,20 +225,21 @@ const ModalFeedback = ({ open, onClose }) => {
         >
           Cancelar
         </Button>
-        <Button
-          onClick={formik.handleSubmit}
-          disabled={submitting || !formik.isValid}
-          variant="contained"
-          color="primary"
-          sx={{
-            textTransform: 'none',
-            px: 3,
-            borderRadius: '8px',
-            fontWeight: 600
-          }}
-        >
-          {submitting ? 'Enviando...' : 'Enviar feedback'}
-        </Button>
+        <ContainerBottom>
+          <CustomButton disabled={loading} onClick={formik.handleSubmit}>
+            {loading ? (
+              <>
+                <LoadingText text={'Enviando opinion'} />
+                <CircularProgress
+                  size={30}
+                  sx={{ ml: 1, color: 'var(--color-info)' }}
+                />
+              </>
+            ) : (
+              'Enviar opinion '
+            )}
+          </CustomButton>
+        </ContainerBottom>
       </DialogActions>
     </Dialog>
   )
@@ -226,7 +247,8 @@ const ModalFeedback = ({ open, onClose }) => {
 
 ModalFeedback.propTypes = {
   open: PropTypes.bool.isRequired,
-  onClose: PropTypes.func.isRequired
+  onClose: PropTypes.func.isRequired,
+  onSubmitSuccess: PropTypes.func
 }
 
 export default ModalFeedback

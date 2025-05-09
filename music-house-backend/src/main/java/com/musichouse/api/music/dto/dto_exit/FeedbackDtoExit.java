@@ -15,7 +15,7 @@ import java.util.UUID;
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class FeedbackDtoExit {
 
-    private String idFeedback;
+    private UUID idFeedback;
 
     private int rating;
 

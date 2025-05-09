@@ -10,7 +10,7 @@ import PropTypes from 'prop-types'
 const initialState = {
   favorites: [],
   loading: false,
- characteristics: [
+  characteristics: [
     { name: 'Estuche', image: instrumentCase, id: 'instrumentCase' },
     { name: 'Soporte', image: support, id: 'support' },
     { name: 'Afinador', image: tuner, id: 'tuner' },
@@ -24,7 +24,8 @@ const initialState = {
   themes: { content: [], totalElements: 0 },
   users: { content: [], totalElements: 0 },
   instruments: { content: [], totalElements: 0 },
-  reservas:{ content: [], totalElements: 0 }
+  reservas: { content: [], totalElements: 0 },
+  feedbacks: { content: [], totalElements: 0 }
 }
 
 const ContextGlobal = createContext()
@@ -109,16 +110,37 @@ const appReducer = (state, action) => {
         ...state,
         users: action.payload
       }
-      case actions.UPDATE_RESERVATION:
-        return {
-          ...state,
-          reservas: action.payload?.content
-            ? action.payload
-            : {
-                content: Array.isArray(action.payload) ? action.payload : [],
-                totalElements: 0
-              }
+    case actions.UPDATE_RESERVATION:
+      return {
+        ...state,
+        reservas: action.payload?.content
+          ? action.payload
+          : {
+              content: Array.isArray(action.payload) ? action.payload : [],
+              totalElements: 0
+            }
+      }
+
+    case actions.SET_FEEDBACKS:
+      return {
+        ...state,
+        feedbacks: action.payload?.content
+          ? action.payload
+          : {
+              content: Array.isArray(action.payload) ? action.payload : [],
+              totalElements: 0
+            }
+      }
+
+    case actions.APPEND_FEEDBACK:
+      return {
+        ...state,
+        feedbacks: {
+          ...state.feedbacks,
+          content: [action.payload, ...(state.feedbacks?.content || [])],
+          totalElements: (state.feedbacks?.totalElements || 0) + 1
         }
+      }
 
     default:
       return state

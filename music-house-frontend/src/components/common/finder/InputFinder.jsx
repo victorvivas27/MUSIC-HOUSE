@@ -34,13 +34,14 @@ export const InputFinder = ({ value, setValue, onKeyUp, onKeyDown, inputRef, col
         display: 'flex',
         height: '2.5rem',
         backgroundColor: expanded ? 'var(--color-secundario-80)' : 'var(--color-secundario-50)',
-        border:"1px solid var(--texto-primario)",
+        border:"1px solid var(--color-primario)",
         borderRadius: '30px',
         overflow: 'hidden',
         padding: expanded ? '0 10px' : '0',
         boxShadow: expanded ? '0 0 8px 2px var(--color-primario)' : 'none',
         transition: 'all 0.4s ease',
         width: expanded ? { xs: '280px', md: '450px' } : '60px',
+        
       }}
     >
       <IconButton
@@ -66,6 +67,7 @@ export const InputFinder = ({ value, setValue, onKeyUp, onKeyDown, inputRef, col
           flex: 1,
           opacity: expanded ? 1 : 0,
           transition: 'opacity 0.3s ease',
+           color: 'var(--color-primario)',
         }}
       />
     </Box>

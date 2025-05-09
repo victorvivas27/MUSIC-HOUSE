@@ -15,6 +15,7 @@ import {
 import imageAbout from '@/components/Images/image_about.png'
 import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
 
+
 const CustomTypography = styled(Typography)(({ theme, bgColor }) => ({
   padding: '1rem 1rem',
   fontWeight: 'bold',
@@ -132,6 +133,8 @@ export const About = () => {
           </Box>
         </Container>
       </MainWrapper>
+
+      
     </main>
   )
 }

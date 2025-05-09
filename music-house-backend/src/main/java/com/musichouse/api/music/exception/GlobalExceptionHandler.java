@@ -52,44 +52,49 @@ public class GlobalExceptionHandler {
                 .body(ApiResponse.<Map<String, String>>builder()
                         .status(HttpStatus.BAD_REQUEST)
                         .statusCode(HttpStatus.BAD_REQUEST.value())
-                        .message("Error de validación")
-                        .error("Se encontraron errores en los datos enviados")
+                        .message("Algunos campos tienen errores")
+                        .error("Revisá los campos resaltados y corregí los datos ingresados")
                         .result(errors)
                         .build());
     }
 
+    // 🔹 Error al mapear datos JSON (estructura incorrecta)
     @ExceptionHandler(JsonMappingException.class)
     public ResponseEntity<ApiResponse<Void>> handleJsonMappingException(JsonMappingException e) {
-        return buildResponse(HttpStatus.BAD_REQUEST, "Error de mapeo de JSON: " + e.getOriginalMessage());
+        return buildResponse(HttpStatus.BAD_REQUEST,
+                "No se pudo interpretar la información enviada: " + e.getOriginalMessage());
     }
 
-
+    // 🔹 Error al leer el cuerpo de la solicitud (por formato inválido)
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiResponse<Void>> handleHttpMessageNotReadable(HttpMessageNotReadableException ex) {
         Throwable cause = ex.getCause();
 
         if (cause instanceof InvalidFormatException invalidFormatException) {
             String field = invalidFormatException.getPath().isEmpty()
-                    ? "desconocido"
+                    ? "campo desconocido"
                     : invalidFormatException.getPath().get(0).getFieldName();
 
             String errorMsg = invalidFormatException.getOriginalMessage() != null
                     ? invalidFormatException.getOriginalMessage()
-                    : "Formato inválido";
+                    : "El valor enviado no coincide con el formato esperado";
 
             return buildResponse(
                     HttpStatus.BAD_REQUEST,
-                    "Dato inválido en el campo '" + field + "': " + errorMsg
+                    "Formato inválido en el campo '" + field + "': " + errorMsg
             );
         }
 
-        return buildResponse(HttpStatus.BAD_REQUEST, "Error de lectura del cuerpo de la solicitud.");
+        return buildResponse(HttpStatus.BAD_REQUEST,
+                "No se pudo leer el cuerpo de la solicitud. Verificá que los datos enviados sean correctos.");
     }
 
-    // 🔹 Manejo de excepciones generales
+    // 🔹 Manejo de errores inesperados
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiResponse<Void>> handleGeneralException(Exception e) {
-        String errorMessage = e.getMessage() != null ? e.getMessage() : "Error interno desconocido";
+        String errorMessage = e.getMessage() != null
+                ? e.getMessage()
+                : "Ocurrió un error inesperado. Por favor, intentá más tarde.";
         return buildResponse(HttpStatus.INTERNAL_SERVER_ERROR, errorMessage);
     }
 

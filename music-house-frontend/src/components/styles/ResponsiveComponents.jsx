@@ -141,8 +141,8 @@ export const ContainerLogo = styled(Box, {
 export const ParagraphResponsive = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
-  fontWeight: 300,
-  fontSize: '0.7rem',
+  fontWeight: 400,
+  fontSize: '0.9rem',
   fontStyle: 'italic',
   wordWrap: 'break-word',
   overflowWrap: 'break-word',
@@ -153,16 +153,16 @@ export const ParagraphResponsive = styled(Typography, {
   textOverflow: 'ellipsis',
 
   [theme.breakpoints.up('sm')]: {
-    fontSize: '0.7rem'
-  },
-  [theme.breakpoints.up('md')]: {
     fontSize: '0.8rem'
   },
-  [theme.breakpoints.up('lg')]: {
+  [theme.breakpoints.up('md')]: {
     fontSize: '0.9rem'
   },
+  [theme.breakpoints.up('lg')]: {
+    fontSize: '1.1rem'
+  },
   [theme.breakpoints.up('xl')]: {
-    fontSize: '1rem'
+    fontSize: '1.2rem'
   },
 
   ...sx

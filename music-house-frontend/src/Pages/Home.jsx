@@ -15,8 +15,8 @@ import { getErrorMessage } from '@/api/getErrorMessage'
 import useAlert from '@/hook/useAlert'
 import SmartLoader from '@/components/common/smartLoader/SmartLoader'
 import Feedback from './Feedback'
-import { Button } from '@mui/material'
 import ModalFeedback from '@/components/common/feedback/ModalFeedback'
+import { useLocation } from 'react-router-dom'
 
 export const Home = () => {
   const { state, dispatch } = useAppStates()
@@ -24,9 +24,12 @@ export const Home = () => {
   const [page, setPage] = useState(0)
   const [pageSize] = useState(5)
   const [isFetchingMore, setIsFetchingMore] = useState(false)
-   const [open, setOpen] = useState(false)
-   const [hasClosedModal, setHasClosedModal] = useState(false)
-   const delayTimeoutRef = useRef(null)
+  const [open, setOpen] = useState(false)
+  const [hasClosedModal, setHasClosedModal] = useState(false)
+  const [hasSentFeedback, setHasSentFeedback] = useState(
+    localStorage.getItem('hasSentFeedback') === 'true'
+  )
+  const delayTimeoutRef = useRef(null)
   const observer = useRef()
   const lastElementRef = useCallback(
     (node) => {
@@ -77,52 +80,73 @@ export const Home = () => {
 
   const instruments = state.instruments?.content || []
 
-useEffect(() => {
-  const handleScroll = () => {
-    const reachedBottom =
-      window.innerHeight + window.scrollY >= document.body.offsetHeight - 50
+  useEffect(() => {
+    const handleScroll = () => {
+      const reachedBottom =
+        window.innerHeight + window.scrollY >= document.body.offsetHeight - 50
 
-    if (reachedBottom && !open && !hasClosedModal && !delayTimeoutRef.current) {
-      // esperamos 2 segundos antes de abrir
-      delayTimeoutRef.current = setTimeout(() => {
-        setOpen(true)
+      if (
+        reachedBottom &&
+        !open &&
+        !hasClosedModal &&
+        !hasSentFeedback &&
+        !delayTimeoutRef.current
+      ) {
+        delayTimeoutRef.current = setTimeout(() => {
+          setOpen(true)
+          delayTimeoutRef.current = null
+        }, 2000)
+      }
+
+      // si sube antes del tiempo, cancelamos el delay
+      if (!reachedBottom && delayTimeoutRef.current) {
+        clearTimeout(delayTimeoutRef.current)
         delayTimeoutRef.current = null
-      }, 2000)
+      }
+
+      // si sube al top, reseteamos
+      if (window.scrollY < 50 && hasClosedModal) {
+        setHasClosedModal(false)
+      }
     }
 
-    // si sube antes del tiempo, cancelamos el delay
-    if (!reachedBottom && delayTimeoutRef.current) {
-      clearTimeout(delayTimeoutRef.current)
-      delayTimeoutRef.current = null
+    window.addEventListener('scroll', handleScroll)
+    return () => {
+      window.removeEventListener('scroll', handleScroll)
+      if (delayTimeoutRef.current) clearTimeout(delayTimeoutRef.current)
     }
+  }, [open, hasClosedModal])
 
-    // si sube al top, reseteamos
-    if (window.scrollY < 50 && hasClosedModal) {
-      setHasClosedModal(false)
+ 
+
+  const handleCloseModal = (hasSubmitted = false) => {
+    setOpen(false)
+    if (hasSubmitted) {
+      setHasSentFeedback(true)
+      localStorage.setItem('hasSentFeedback', 'true')
+    } else {
+      setHasClosedModal(true)
     }
-  }
-
-  window.addEventListener('scroll', handleScroll)
-  return () => {
-    window.removeEventListener('scroll', handleScroll)
     if (delayTimeoutRef.current) clearTimeout(delayTimeoutRef.current)
   }
-}, [open, hasClosedModal])
 
-const handleCloseModal = () => {
-  setOpen(false)
-  setHasClosedModal(true)
-  if (delayTimeoutRef.current) clearTimeout(delayTimeoutRef.current)
-}
+  const location = useLocation()
+
+useEffect(() => {
+  if (location.hash) {
+    const element = document.querySelector(location.hash)
+    if (element) {
+      setTimeout(() => {
+        element.scrollIntoView({ behavior: 'smooth' })
+      }, 300)
+    }
+  }
+}, [location.hash])
 
   return (
     <>
       {page === 0 && (
-        <SmartLoader
-          title="Un momento por favor"
-          storageKey="hasVisitedHome"
-          
-        />
+        <SmartLoader title="Un momento por favor" storageKey="hasVisitedHome" />
       )}
 
       <MainWrapper>
@@ -163,10 +187,13 @@ const handleCloseModal = () => {
         )}
       </ProductsWrapper>
 
-      <Feedback/>
+      <Feedback />
 
-      <Button onClick={() => setOpen(true)}></Button>
-<ModalFeedback open={open} onClose={handleCloseModal} />
+      <ModalFeedback
+        open={open}
+        onClose={() => handleCloseModal(false)}
+        onSubmitSuccess={() => handleCloseModal(true)} 
+      />
     </>
   )
 }

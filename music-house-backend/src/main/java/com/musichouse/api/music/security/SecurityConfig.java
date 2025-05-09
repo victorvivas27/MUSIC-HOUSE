@@ -154,6 +154,7 @@ public class SecurityConfig {
                          */
                         .requestMatchers(HttpMethod.GET, "/api/feedback/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/api/feedback/**").hasRole(RoleConstants.USER)
+                        .requestMatchers(HttpMethod.DELETE, "/api/feedback/**").hasRole(RoleConstants.ADMIN)
 
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager

@@ -1,35 +1,43 @@
 /* 📌 Reseteo avanzado para mayor compatibilidad entre navegadores */
 :root {
-  /* 🖌️ 🎨 Colores */
-  /* 🎯 Colores base */
-  --color-primario: #FBC02D;         /* Amarillo vibrante */
-  --color-secundario: #00a3c8;       /* Gris oscuro neutro */
+  /* 🎨 Paleta base */
+  --color-primario: #FBC02D;
+  --color-primario-hover: #FFD700;
+  --color-primario-active: #D4A10F;
+  --color-secundario: #483f3f;
 
-  /* 🟡 Estados activos y variantes */
-  --color-primario-hover: #FFD700;   /* Amarillo más claro (hover) */
-  --color-primario-active: #D4A10F;  /* Versión oscura para active */
+  /* 🎯 Estados */
+  --color-exito: #28A745;
+  --color-error: #DC3545;
+  --color-info: #1976D2;
+  --color-warning: #FFC107;
+  --color-neutral: #9E9E9E;
+  --color-disabled: #C0C0C0;
+  --color-focus: #64B5F6;
 
-  /* ⚪️ Transparencias del secundario */
-  --color-secundario-80: #5C5C5CCC;
-  --color-secundario-50: #5C5C5C80;
-  --color-secundario-30: #5C5C5C4D;
-  --color-secundario-10: #5C5C5C1A;
+  /* 🌫️ Transparencias (secundario) */
+  --color-secundario-opacity10: rgba(92, 92, 92, 0.1);
+  --color-secundario-opacity30: rgba(92, 92, 92, 0.3);
+  --color-secundario-opacity50: rgba(92, 92, 92, 0.5);
+  --color-secundario-opacity80: rgba(92, 92, 92, 0.8);
 
-  /* ✅ Estados */
-  --color-exito: #28A745;            /* Verde éxito */
-  --color-error: #DC3545;            /* Rojo error */
-  --color-info: #1976D2;             /* Azul informativo */
+  /* ✍️ Texto */
+  --texto-primario: #000000;
+  --texto-secundario: #BDBDBD;
+  --texto-inverso: #ffffff;
 
-  /* 🌗 Texto */
-  --texto-primario: #000000;         /* Negro */
-  --texto-secundario: #BDBDBD;       /* Gris claro */
-  --texto-inverso: #ffffff;          /* Blanco */
-
-  /* 🎨 Fondos */
+  /* 🧱 Fondos */
   --background-claro: #ffffffb7;
   --background-oscuro: #1E1E1E;
-  --background-transparente: #5c5c5c7e;
-  --background-disabled: #86762e7a;
+  --background-transparente: rgba(92, 92, 92, 0.49);
+  --background-disabled: rgba(134, 118, 46, 0.48);
+  --background-vidrio: rgba(251, 193, 45, 0.19);
+  --background-vidrio-soft: rgba(251, 193, 45, 0.07);
+  --color-hover-card: #fef7e0;
+
+  /* 🌈 Gradientes */
+  --gradiente-primario: linear-gradient(135deg, #fbc02d 0%, #d4a10f 100%);
+  --gradiente-vidrio: linear-gradient(145deg, rgba(244, 181, 22, 0.544), rgba(79, 71, 71, 0.848));
 
   /* 🌟 Sombras */
   --box-shadow: 
@@ -89,6 +97,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-size-adjust: 100%;
   color: var(--texto-primario);
+    scroll-behavior: smooth;
 }
 
 body {
@@ -131,48 +140,68 @@ body::after {
   }
 }
 
-/* 🔥 Clases especiales */
+/* 🎨 Estilo personalizado para modales SweetAlert2 */
+
+/* Contenedor principal del modal */
 .custom-swal {
-  border-radius: 50px 10px !important;
+  border-radius: 40px 12px !important;          /* Forma creativa y personalizada */
   width: 500px !important;
   max-width: 90vw;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-  border: 2px solid var(--color-primario);
-  z-index: 9999 !important;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);    /* Sombra para profundidad */
+  border: 2px solid var(--color-primario);      /* Borde destacado con color institucional */
+  z-index: 9999 !important;                     /* Asegura que quede por encima */
 }
+
+
+/* Título del modal */
 .custom-swal .swal2-title {
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   font-family: "Winky Sans", sans-serif;
-  font-optical-sizing: auto;
+  font-weight: bold;
 }
+
+
+/* Contenido del mensaje (parrafo HTML) */
 .custom-swal .swal2-html-container {
-  font-size: 1rem;
+  font-size: 1.05rem;
   font-family: "Meow Script", cursive;
+  color: var(--texto-primario);
 }
+
+
+/* Botón principal (ej: confirmar) */
 .custom-swal-btn {
   background-color: #ff4d4f !important;
   color: #fff !important;
   font-size: 1rem;
-  padding: 7px 35px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(255, 77, 79, 0.5);
+  padding: 8px 36px;
+  border-radius: 12px;
   font-family: "Meow Script", cursive;
   transition: all 0.3s ease;
 }
+
+
 .custom-swal-btn:hover {
   background-color: var(--color-error) !important;
   transform: scale(1.05);
 }
+
+
+
+/* Botón secundario (ej: cancelar) */
 .custom-swal-btn-can {
-  background-color: var(--color-azul) !important;
+  background-color: var(--color-info) !important;
   color: var(--background-color) !important;
   font-size: 1rem;
-  padding: 7px 35px;
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(104, 125, 217, 0.5);
+  padding: 8px 36px;
+  border-radius: 12px;
   font-family: "Meow Script", cursive;
   transition: all 0.3s ease;
 }
+
+
+
+/* Iconos visuales del modal (éxito, error, advertencia) */
 .custom-swal .swal2-icon.swal2-error,
 .custom-swal .swal2-icon.swal2-success,
 .custom-swal .swal2-icon.swal2-warning {
@@ -181,6 +210,18 @@ body::after {
   font-size: 10px !important;
   border: 4px solid !important;
 }
+
+.custom-swal .swal2-icon.swal2-success .swal2-success-ring {
+  border-color: var(--color-primario);
+}
+
+.custom-swal .swal2-icon.swal2-success [class^='swal2-success-line'] {
+  background-color: var(--color-primario);
+}
+
+
+
+/* Z-index del fondo del modal */
 .swal2-container {
   z-index: 9998 !important;
 }
@@ -294,7 +335,7 @@ body::after {
 }
 
 .text-focus-in {
-  animation: text-focus-in 1s ease-out 0.5s both;
+  animation: text-focus-in 0.5s ease-out 0.2s both;
 }
 
 .MuiRating-root {

@@ -1,10 +1,4 @@
-import {
-  Card,
-  CardHeader,
-  CardContent,
-  Avatar,
-  Box
-} from '@mui/material'
+import { Card, CardHeader, CardContent, Avatar, Box } from '@mui/material'
 import CustomRating from './CustomRating'
 import { motion } from 'framer-motion'
 import { useInView } from 'react-intersection-observer'
@@ -24,21 +18,21 @@ const FeedbackCard = ({ feedback }) => {
       ref={ref}
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.5, ease: 'easeOut',delay:0.5 }}
+      transition={{ duration: 0.3, ease: 'easeOut', delay: 1 }}
     >
       <Card
         sx={{
-            width: {
-                xs: 330,  
-                sm: 350,   
-                md: 360,     
-                lg: 370     
-              },
-          m: 1,
+          width: {
+            xs: 330,
+            sm: 350,
+            md: 360,
+            lg: 370
+          },
+         
           borderRadius: 3,
-          bgcolor: 'rgba(251, 192, 45, 0.15)', 
-          backdropFilter: 'blur(8px)',       
-          border: '1px solid rgba(251, 192, 45, 0.25)', 
+          bgcolor: 'var(--background-vidrio)',
+          backdropFilter: 'blur(8px)',
+          border: '1px solid var( --color-primario-active)',
           zIndex: 67
         }}
       >
@@ -51,7 +45,11 @@ const FeedbackCard = ({ feedback }) => {
             />
           }
           title={`${name} ${lastName}`}
-          titleTypographyProps={{ fontWeight: 'bold', fontSize: '1rem',color:"var(--color-primario)" }}
+          titleTypographyProps={{
+            fontWeight: 'bold',
+            fontSize: '1rem',
+            color: 'var(--color-primario)'
+          }}
         />
         <CardContent>
           <Box sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
@@ -64,10 +62,24 @@ const FeedbackCard = ({ feedback }) => {
                 <CustomRating value={rating} size="large" />
               </motion.div>
             )}
-            <ParagraphResponsive sx={{color:"var(--color-secundario)"}}>({rating}/5)</ParagraphResponsive>
+            <ParagraphResponsive
+              sx={{
+                color: 'var(--texto-secundario)'
+              }}
+            >
+              ({rating}/5)
+            </ParagraphResponsive>
           </Box>
 
-          <ParagraphResponsive sx={{color:"var(--color-secundario)"}}>{comment}</ParagraphResponsive>
+          <ParagraphResponsive
+            sx={{
+              color: 'var(--texto-primario)',
+              fontFamily: '"Roboto Slab", serif',
+             
+            }}
+          >
+            {comment}
+          </ParagraphResponsive>
         </CardContent>
       </Card>
     </motion.div>

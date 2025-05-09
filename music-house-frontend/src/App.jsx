@@ -27,71 +27,69 @@ import CrearUsuario from "./Pages/CrearUsuario"
 import { ServerError } from "./Pages/ServerError"
 import { NotFoundPage } from "./Pages/NotFound"
 import Reservationes from "./Pages/Admin/Reservationes"
+import Feedback from "./Pages/Feedback"
 
 
 
 
 export const App = () => {
   return (
-    <>
-      <BrowserRouter>
-        <HeaderVisibilityProvider>
-          <AuthProvider>
-            <ContextProvider>
-              <Routes>
-                <Route path="/autentificacion" element={<AuthPage />} />
-                <Route element={<UserLayoutWithoutHeaderFooter />}>
-                  <Route path="/editarUsuario/:id" element={<EditUser />} />
-                </Route>
-                <Route element={<UserLayout />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/about" element={<About />} />
-                 
-                  <Route path="/instrument/:id/:slug?" element={<Instrument />} />
-                  <Route element={<ProtectedRoute />}>
+    <BrowserRouter>
+      <HeaderVisibilityProvider>
+        <AuthProvider>
+          <ContextProvider>
+            <Routes>
+              {/* 🔓 RUTAS PÚBLICAS (acceso sin login) */}
+              <Route path="/autentificacion" element={<AuthPage />} />
+              <Route path="/noDisponible" element={<ServerError />} />
+              <Route path="*" element={<NotFoundPage />} />
+
+              {/* 🔐 RUTAS USUARIO LOGUEADO SIN HEADER/FOOTER */}
+              <Route element={<UserLayoutWithoutHeaderFooter />}>
+                <Route path="/editarUsuario/:id" element={<EditUser />} />
+              </Route>
+
+              {/* 🔐 RUTAS USUARIO LOGUEADO CON HEADER */}
+              <Route element={<UserLayout />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/about" element={<About />} />
+                <Route path='/feedback' element={<Feedback/>} />
+                <Route path="/instrument/:id/:slug?" element={<Instrument />} />
+
+                <Route element={<ProtectedRoute />}>
                   <Route path="/perfil" element={<Perfil />} />
-                    <Route path="/favorites" element={<Favorites />} />
-                    <Route path="/reservations" element={<MisReservas />} />
-                    
-                  </Route>
+                  <Route path="/favorites" element={<Favorites />} />
+                  <Route path="/reservations" element={<MisReservas />} />
                 </Route>
-                <Route element={<AdminLayout />}>
-                  <Route element={<ProtectedRoute role={ROLE_ADMIN} />}>
-                    <Route path="/instruments" element={<Instruments />} />
-                    <Route path="/usuarios" element={<Usuarios />} />
-                    <Route path="/categories" element={<Categories />} />
-                    <Route path="/reservations-user" element={<Reservationes />} />
-                    <Route path="/theme" element={<Theme />} />
-                    <Route path="/agregarTheme" element={<AgregarTheme />} />
-                    <Route path="/editarTheme/:id" element={<EditarTheme />} />
-                    <Route path="/agregarInstrumento" element={<AgregarInstrumento />}
-                    />
-                    <Route
-                      path="/editarInstrumento/:id"
-                      element={<EditarInstrumento />}
-                    />
-                    <Route
-                      path="/agregarCategoria"
-                      element={<AgregarCategoria />}
-                    />
-                    <Route
-                      path="/editarCategoria/:id"
-                      element={<EditarCategoria />}
-                    />
-                  </Route>
+              </Route>
+
+              {/* 🛠️ RUTAS DE ADMIN (con header y protegidas) */}
+              <Route element={<AdminLayout />}>
+                <Route element={<ProtectedRoute role={ROLE_ADMIN} />}>
+                  <Route path="/instruments" element={<Instruments />} />
+                  <Route path="/usuarios" element={<Usuarios />} />
+                  <Route path="/categories" element={<Categories />} />
+                  <Route path="/reservations-user" element={<Reservationes />} />
+                  <Route path="/theme" element={<Theme />} />
+                  <Route path="/agregarTheme" element={<AgregarTheme />} />
+                  <Route path="/editarTheme/:id" element={<EditarTheme />} />
+                  <Route path="/agregarInstrumento" element={<AgregarInstrumento />} />
+                  <Route path="/editarInstrumento/:id" element={<EditarInstrumento />} />
+                  <Route path="/agregarCategoria" element={<AgregarCategoria />} />
+                  <Route path="/editarCategoria/:id" element={<EditarCategoria />} />
                 </Route>
-                <Route element={<AdminLayoutWithoutHeaderFooter />}>
-                  <Route element={<ProtectedRoute role={ROLE_ADMIN} />}>
-                    <Route path="/agregarUsuario" element={<CrearUsuario />} />
-                  </Route>
+              </Route>
+
+              {/* 🛠️ RUTA DE ADMIN SIN HEADER/FOOTER */}
+              <Route element={<AdminLayoutWithoutHeaderFooter />}>
+                <Route element={<ProtectedRoute role={ROLE_ADMIN} />}>
+                  <Route path="/agregarUsuario" element={<CrearUsuario />} />
                 </Route>
-                <Route path="/noDisponible" element={<ServerError />} />
-                <Route path="*" element={<NotFoundPage />} />
-              </Routes>
-            </ContextProvider>
-          </AuthProvider>
-        </HeaderVisibilityProvider>
-      </BrowserRouter>
-    </>
+              </Route>
+            </Routes>
+          </ContextProvider>
+        </AuthProvider>
+      </HeaderVisibilityProvider>
+    </BrowserRouter>
   )
 }

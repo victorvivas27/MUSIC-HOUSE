@@ -13,6 +13,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
+
 @RestController
 @AllArgsConstructor
 @RequestMapping("/api/feedback")
@@ -32,7 +34,7 @@ public class FeedbackController {
                 .body(ApiResponse.<FeedbackDtoExit>builder()
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
-                        .message("Feedback agregado con éxito.")
+                        .message("¡Gracias por dejarnos tu feedback!")
                         .error(null)
                         .result(feedbackDtoExit)
                         .build());
@@ -50,6 +52,21 @@ public class FeedbackController {
                 .message("Lista de feedback obtenida exitosamente.")
                 .error(null)
                 .result(feedbackDtoExits)
+                .build());
+    }
+
+    // 🔹 ELIMINAR FEEDBCK
+    @DeleteMapping("{idFeedback}")
+    public ResponseEntity<ApiResponse<String>> deleteFeedback(@PathVariable UUID idFeedback) throws ResourceNotFoundException {
+
+        feedbackService.deleteFeedback(idFeedback);
+
+        return ResponseEntity.ok(ApiResponse.<String>builder()
+                .status(HttpStatus.OK)
+                .statusCode(HttpStatus.OK.value())
+                .message("Feedback eliminado exitosamente.")
+                .error(null)
+                .result(null)
                 .build());
     }
 }

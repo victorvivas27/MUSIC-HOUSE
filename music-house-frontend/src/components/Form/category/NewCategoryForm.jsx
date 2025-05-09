@@ -30,10 +30,8 @@ export const NewCategoryForm = () => {
           categoryName: formData.categoryName,
           description: formData.description
         })
-
-        showSuccess(`✅ ${response.message}`)
-
-        setTimeout(() => {
+showSuccess(`✅ ${response.message}`)
+setTimeout(() => {
           navigate('/categories')
         }, 1500)
       } catch (error) {

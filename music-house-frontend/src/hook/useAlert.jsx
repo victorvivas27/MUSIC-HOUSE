@@ -20,7 +20,7 @@ const useAlert = () => {
       cancelButtonColor: 'var(--color-azul)',
       allowOutsideClick: false,
       allowEscapeKey: false,
-      background: 'var(--color-secundario)',
+      background: 'var(--gradiente-vidrio)',
       color: 'var(--color-primario)',
       borderRadius: '40px',
       showClass: {
@@ -45,7 +45,7 @@ const useAlert = () => {
       text,
       allowOutsideClick: false,
       allowEscapeKey: false,
-      background: 'var(--color-secundario)',
+      background: 'var(--gradiente-vidrio)',
       color: 'var(--color-primario)',
       showClass: {
         popup: 'animate__animated animate__fadeInDown'
@@ -67,11 +67,10 @@ const useAlert = () => {
       title,
       text,
       icon: 'success',
-      confirmButtonColor: '#3085d6',
       showConfirmButton: false,
-      timer: 1000,
+      timer: 3500,
       timerProgressBar: true,
-      background: 'var(--color-secundario)',
+      background: 'var( --gradiente-vidrio)',
       color: 'var(--color-primario)',
       showClass: {
         popup: 'animate__animated animate__fadeInDown'
@@ -95,7 +94,7 @@ const useAlert = () => {
       icon: 'error',
       confirmButtonColor: '#d33',
       confirmButtonText: 'Entendido ✔️',
-      background: 'var(--color-secundario)',
+      background: 'var(--gradiente-vidrio)',
       color: 'var(--color-primario)',
       showClass: {
         popup: 'animate__animated animate__fadeInDown'

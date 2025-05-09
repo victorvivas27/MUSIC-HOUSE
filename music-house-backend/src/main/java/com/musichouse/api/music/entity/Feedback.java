@@ -6,6 +6,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Getter
@@ -13,13 +14,13 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "FEEDBACK",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"id_user"})
+@Table(name = "FEEDBACK"
+        //uniqueConstraints = @UniqueConstraint(columnNames = {"id_user"})
 )
 public class Feedback {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    private String idFeedback;
+    private UUID idFeedback;
 
     @Column(nullable = false)
     private int rating;

@@ -6,6 +6,7 @@ import CategoryIcon from '@mui/icons-material/Category'
 import PeopleIcon from '@mui/icons-material/People'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
 import PaletteIcon from '@mui/icons-material/Palette'
+import FeedbackIcon from '@mui/icons-material/Feedback'
 
 export const pagesMobile = [
   {
@@ -32,7 +33,15 @@ export const pagesMobile = [
     text: 'Mis reservas',
     icon: <CalendarMonthIcon sx={{ color: '#ff9800' }} />,
     user: true
-  } // naranja
+  }, // naranja
+ {
+  to: '/',
+  text: 'Feedback',
+  icon: <FeedbackIcon sx={{ color: '#ff9800' }} />,
+  scrollTo: '#feedback-section',
+  anonymous: true,
+  user: true
+}
 ]
 
 export const pagesDesktop = [
@@ -90,5 +99,20 @@ export const pagesDesktop = [
     text: 'Reservas Usuario',
     icon: <CalendarMonthIcon sx={{ color: '#ff9800' }} />,
     admin: true
-  } // naranja
+  }, // naranja
+   {
+    to: '/feedback-user',
+    text: 'Feedback Usuario',
+     icon: <FeedbackIcon sx={{ color: '#ff9800' }} />,
+    admin: true
+  } ,
+  {
+  to: '/',
+  text: 'Feedback',
+  icon: <FeedbackIcon sx={{ color: '#ff9800' }} />,
+  scrollTo: '#feedback-section',
+  anonymous: true,
+  user: true
+}
+
 ]

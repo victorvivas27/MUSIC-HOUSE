@@ -39,14 +39,8 @@ export const Header = () => {
   const [isMenuUserOpen, setIsMenuUserOpen] = useState(false)
   const [anchorElNav, setAnchorElNav] = useState(null)
   const [anchorElUser, setAnchorElUser] = useState(null)
-  const {
-    authGlobal,
-    logOut,
-    isUserAdmin,
-    isUser,
-    userName,
-    userLastName
-  } = useAuth()
+  const { authGlobal, logOut, isUserAdmin, isUser, userName, userLastName } =
+    useAuth()
   const { toggleHeaderVisibility } = useHeaderVisibility()
   const { pathname } = useLocation()
   const [userMenuTimeout, setUserMenuTimeout] = useState(null)
@@ -137,7 +131,7 @@ export const Header = () => {
                     textTransform: 'uppercase',
                     backgroundColor: 'var(--color-secundario)',
                     color: 'var(--color-primario)',
-                  
+
                     border: '2px solid var(--color-primario)'
                   }}
                 >
@@ -154,11 +148,15 @@ export const Header = () => {
                     borderRadius: '0.3rem',
                     display: 'flex',
                     alignItems: 'center',
-                    justifyContent: 'center',
-                  
+                    justifyContent: 'center'
                   }}
                 >
-                  <MenuIcon sx={{ fontSize: '2.5rem', color: 'var( --color-secundario)' }} />
+                  <MenuIcon
+                    sx={{
+                      fontSize: '2.5rem',
+                      color: 'var( --color-secundario)'
+                    }}
+                  />
                 </Box>
               )}
             </IconButton>
@@ -180,7 +178,6 @@ export const Header = () => {
               hideBackdrop
               sx={{
                 '& .MuiPaper-root': {
-                 
                   backgroundColor: 'var(--color-secundario-80)',
                   borderRadius: '1rem',
                   padding: '0.5rem',
@@ -191,23 +188,42 @@ export const Header = () => {
               }}
             >
               {pagesMobile.map((page, index) => {
+                const handleClick = () => {
+                  handleCloseNavMenu()
+
+                  if (page.scrollTo) {
+                    if (pathname !== page.to) {
+                      // Navega primero y luego hace scroll al selector
+                      navigate(page.to)
+                      setTimeout(() => {
+                        const element = document.querySelector(page.scrollTo)
+                        if (element) {
+                          element.scrollIntoView({ behavior: 'smooth' })
+                        }
+                      }, 300)
+                    } else {
+                      // Ya estás en la misma ruta → solo scroll
+                      const element = document.querySelector(page.scrollTo)
+                      if (element) {
+                        element.scrollIntoView({ behavior: 'smooth' })
+                      }
+                    }
+                  } else {
+                    navigate(page.to)
+                  }
+                }
+
                 return (
                   ((page.user && isUser) ||
                     (page.admin && isUserAdmin) ||
                     (page.anonymous && !(isUser || isUserAdmin)) ||
                     page.any) && (
-                    <MenuItem
-                      key={`menu-nav-${index}`}
-                      onClick={handleCloseNavMenu}
-                    >
-                      <Link
-                        to={page.to}
-                        className="option-link"
-                        style={{
+                    <MenuItem key={`menu-nav-${index}`} onClick={handleClick}>
+                      <Box
+                        sx={{
                           display: 'flex',
                           alignItems: 'center',
-                          gap: 8,
-                          textDecoration: 'none',
+                          gap: 1,
                           color: 'var(--color-primario)',
                           width: '100%'
                         }}
@@ -216,7 +232,7 @@ export const Header = () => {
                         <Typography textAlign="left" sx={{ fontWeight: 500 }}>
                           {page.text}
                         </Typography>
-                      </Link>
+                      </Box>
                     </MenuItem>
                   )
                 )
@@ -292,8 +308,19 @@ export const Header = () => {
                 shouldShow && (
                   <Button
                     key={`menu-option-${index}`}
-                    component={Link}
-                    to={page.to}
+                    onClick={() => {
+                      if (page.scrollTo) {
+                        navigate(page.to, { replace: false }) // nos aseguramos de estar en "/"
+                        setTimeout(() => {
+                          const element = document.querySelector(page.scrollTo)
+                          if (element) {
+                            element.scrollIntoView({ behavior: 'smooth' })
+                          }
+                        }, 100)
+                      } else {
+                        navigate(page.to)
+                      }
+                    }}
                     sx={{
                       textTransform: 'none',
                       display: 'flex',
@@ -325,7 +352,7 @@ export const Header = () => {
             })}
           </Box>
           <Link to="/">
-            <ContainerLogo >
+            <ContainerLogo>
               <Logo />
             </ContainerLogo>
           </Link>
