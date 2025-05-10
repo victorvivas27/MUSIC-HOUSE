@@ -25,7 +25,7 @@ const initialState = {
   users: { content: [], totalElements: 0 },
   instruments: { content: [], totalElements: 0 },
   reservas: { content: [], totalElements: 0 },
-  feedbacks: { content: [], totalElements: 0 }
+  feedback: { content: [], totalElements: 0 }
 }
 
 const ContextGlobal = createContext()
@@ -62,17 +62,6 @@ const appReducer = (state, action) => {
 
       return { ...state, favorites: updatedFavorites }
     }
-
-    case actions.SET_CATEGORIES:
-      return {
-        ...state,
-        categories: action.payload?.content
-          ? action.payload
-          : {
-              content: Array.isArray(action.payload) ? action.payload : [],
-              totalElements: 0
-            }
-      }
 
     case actions.SET_THEMES:
       return {
@@ -121,10 +110,21 @@ const appReducer = (state, action) => {
             }
       }
 
-    case actions.SET_FEEDBACKS:
+    case actions.SET_CATEGORIES:
       return {
         ...state,
-        feedbacks: action.payload?.content
+        categories: action.payload?.content
+          ? action.payload
+          : {
+              content: Array.isArray(action.payload) ? action.payload : [],
+              totalElements: 0
+            }
+      }
+
+    case actions.SET_FEEDBACK:
+      return {
+        ...state,
+        feedback: action.payload?.content
           ? action.payload
           : {
               content: Array.isArray(action.payload) ? action.payload : [],

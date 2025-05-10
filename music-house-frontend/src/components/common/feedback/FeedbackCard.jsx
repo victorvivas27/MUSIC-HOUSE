@@ -18,7 +18,7 @@ const FeedbackCard = ({ feedback }) => {
       ref={ref}
       initial={{ opacity: 0, y: 30, scale: 0.95 }}
       animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
-      transition={{ duration: 0.3, ease: 'easeOut', delay: 1 }}
+      transition={{ duration: 0.9, ease: 'easeOut', delay: 0.5 }}
     >
       <Card
         sx={{

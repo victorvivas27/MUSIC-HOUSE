@@ -25,3 +25,14 @@ export const submitFeedback = async (data) => {
       handleApiError(error);
     }
   };
+
+
+  export const deleteFeedback = async (idFeedback) => {
+  try {
+    const response = await axios
+    .delete(`${BASE_URL}/feedback/${idFeedback}`);
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+  }
+};

@@ -14,6 +14,9 @@ import {
 } from '@/components/styles/ResponsiveComponents'
 import imageAbout from '@/components/Images/image_about.png'
 import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader'
+import { useContext } from 'react'
+import { AuthContext } from '@/components/utils/context/AuthContext'
+import Feedback from './Feedback'
 
 
 const CustomTypography = styled(Typography)(({ theme, bgColor }) => ({
@@ -31,6 +34,9 @@ export const About = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('md'))
   const isTablet = useMediaQuery('(max-width: 1240px) and (min-width: 1000px)')
+  const { isUser, isUserAdmin } = useContext(AuthContext);
+
+const shouldShowFeedback = isUser && !isUserAdmin;
 
   return (
     <main>
@@ -134,7 +140,7 @@ export const About = () => {
         </Container>
       </MainWrapper>
 
-      
+      {shouldShowFeedback && <Feedback />}
     </main>
   )
 }

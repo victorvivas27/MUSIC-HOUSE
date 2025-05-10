@@ -48,7 +48,8 @@ public class FeedbackService {
         return feedbackBuilder.fromDtoExit(feedbackSaved);
     }
 
-    @Cacheable(value = "feedbacks")
+
+    @Cacheable(value = "feedback", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort")
     public Page<FeedbackDtoExit> feedbackAll(Pageable pageable) {
 
         Page<Feedback> feedbackPage = feedbackRepository.findAll(pageable);
@@ -56,7 +57,7 @@ public class FeedbackService {
     }
 
 
-    @CacheEvict(value = "feedbacks", allEntries = true)
+    @CacheEvict(value = "feedback", allEntries = true)
     public void deleteFeedback(UUID idFeedback)
             throws ResourceNotFoundException, CategoryAssociatedException {
 

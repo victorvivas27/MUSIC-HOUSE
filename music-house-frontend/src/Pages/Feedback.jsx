@@ -9,14 +9,14 @@ import { actions } from '@/components/utils/actions'
 
 const Feedback = () => {
   const { state, dispatch } = useAppStates()
-  const feedbackList = state.feedbacks?.content || []
+  const feedbackList = state.feedback?.content || []
 
   useEffect(() => {
     const fetchFeedback = async () => {
       if (!feedbackList.length) {
         const res = await getAllFeedback()
         if (res?.result?.content) {
-          dispatch({ type: actions.SET_FEEDBACKS, payload: res.result })
+          dispatch({ type: actions.SET_FEEDBACK, payload: res.result })
         }
       }
     }

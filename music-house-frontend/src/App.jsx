@@ -28,6 +28,7 @@ import { ServerError } from "./Pages/ServerError"
 import { NotFoundPage } from "./Pages/NotFound"
 import Reservationes from "./Pages/Admin/Reservationes"
 import Feedback from "./Pages/Feedback"
+import { FeedbackAdmin } from "./Pages/Admin/FeedbackAmin"
 
 
 
@@ -77,6 +78,7 @@ export const App = () => {
                   <Route path="/editarInstrumento/:id" element={<EditarInstrumento />} />
                   <Route path="/agregarCategoria" element={<AgregarCategoria />} />
                   <Route path="/editarCategoria/:id" element={<EditarCategoria />} />
+                    <Route path="/feedback-user" element={<FeedbackAdmin/>} />
                 </Route>
               </Route>
 

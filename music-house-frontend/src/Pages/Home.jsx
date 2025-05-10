@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useContext, useEffect, useRef, useState } from 'react'
 import { useAppStates } from '@/components/utils/global.context'
 import { getInstruments } from '@/api/instruments'
 import { actions } from '@/components/utils/actions'
@@ -17,6 +17,7 @@ import SmartLoader from '@/components/common/smartLoader/SmartLoader'
 import Feedback from './Feedback'
 import ModalFeedback from '@/components/common/feedback/ModalFeedback'
 import { useLocation } from 'react-router-dom'
+import { AuthContext } from '@/components/utils/context/AuthContext'
 
 export const Home = () => {
   const { state, dispatch } = useAppStates()
@@ -29,6 +30,9 @@ export const Home = () => {
   const [hasSentFeedback, setHasSentFeedback] = useState(
     localStorage.getItem('hasSentFeedback') === 'true'
   )
+    const { isUser, isUserAdmin, authGlobal } = useContext(AuthContext);
+
+  const isPublic = !authGlobal && !isUser && !isUserAdmin;
   const delayTimeoutRef = useRef(null)
   const observer = useRef()
   const lastElementRef = useCallback(
@@ -187,13 +191,15 @@ useEffect(() => {
         )}
       </ProductsWrapper>
 
-      <Feedback />
+      {isPublic && <Feedback />}
 
-      <ModalFeedback
-        open={open}
-        onClose={() => handleCloseModal(false)}
-        onSubmitSuccess={() => handleCloseModal(true)} 
-      />
+      {isUser && (
+        <ModalFeedback
+          open={open}
+          onClose={() => handleCloseModal(false)}
+          onSubmitSuccess={() => handleCloseModal(true)}
+        />
+      )}
     </>
   )
 }

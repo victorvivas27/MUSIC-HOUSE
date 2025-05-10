@@ -112,7 +112,7 @@ export const pagesDesktop = [
   icon: <FeedbackIcon sx={{ color: '#ff9800' }} />,
   scrollTo: '#feedback-section',
   anonymous: true,
-  user: true
+  user: false
 }
 
 ]

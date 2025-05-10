@@ -28,7 +28,7 @@ public class CacheConfig {
                 buildCache("availableDates", 100, 10),
                 buildCache("imagesByInstrument", 100, 10),
                 buildCache("reservations", 100, 10),
-                buildCache("feedbacks", 100, 10)
+                buildCache("feedback", 100, 10)
 
         ));
         return cacheManager;

@@ -360,3 +360,65 @@ export const headCellsReservation = [
     disableSort: true
   }
 ]
+
+export const headCellsFeedback = [
+  {
+    id: 'index',
+    numeric: true,
+    disablePadding: false,
+    label: 'N°',
+    hidden: false,
+    disableSort: true
+  },
+   {
+    id:'picture',
+    numeric: true,
+    disablePadding: false,
+    label: 'Imagen',
+    disableSort: true
+  },
+  {
+    id: 'name',
+    numeric: false,
+    disablePadding: false,
+    label: 'Nombre'
+  },
+  {
+    id: 'lastName',
+    numeric: false,
+    disablePadding: false,
+    label: 'Apellido'
+  },
+  {
+    id: 'rating',
+    numeric: false,
+    disablePadding: false,
+    label: 'Calificación'
+  },
+  {
+    id: 'comment',
+    numeric: false,
+    disablePadding: false,
+    label: 'Comentario',
+    disableSort: true
+  },
+  {
+    id: 'registDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Registro'
+  },
+  {
+    id: 'modifiedDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Modificado'
+  },
+  {
+    id: 'actions',
+    numeric: false,
+    disablePadding: false,
+    label: 'Acciones',
+    disableSort: true
+  }
+];
