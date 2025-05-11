@@ -156,6 +156,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/api/feedback/**").hasRole(RoleConstants.USER)
                         .requestMatchers(HttpMethod.DELETE, "/api/feedback/**").hasRole(RoleConstants.ADMIN)
 
+                        .requestMatchers(HttpMethod.POST, "/api/faq/**").permitAll()
+
                         .anyRequest().authenticated()
                 ).sessionManagement(sessionManager -> sessionManager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

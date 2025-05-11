@@ -17,7 +17,7 @@ export const CustomButton = styled(Button, {
   transition: '0.3s',
   '&:hover': {
     backgroundColor: 'var(--color-primario)',
-    color: 'var(--color-azul)'
+    color: 'var(--color-info)'
   },
   '&:active': {
     backgroundColor: 'var(--color-exito)'
@@ -99,7 +99,7 @@ export const TitleResponsive = styled(Typography)(({ theme }) => ({
   color: 'var(--color-primario)',
   textShadow: '0 4px 4px var(--texto-primario)',
   fontWeight: 350,
-  fontSize: '1rem',
+  fontSize: '1.3rem',
 
   [theme.breakpoints.up('sm')]: {
     fontSize: '1.1rem'

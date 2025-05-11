@@ -6,8 +6,12 @@ export const inputStyles = {
   '& .MuiInputBase-input': {
     color: 'var(--texto-primario)',
     fontSize: '18px',
+     '&::placeholder': {
+      color: 'var( --background-vidrio)', // ⚠️ asegúrate de definir esta variable
+      opacity: 1,
+    },
 
-    // ✅ Estilo para autofill
+   
     '&:-webkit-autofill': {
       WebkitBoxShadow: '0 0 0 1000px rgba(255,255,255,0) inset',
       WebkitTextFillColor: 'var(--texto-primario)',

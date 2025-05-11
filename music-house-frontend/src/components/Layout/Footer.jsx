@@ -1,12 +1,5 @@
 import { TitleResponsive } from '../styles/ResponsiveComponents'
-import {
-  Box,
-  Button,
-  IconButton,
-  Stack,
-  TextField,
-  Typography
-} from '@mui/material'
+import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { Link } from 'react-router-dom'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import InstagramIcon from '@mui/icons-material/Instagram'
@@ -15,10 +8,9 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import YouTubeIcon from '@mui/icons-material/YouTube'
 import { Copyright } from '@mui/icons-material'
 import { flexRowContainer } from '../styles/styleglobal'
-
+import Faq from '../common/faq/Faq'
 
 export const Footer = () => {
- 
   return (
     <Box
       component="footer"
@@ -81,36 +73,7 @@ export const Footer = () => {
             ))}
           </Stack>
         </Box>
-
-        {/* Formulario */}
-        <Box sx={{ maxWidth: 300 }}>
-          <TitleResponsive gutterBottom>¿Tienes dudas?</TitleResponsive>
-          <Typography variant="body2" gutterBottom>
-            Escríbenos y te responderemos lo antes posible.
-          </Typography>
-          <Stack spacing={1}>
-            <TextField
-              fullWidth
-              placeholder="Escribe tu duda..."
-              size="small"
-              variant="outlined"
-              InputProps={{
-                style: { color: '#fff' }
-              }}
-              sx={{
-                '& .MuiOutlinedInput-root': {
-                  '& fieldset': { borderColor: '#ccc' },
-                  '&:hover fieldset': { borderColor: '#fff' }
-                }
-              }}
-            />
-            <Button variant="contained" color="primary">
-              Enviar
-            </Button>
-          </Stack>
-        </Box>
-
-       
+        <Faq />
       </Box>
 
       {/* Copyright */}

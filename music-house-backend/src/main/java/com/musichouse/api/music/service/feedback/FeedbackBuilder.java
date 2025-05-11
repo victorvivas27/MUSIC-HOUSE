@@ -7,7 +7,6 @@ import com.musichouse.api.music.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component
-
 public class FeedbackBuilder {
 
     public Feedback fromDto(FeedbackDtoEntrance feedbackDtoEntrance, User user) {
