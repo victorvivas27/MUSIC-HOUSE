@@ -4,10 +4,10 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Card
+  Card,
+  Typography
 } from '@mui/material'
 import {
-  ParagraphResponsive,
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
 import PropTypes from 'prop-types'
@@ -40,7 +40,7 @@ const FaqCard = ({ faq, showAnswer = true }) => {
       {showAnswer ? (
         <Accordion
           sx={{
-            width: { xs: 330, sm: 350, md: 450, lg: 500 },
+            width: { xs: 320, sm: 350, md: 400, lg: 450 },
             borderRadius: 2,
             bgcolor: 'var(--background-vidrio)',
             border: '1px solid var(--color-primario-active)',
@@ -63,7 +63,7 @@ const FaqCard = ({ faq, showAnswer = true }) => {
             </TitleResponsive>
           </AccordionSummary>
           <AccordionDetails>
-            <ParagraphResponsive
+            <Typography
               sx={{
                 fontSize: {
                   xs: '0.95rem',
@@ -72,11 +72,12 @@ const FaqCard = ({ faq, showAnswer = true }) => {
                 },
                 color: 'var(--texto-primario)',
                 fontFamily: '"Roboto Slab", serif',
-                lineHeight: 1.6
+                lineHeight: 1.6,
+                whiteSpace: 'pre-line'
               }}
             >
               {answer}
-            </ParagraphResponsive>
+            </Typography>
           </AccordionDetails>
         </Accordion>
       ) : (

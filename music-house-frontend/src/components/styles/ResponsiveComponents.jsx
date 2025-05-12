@@ -142,7 +142,7 @@ export const ParagraphResponsive = styled(Typography, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
   fontWeight: 400,
-  fontSize: '0.9rem',
+  fontSize: '0.7rem',
   fontStyle: 'italic',
   wordWrap: 'break-word',
   overflowWrap: 'break-word',
@@ -153,16 +153,16 @@ export const ParagraphResponsive = styled(Typography, {
   textOverflow: 'ellipsis',
 
   [theme.breakpoints.up('sm')]: {
-    fontSize: '0.8rem'
+    fontSize: '0.1rem'
   },
   [theme.breakpoints.up('md')]: {
-    fontSize: '0.9rem'
+    fontSize: '0.8rem'
   },
   [theme.breakpoints.up('lg')]: {
-    fontSize: '1.1rem'
+    fontSize: '0.9rem'
   },
   [theme.breakpoints.up('xl')]: {
-    fontSize: '1.2rem'
+    fontSize: '1rem'
   },
 
   ...sx

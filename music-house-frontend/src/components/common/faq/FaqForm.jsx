@@ -41,7 +41,7 @@ const FaqForm = () => {
   return (
     <Box
       sx={{
-        maxWidth: 450
+        maxWidth: 550
       }}
     >
       <TitleResponsive gutterBottom>¿Tienes una pregunta?</TitleResponsive>
