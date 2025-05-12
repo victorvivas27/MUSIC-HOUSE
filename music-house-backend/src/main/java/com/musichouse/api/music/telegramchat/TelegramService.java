@@ -17,8 +17,12 @@ public class TelegramService {
 
     @Async
     public void enviarMensajeDeBienvenida(Long telegramChatId, String userName, String lastName, String email) {
-        String codigoDescuento = CodeGenerator.generateCodeRandom();
+        if (telegramChatId == null) {
+            System.out.println("telegramChatId es null, no se enviará mensaje de bienvenida.");
+            return;
+        }
 
+        String codigoDescuento = CodeGenerator.generateCodeRandom();
 
         String mensajeDeBienvenida = String.format(
                 "¡Bienvenido a Music House, %s %s! Gracias por registrarte. " +
@@ -30,11 +34,9 @@ public class TelegramService {
         mensajeAEnviar.setText(mensajeDeBienvenida);
 
         try {
-
             Thread.sleep(1500);
             telegramBot.execute(mensajeAEnviar);
             telegramBot.mostrarOpcionesSecundarias(telegramChatId);
-
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
             e.printStackTrace();

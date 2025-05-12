@@ -178,7 +178,7 @@ export const Header = () => {
               hideBackdrop
               sx={{
                 '& .MuiPaper-root': {
-                  backgroundColor: 'var(--color-secundario-80)',
+                  backgroundColor: 'var( --color-secundario-opacity80)',
                   borderRadius: '1rem',
                   padding: '0.5rem',
                   boxShadow: 'var(--box-shadow)',

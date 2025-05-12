@@ -36,6 +36,19 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
                     updatedFullNumber
                   )
                 }}
+                sx={{
+                 borderRadius: 2,
+                }}
+                MenuProps={{
+                  PaperProps: {
+                    sx: {
+                      backgroundColor: 'var(--color-select)', 
+                      color: 'var( --texto-primario)', 
+                      maxHeight: 250,
+                      borderRadius: 1
+                    }
+                  }
+                }}
               >
                 <MenuItem value="" disabled>
                   <Typography>🔢Código País</Typography>
@@ -47,8 +60,8 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
                     value={country.code}
                     sx={{
                       '&:hover': {
-                        backgroundColor: 'var(--color-primario)',
-                        color: 'var(--texto-inverso-black)'
+                        backgroundColor: 'var(--color-primario-hover)',
+                        color: 'var( --color-exito)'
                       }
                     }}
                   >

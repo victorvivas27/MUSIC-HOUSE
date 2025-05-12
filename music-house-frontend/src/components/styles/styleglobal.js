@@ -7,7 +7,7 @@ export const inputStyles = {
     color: 'var(--texto-primario)',
     fontSize: '18px',
      '&::placeholder': {
-      color: 'var( --background-vidrio)', // ⚠️ asegúrate de definir esta variable
+      color: 'var(  --texto-primario)', 
       opacity: 1,
     },
 

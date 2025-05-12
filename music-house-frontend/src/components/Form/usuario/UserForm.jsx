@@ -26,7 +26,7 @@ import { AvatarUploader } from './AvatarUploader'
 import { PasswordFields } from './PasswordFields'
 import { UserRolesSection } from './UserRolesSection'
 import { BasicInfoFields } from './BasicInfoFields'
-import { TelegramField } from './TelegramField'
+//import { TelegramField } from './TelegramField'
 import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
 const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
   color: 'black',
@@ -177,14 +177,14 @@ export const UserForm = ({
                   </Grid>
                 )}
 
-                <Grid item xs={12}>
+               {/* <Grid item xs={12}>
                   <TitleResponsive>Telegram</TitleResponsive>
                   <TelegramField
                     values={values}
                     touched={touched}
                     errors={errors}
                   />
-                </Grid>
+                </Grid>*/}
 
                 <Grid item xs={12}>
                   <FormControlLabel

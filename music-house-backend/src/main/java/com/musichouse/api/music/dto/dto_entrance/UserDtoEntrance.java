@@ -50,10 +50,10 @@ public class UserDtoEntrance {
     @NotNull(message = "El campo phones debe estar presente y no puede estar vacío")
     private List<PhoneDtoEntrance> phones;
 
-    @NotNull(message = "El código de Telegram es obligatorio")
+    //@NotNull(message = "El código de Telegram es obligatorio")
     @Positive(message = "El código de Telegram debe ser un número positivo")
     private Long telegramChatId;
 
-   
+
     private List<Roles> roles;
 }

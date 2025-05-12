@@ -5,11 +5,11 @@ export const userValidationSchema = Yup.object().shape({
   name: Yup.string().min(3, 'Mínimo 3 caracteres').required('El nombre es obligatorio'),
   lastName: Yup.string().min(3, 'Mínimo 3 caracteres').required('El apellido es obligatorio'),
   email: Yup.string().email('Email inválido').required('El email es obligatorio'),
-  telegramChatId: Yup.string()
-    .matches(/^\d+$/, 'Solo números')
-    .min(5, 'Mínimo 5 dígitos')
-    .max(15, 'Máximo 15 dígitos')
-    .required('El código de Telegram es obligatorio'),
+  //telegramChatId: Yup.string()
+    //.matches(/^\d+$/, 'Solo números')
+    //.min(5, 'Mínimo 5 dígitos')
+    //.max(15, 'Máximo 15 dígitos')
+    //.required('El código de Telegram es obligatorio'),
 
 
     password: Yup.string().when('idUser', {

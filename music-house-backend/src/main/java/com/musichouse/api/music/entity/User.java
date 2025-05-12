@@ -93,7 +93,7 @@ public class User extends Person implements UserDetails {
     /**
      * Identificador único de Telegram del usuario.
      */
-    @Column(name = "chat_id", nullable = true)
+    @Column(name = "chat_id")
     private Long telegramChatId;
 
 
