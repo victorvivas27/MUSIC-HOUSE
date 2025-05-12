@@ -44,9 +44,10 @@ const FaqForm = () => {
         maxWidth: 450
       }}
     >
-      <TitleResponsive gutterBottom>¿Tienes dudas?</TitleResponsive>
+      <TitleResponsive gutterBottom>¿Tienes una pregunta?</TitleResponsive>
       <ParagraphResponsive variant="body2" gutterBottom>
-        Escríbenos y te responderemos lo antes posible.
+        Envíala aquí y podríamos incluirla en nuestra sección de preguntas
+        frecuentes.
       </ParagraphResponsive>
       <form onSubmit={formik.handleSubmit}>
         <Stack spacing={1}>
