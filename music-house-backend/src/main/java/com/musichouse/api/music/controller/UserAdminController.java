@@ -11,7 +11,7 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.security.JwtService;
 import com.musichouse.api.music.service.userAdmin.UserServiceAdmin;
 import com.musichouse.api.music.util.ApiResponse;
-import com.musichouse.api.music.util.FileValidatorUtils;
+import com.musichouse.api.music.util.FileValidatorImage;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -63,7 +63,7 @@ public class UserAdminController {
     ) throws JsonProcessingException, MessagingException {
 
         UserDtoEntrance userDtoEntrance = objectMapper.readValue(userJson, UserDtoEntrance.class);
-        List<String> fileErrors = FileValidatorUtils.validateImage(file);
+        List<String> fileErrors = FileValidatorImage.validateImage(file);
         Set<ConstraintViolation<UserDtoEntrance>> violations = validator.validate(userDtoEntrance);
         List<String> dtoErrors = violations.stream()
                 .map(v -> v.getPropertyPath() + ": " + v.getMessage())
@@ -203,7 +203,7 @@ public class UserAdminController {
         UserDtoModify userDtoModify = objectMapper.readValue(userJson, UserDtoModify.class);
 
         // 2. Validar archivos subidos
-        List<String> fileErrors = FileValidatorUtils.validateImage(file);
+        List<String> fileErrors = FileValidatorImage.validateImage(file);
 
         // 3. Validar DTO manualmente (porque viene como JSON string)
         Set<ConstraintViolation<UserDtoModify>> violations = validator.validate(userDtoModify);

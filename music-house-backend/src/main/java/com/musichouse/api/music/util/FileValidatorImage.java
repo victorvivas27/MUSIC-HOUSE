@@ -5,7 +5,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FileValidatorUtils {
+public class FileValidatorImage {
 
     private static final List<String> ALLOWED_CONTENT_TYPES = List.of(
             "image/jpeg",

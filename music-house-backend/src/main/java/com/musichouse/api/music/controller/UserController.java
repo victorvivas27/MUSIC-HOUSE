@@ -8,7 +8,7 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.security.JwtService;
 import com.musichouse.api.music.service.user.UserService;
 import com.musichouse.api.music.util.ApiResponse;
-import com.musichouse.api.music.util.FileValidatorUtils;
+import com.musichouse.api.music.util.FileValidatorImage;
 import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
@@ -43,7 +43,7 @@ public class UserController {
 
         UserDtoModify userDtoModify = objectMapper.readValue(userJson, UserDtoModify.class);
 
-        List<String> fileErrors = FileValidatorUtils.validateImage(file);
+        List<String> fileErrors = FileValidatorImage.validateImage(file);
         Set<ConstraintViolation<UserDtoModify>> violations = validator.validate(userDtoModify);
         List<String> dtoErrors = violations.stream()
                 .map(v -> v.getPropertyPath() + ": " + v.getMessage())

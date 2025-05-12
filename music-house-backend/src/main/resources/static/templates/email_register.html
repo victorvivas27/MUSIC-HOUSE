@@ -1,71 +1,57 @@
 <!DOCTYPE html>
-<html lang="es" xmlns:th="http://www.thymeleaf.org">
-
+<html lang="es">
 <head>
-    <meta charset="UTF-8"/>
-    <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
-    <title>Confirmación de Reserva</title>
+    <meta charset="UTF-8">
+    <title>¡Bienvenido a Music House!</title>
 </head>
-<body style="margin: 0; padding: 0; font-family: Cambria, Cochin, Georgia, Times, 'Times New Roman', serif; background-color: #f7f7f7;">
+<body style="margin: 0; padding: 0; font-family: 'Roboto', Arial, sans-serif; background-color: #fef7e0;">
 
-<div style="max-width: 600px; margin: auto; box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px, rgba(0, 0, 0, 0.3) 0px 30px 60px -30px, rgba(10, 37, 64, 0.35) 0px -2px 6px 0px inset; background-color: #ffffff; border-radius: 10px; overflow: hidden;">
-    <img alt="Header Image" style="width: 100%; height: 80px; object-fit: cover;" th:src="@{cid:backgroundImage}"/>
-    <h1 style="color: #1e88e5; text-align: center; margin: 20px;">¡Bienvenido a Music House, [[${nombre}]]
-        [[${apellido}]]!</h1>
-    <div style="padding: 20px;">
-        <p>Tu cuenta en Music House ha sido creada exitosamente. ¡Nos alegra tenerte con nosotros!</p>
-        <p>Disfruta de todos nuestros servicios y productos. Si tienes alguna pregunta o necesitas asistencia, no dudes
-            en contactarnos.</p>
+<div style="max-width: 600px; margin: 40px auto; background-color: #ffffffb7; border-radius: 10px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
 
-        <!-- Enlace a sección principal -->
-        <div style="text-align: center; margin: 20px 0;">
-            <a class="link-button" href="http://34.192.181.246/"
-               style="display: inline-block; padding: 10px 20px;
-               background-color: #1e88e5; color: #fff; text-decoration: none;
-               border-radius: 5px;">Explora nuestro catálogo</a>
+    <!-- Imagen superior -->
+    <img src="cid:backgroundImage" alt="Banner" style="width: 100%; height: 100px; object-fit: cover;">
+
+    <!-- Contenido principal -->
+    <div style="padding: 30px 20px; color: #483f3f;">
+        <h1 style="color: #FBC02D; font-size: 22px; text-align: center; margin-bottom: 10px;">
+            ¡Bienvenido a Music House, [[${nombre}]] [[${apellido}]]!
+        </h1>
+
+        <p style="font-size: 16px; line-height: 1.6; color: #000000;">
+            Tu cuenta fue creada con éxito. Ya puedes acceder a nuestro catálogo de instrumentos y comenzar a alquilar
+            lo que necesites.
+        </p>
+
+        <div style="text-align: center; margin: 25px 0;">
+            <a href="https://musichouse.up.railway.app/" target="_blank"
+               style="background-color: #FBC02D; color: #000000; text-decoration: none; padding: 12px 24px; border-radius: 6px; font-weight: bold; display: inline-block;">
+                MusicHouse
+            </a>
         </div>
 
-        <!-- Promoción especial -->
-        <p>¡Aprovecha nuestra promoción especial para nuevos usuarios! Usa el código <strong>NEWMUSIC10</strong> al
-            realizar tu primer alquiler y obtén un 10% de descuento.</p>
-
-        <!-- Breve tutorial -->
-        <p>Para comenzar, aquí tienes un breve tutorial:</p>
-        <ol>
-            <li>Inicia sesión en tu cuenta.</li>
-            <li>Explora nuestro catálogo y añade productos a tu carrito.</li>
-            <li>Procede al pago y disfruta de tu compra.</li>
-        </ol>
     </div>
 
-    <footer style="padding: 20px; text-align: center; font-size: 12px; color: #463812; background-color: #f1f1f1; border-top: 1px solid #ddd;">
-        <img alt="logo music house" style="width: 45px; margin: 10px;" th:src="@{cid:logoImage}"/>
-        <div style="color: #007bff;">
-            <strong>Music House</strong><br/>
-            <span style="font-size: 10px;">Calle Falsa 123, Ciudad, País</span><br/>
-            <span style="font-size: 10px;">Tel: <a href="tel:+1234567890"
-                                                   style="text-decoration: none; color: #007bff;">(123) 456-7890</a></span><br/>
-            <span style="font-size: 10px;">Email: <a href="mailto:proyectointegradorequipo.01@gmail.com"
-                                                     style="text-decoration: none; color: #007bff;">proyectointegradorequipo.01@gmail.com</a></span>
+    <!-- Pie de página -->
+    <footer style="background-color: rgba(92, 92, 92, 0.1); text-align: center; padding: 20px; font-size: 12px; color: #483f3f;">
+        <img src="cid:logoImage" alt="Logo" style="width: 60px; margin-bottom: 10px;">
+
+        <p><strong>Music House</strong><br>
+            Calle Falsa 123, Ciudad, País<br>
+            <a href="tel:+1234567890" style="color: #FBC02D; text-decoration: none;">(123) 456-7890</a><br>
+            <a href="mailto:musichousevivas@gmail.com" style="color: #FBC02D; text-decoration: none;">musichousevivas@gmail.com</a>
+        </p>
+
+        <div style="margin-top: 10px;">
+            <a href="https://wa.me/+56986841970"><img src="cid:whatsappIcon" alt="WhatsApp"
+                                                      style="width: 24px; margin: 0 5px;"></a>
+            <a href="https://facebook.com"><img src="cid:facebookIcon" alt="Facebook"
+                                                style="width: 24px; margin: 0 5px;"></a>
+            <a href="https://twitter.com"><img src="cid:xIcon" alt="X" style="width: 24px; margin: 0 5px;"></a>
+            <a href="https://instagram.com"><img src="cid:instagramIcon" alt="Instagram"
+                                                 style="width: 24px; margin: 0 5px;"></a>
         </div>
-        <div style="margin: 20px 0;">
-            <a href="https://wa.me/+56986841970" style="text-decoration: none;" target="_blank">
-                <img alt="icono whatsapp" style="width: 30px; margin: 0 5px; vertical-align: middle;"
-                     th:src="@{cid:whatsappIcon}"/>
-            </a>
-            <a href="https://facebook.com" style="text-decoration: none;" target="_blank">
-                <img alt="icono facebook" style="width: 30px; margin: 0 5px; vertical-align: middle;"
-                     th:src="@{cid:facebookIcon}"/>
-            </a>
-            <a href="https://twitter.com" style="text-decoration: none;" target="_blank">
-                <img alt="icono x" style="width: 30px; margin: 0 5px; vertical-align: middle;" th:src="@{cid:xIcon}"/>
-            </a>
-            <a href="https://instagram.com" style="text-decoration: none;" target="_blank">
-                <img alt="icono instagram" style="width: 30px; margin: 0 5px; vertical-align: middle;"
-                     th:src="@{cid:instagramIcon}"/>
-            </a>
-        </div>
-        <p style="font-size: 8px;">&copy; 2024 Music House. Todos los derechos reservados.</p>
+
+        <p style="font-size: 10px; color: #9E9E9E;">&copy; 2024 Music House. Todos los derechos reservados.</p>
     </footer>
 </div>
 </body>

@@ -56,7 +56,7 @@ public class MailManager {
             helper.addInline("facebookIcon", facebookIcon);
             ClassPathResource xIcon = new ClassPathResource("static/img/x-twitter01.png");
             helper.addInline("xIcon", xIcon);
-            ClassPathResource logoImage = new ClassPathResource("static/img/logomusichousenegro-letranegro.png");
+            ClassPathResource logoImage = new ClassPathResource("static/img/logo-music-house.png");
             helper.addInline("logoImage", logoImage);
             ClassPathResource backgroundImage = new ClassPathResource("static/img/magen3.png");
             helper.addInline("backgroundImage", backgroundImage);
@@ -106,7 +106,7 @@ public class MailManager {
             helper.addInline("facebookIcon", facebookIcon);
             ClassPathResource xIcon = new ClassPathResource("static/img/x-twitter01.png");
             helper.addInline("xIcon", xIcon);
-            ClassPathResource logoImage = new ClassPathResource("static/img/logomusichousenegro-letranegro.png");
+            ClassPathResource logoImage = new ClassPathResource("static/img/logo-music-house.png");
             helper.addInline("logoImage", logoImage);
             ClassPathResource backgroundImage = new ClassPathResource("static/img/magen3.png");
             helper.addInline("backgroundImage", backgroundImage);

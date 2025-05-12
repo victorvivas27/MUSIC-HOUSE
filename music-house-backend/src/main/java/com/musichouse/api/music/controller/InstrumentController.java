@@ -8,7 +8,7 @@ import com.musichouse.api.music.dto.dto_modify.InstrumentDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.instrument.InstrumentService;
 import com.musichouse.api.music.util.ApiResponse;
-import com.musichouse.api.music.util.FileValidatorUtils;
+import com.musichouse.api.music.util.FileValidatorImage;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
@@ -58,7 +58,7 @@ public class InstrumentController {
         List<String> fileErrors = new ArrayList<>();
         if (files != null) {
             for (MultipartFile file : files) {
-                fileErrors.addAll(FileValidatorUtils.validateImages(files));
+                fileErrors.addAll(FileValidatorImage.validateImages(files));
             }
         }
 

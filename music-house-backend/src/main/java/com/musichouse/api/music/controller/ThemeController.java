@@ -8,7 +8,7 @@ import com.musichouse.api.music.dto.dto_modify.ThemeDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.service.themeService.ThemeService;
 import com.musichouse.api.music.util.ApiResponse;
-import com.musichouse.api.music.util.FileValidatorUtils;
+import com.musichouse.api.music.util.FileValidatorImage;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
 import lombok.AllArgsConstructor;
@@ -49,7 +49,7 @@ public class ThemeController {
         ThemeDtoEntrance themeDtoEntrance = objectMapper.readValue(themeJson, ThemeDtoEntrance.class);
 
         // 2. Validar archivo (solo uno ahora)
-        List<String> fileErrors = FileValidatorUtils.validateImage(image);
+        List<String> fileErrors = FileValidatorImage.validateImage(image);
 
         // 3. Validar DTO manualmente
         Set<ConstraintViolation<ThemeDtoEntrance>> violations = validator.validate(themeDtoEntrance);
@@ -128,7 +128,7 @@ public class ThemeController {
         ThemeDtoModify themeDtoModify = objectMapper.readValue(themeJson, ThemeDtoModify.class);
 
         // 2. Validar imagen si se envió
-        List<String> imageErrors = FileValidatorUtils.validateImage(file);
+        List<String> imageErrors = FileValidatorImage.validateImage(file);
 
         // 3. Validar DTO manualmente
         Set<ConstraintViolation<ThemeDtoModify>> violations = validator.validate(themeDtoModify);
