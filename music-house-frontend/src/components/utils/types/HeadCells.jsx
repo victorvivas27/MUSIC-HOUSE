@@ -422,3 +422,52 @@ export const headCellsFeedback = [
     disableSort: true
   }
 ];
+export const headCellsFaq = [
+  {
+    id: 'index',
+    numeric: true,
+    disablePadding: false,
+    label: 'N°',
+    hidden: false,
+    disableSort: true
+  },
+  {
+    id: 'question',
+    numeric: false,
+    disablePadding: false,
+    label: 'Pregunta'
+  },
+  {
+    id: 'answer',
+    numeric: false,
+    disablePadding: false,
+    label: 'Respuesta',
+    disableSort: true
+  },
+  {
+    id: 'active',
+    numeric: false,
+    disablePadding: false,
+    label: 'Activa',
+    disableSort: true
+  },
+  {
+    id: 'registDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Registro'
+  },
+  {
+    id: 'modifiedDate',
+    numeric: false,
+    disablePadding: false,
+    label: 'Modificado'
+  },
+  {
+    id: 'actions',
+    numeric: false,
+    disablePadding: false,
+    label: 'Acciones',
+    disableSort: true
+  }
+]

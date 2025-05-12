@@ -22,6 +22,7 @@ public class FaqDtoExit {
     private String answer;
 
     private boolean isActive;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "America/Santiago")
     private LocalDateTime registDate;
 

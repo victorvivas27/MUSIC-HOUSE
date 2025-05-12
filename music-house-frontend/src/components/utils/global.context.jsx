@@ -25,7 +25,8 @@ const initialState = {
   users: { content: [], totalElements: 0 },
   instruments: { content: [], totalElements: 0 },
   reservas: { content: [], totalElements: 0 },
-  feedback: { content: [], totalElements: 0 }
+  feedback: { content: [], totalElements: 0 },
+  faq: { content: [], totalElements: 0 }
 }
 
 const ContextGlobal = createContext()
@@ -140,6 +141,17 @@ const appReducer = (state, action) => {
           content: [action.payload, ...(state.feedbacks?.content || [])],
           totalElements: (state.feedbacks?.totalElements || 0) + 1
         }
+      }
+
+        case actions.SET_FAQ:
+      return {
+        ...state,
+        faq: action.payload?.content
+          ? action.payload
+          : {
+              content: Array.isArray(action.payload) ? action.payload : [],
+              totalElements: 0
+            }
       }
 
     default:

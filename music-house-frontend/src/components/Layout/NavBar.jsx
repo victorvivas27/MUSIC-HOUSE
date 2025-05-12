@@ -7,6 +7,7 @@ import PeopleIcon from '@mui/icons-material/People'
 import MusicNoteIcon from '@mui/icons-material/MusicNote'
 import PaletteIcon from '@mui/icons-material/Palette'
 import FeedbackIcon from '@mui/icons-material/Feedback'
+import QuestionAnswerIcon from '@mui/icons-material/QuestionAnswer'
 
 export const pagesMobile = [
   {
@@ -113,6 +114,19 @@ export const pagesDesktop = [
   scrollTo: '#feedback-section',
   anonymous: true,
   user: false
-}
+},
+   {
+    to: '/faq',
+    text: 'Preguntas',
+    icon: <QuestionAnswerIcon sx={{ color: '#2196f3' }} />,
+    admin: true
+  },
+   {
+    to: '/faqs',
+    text: 'Preguntas frecuentes',
+  icon: <QuestionAnswerIcon sx={{ color: '#2196f3' }} />,
+    anonymous: true,
+    user: true
+  },
 
 ]

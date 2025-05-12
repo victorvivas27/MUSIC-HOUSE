@@ -53,6 +53,7 @@ public class FeedbackService {
     public Page<FeedbackDtoExit> feedbackAll(Pageable pageable) {
 
         Page<Feedback> feedbackPage = feedbackRepository.findAll(pageable);
+
         return feedbackPage.map(feedbackBuilder::fromDtoExit);
     }
 
@@ -65,4 +66,6 @@ public class FeedbackService {
 
         feedbackRepository.deleteById(idFeedback);
     }
+
+
 }

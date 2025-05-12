@@ -12,7 +12,7 @@ import { Box, Stack, TextField } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
-const Faq = () => {
+const FaqForm = () => {
   const { showSuccess, showError } = useAlert()
 
   const formik = useFormik({
@@ -41,8 +41,7 @@ const Faq = () => {
   return (
     <Box
       sx={{
-        maxWidth: 450,
-      
+        maxWidth: 450
       }}
     >
       <TitleResponsive gutterBottom>¿Tienes dudas?</TitleResponsive>
@@ -62,14 +61,14 @@ const Faq = () => {
             helperText={
               formik.touched.question && formik.errors.question
                 ? formik.errors.question
-                : ' ' 
+                : ' '
             }
             sx={{
               ...inputStyles,
               '& .MuiInputBase-input': {
-                color: 'var( --texto-inverso)', 
+                color: 'var( --texto-inverso)',
                 fontSize: '18px'
-              },
+              }
             }}
           />
           <ContainerBottom>
@@ -81,4 +80,4 @@ const Faq = () => {
   )
 }
 
-export default Faq
+export default FaqForm

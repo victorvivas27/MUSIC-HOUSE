@@ -111,7 +111,7 @@ export const TitleResponsive = styled(Typography)(({ theme }) => ({
     fontSize: '1.4rem'
   },
   [theme.breakpoints.up('xl')]: {
-    fontSize: '2rem'
+    fontSize: '1.8rem'
   }
 }))
 

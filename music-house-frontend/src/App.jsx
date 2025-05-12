@@ -29,6 +29,9 @@ import { NotFoundPage } from "./Pages/NotFound"
 import Reservationes from "./Pages/Admin/Reservationes"
 import Feedback from "./Pages/Feedback"
 import { FeedbackAdmin } from "./Pages/Admin/FeedbackAmin"
+import { FaqAdmin } from "./Pages/Admin/FaqAdmin"
+import EditarFaq from "./components/common/faq/EditarFaq"
+import Faqs from "./Pages/Faqs"
 
 
 
@@ -55,6 +58,7 @@ export const App = () => {
                 <Route path="/" element={<Home />} />
                 <Route path="/about" element={<About />} />
                 <Route path='/feedback' element={<Feedback/>} />
+                <Route path='/faqs' element={<Faqs/>} />
                 <Route path="/instrument/:id/:slug?" element={<Instrument />} />
 
                 <Route element={<ProtectedRoute />}>
@@ -79,6 +83,8 @@ export const App = () => {
                   <Route path="/agregarCategoria" element={<AgregarCategoria />} />
                   <Route path="/editarCategoria/:id" element={<EditarCategoria />} />
                     <Route path="/feedback-user" element={<FeedbackAdmin/>} />
+                    <Route path="/faq" element={<FaqAdmin/>} />
+                    <Route path="/editarPregunta/:id" element={<EditarFaq/>} />
                 </Route>
               </Route>
 

@@ -23,7 +23,10 @@ const Feedback = () => {
     fetchFeedback()
   }, [dispatch, feedbackList.length])
 
-  const [ref, inView] = useInView({ triggerOnce: false, threshold: 0.5 })
+  const [ref, inView] = useInView({
+     triggerOnce: false,
+      threshold: 0.5 
+    })
 
   return (
     <Box sx={{

@@ -1,6 +1,5 @@
 import { TitleResponsive } from '../styles/ResponsiveComponents'
 import { Box, IconButton, Stack, Typography } from '@mui/material'
-import { Link } from 'react-router-dom'
 import FacebookIcon from '@mui/icons-material/Facebook'
 import InstagramIcon from '@mui/icons-material/Instagram'
 import TwitterIcon from '@mui/icons-material/Twitter'
@@ -8,7 +7,8 @@ import LinkedInIcon from '@mui/icons-material/LinkedIn'
 import YouTubeIcon from '@mui/icons-material/YouTube'
 import { Copyright } from '@mui/icons-material'
 import { flexRowContainer } from '../styles/styleglobal'
-import Faq from '../common/faq/Faq'
+import FaqForm from '../common/faq/FaqForm'
+
 
 export const Footer = () => {
   return (
@@ -41,12 +41,6 @@ export const Footer = () => {
           <TitleResponsive gutterBottom>Contacto</TitleResponsive>
           <Typography variant="body2">📍 Av. Principal 1234, Ciudad</Typography>
           <Typography variant="body2">📞 +56 9 1234 5678</Typography>
-          <Link
-            to="/preguntas-frecuentes"
-            style={{ color: 'var(--color-info)' }}
-          >
-            ❓ Preguntas Frecuentes
-          </Link>
         </Box>
 
         {/* Redes Sociales */}
@@ -73,7 +67,7 @@ export const Footer = () => {
             ))}
           </Stack>
         </Box>
-        <Faq />
+        <FaqForm />
       </Box>
 
       {/* Copyright */}

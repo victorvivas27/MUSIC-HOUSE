@@ -1,23 +1,30 @@
-import { useState, useEffect } from 'react'
+import { deleteFaq, getAllFaq } from '@/api/faq'
+import { getErrorMessage } from '@/api/getErrorMessage'
+import { Loader } from '@/components/common/loader/Loader'
+import {
+  MainWrapper,
+  TitleResponsive
+} from '@/components/styles/ResponsiveComponents'
+import { actions } from '@/components/utils/actions'
+import { useAppStates } from '@/components/utils/global.context'
+import useAlert from '@/hook/useAlert'
+import { usePaginationControl } from '@/hook/usePaginationControl'
+
 import {
   Box,
+  Checkbox,
+  IconButton,
+  Paper,
   Table,
   TableBody,
   TableCell,
   TableContainer,
   TablePagination,
   TableRow,
-  Paper,
-  IconButton,
-  Tooltip,
-  Checkbox
+  Tooltip
 } from '@mui/material'
-
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
-import useAlert from '@/hook/useAlert'
-import { useAppStates } from '@/components/utils/global.context'
-import { actions } from '@/components/utils/actions'
-import { deleteCategory, getCategories } from '@/api/categories'
 import {
   EnhancedTableHead,
   EnhancedTableToolbar,
@@ -26,28 +33,24 @@ import {
   handleSort,
   isSelected
 } from './common/tableHelper'
-import { headCellsCategory } from '@/components/utils/types/HeadCells'
-import { getErrorMessage } from '@/api/getErrorMessage'
-import { Loader } from '@/components/common/loader/Loader'
 import {
-  MainWrapper,
-  TitleResponsive
-} from '@/components/styles/ResponsiveComponents'
-import ArrowBack from '@/components/utils/ArrowBack'
-import { flexRowContainer, paginationStyles } from '@/components/styles/styleglobal'
-import SearchNameCategory from '@/components/common/search/SearchINameCategory'
-import { usePaginationControl } from '@/hook/usePaginationControl'
+  flexRowContainer,
+  paginationStyles
+} from '@/components/styles/styleglobal'
 import WarningAmberRoundedIcon from '@mui/icons-material/WarningAmberRounded'
 import DeleteIcon from '@mui/icons-material/Delete'
 import EditIcon from '@mui/icons-material/Edit'
+import { headCellsFaq } from '@/components/utils/types/HeadCells'
+import ArrowBack from '@/components/utils/ArrowBack'
 
-export const Categories = () => {
+export const FaqAdmin = () => {
   const [order, setOrder] = useState('asc')
-  const [orderBy, setOrderBy] = useState('categoryName')
+  const [orderBy, setOrderBy] = useState('registDate')
   const [selected, setSelected] = useState([])
   const [firstLoad, setFirstLoad] = useState(true)
   const navigate = useNavigate()
   const { showConfirm, showLoading, showSuccess, showError } = useAlert()
+  const [loading, setLoading] = useState(true)
   const { state, dispatch } = useAppStates()
   const {
     page,
@@ -55,43 +58,41 @@ export const Categories = () => {
     handleChangePage,
     handleChangeRowsPerPage,
     safePage
-  } = usePaginationControl(state.categories.totalElements)
+  } = usePaginationControl(state.faq.totalElements)
 
   const fetchData = async (
     pageToUse = page,
     sizeToUse = rowsPerPage,
     isFirst = false
   ) => {
-    if (isFirst) dispatch({ type: actions.SET_LOADING, payload: true })
+    if (isFirst) setLoading(true)
     const sort = `${orderBy},${order}`
 
     try {
-      const data = await getCategories(pageToUse, sizeToUse, sort)
-      dispatch({ type: actions.SET_CATEGORIES, payload: data.result })
+      const data = await getAllFaq(pageToUse, sizeToUse, sort)
+      dispatch({ type: actions.SET_FAQ, payload: data.result })
     } catch {
       dispatch({
-        type: actions.SET_CATEGORIES,
+        type: actions.SET_FAQ,
         payload: { content: [], totalElements: 0 }
       })
     } finally {
       setTimeout(() => {
         if (isFirst) setFirstLoad(false)
-        dispatch({ type: actions.SET_LOADING, payload: false })
+        setLoading(false)
       }, 100)
     }
   }
-  const rows = Array.isArray(state.categories.content)
-    ? state.categories.content
-    : []
+  const rows = Array.isArray(state.faq.content) ? state.faq.content : []
 
   useEffect(() => {
     fetchData(page, rowsPerPage, firstLoad)
   }, [page, rowsPerPage, order, orderBy])
 
-  const handleAdd = () => navigate('/agregarCategoria')
+  //const handleAdd = () => navigate('/modificar-pregunta')
 
   const handleSelectAllClick = (event) => {
-    handleSelectAll(event, rows, 'idCategory', setSelected)
+    handleSelectAll(event, rows, 'idFeedback', setSelected)
   }
 
   const handleClick = (event, id) => {
@@ -99,23 +100,23 @@ export const Categories = () => {
   }
 
   const handleRequestSort = (event, property) => {
-    const column = headCellsCategory.find((col) => col.id === property)
+    const column = headCellsFaq.find((col) => col.id === property)
     if (column?.disableSort) return
 
     handleSort(event, property, orderBy, order, setOrderBy, setOrder)
   }
 
-  const handleEdit = (id) => navigate(`/editarCategoria/${id}`)
+  const handleEdit = (id) => navigate(`/editarPregunta/${id}`)
 
-  const handleConfirmDelete = async (idCategory = null) => {
-    const selectedIds = idCategory ? [idCategory] : selected
+  const handleConfirmDelete = async (idFaq = null) => {
+    const selectedIds = idFaq ? [idFaq] : selected
     if (selectedIds.length === 0) {
-      showError('Error', 'No hay categorías seleccionadas para eliminar.')
+      showError('Error', 'No hay pregunta seleccionadas para eliminar.')
       return
     }
 
     const isConfirmed = await showConfirm(
-      `¿Eliminar ${selectedIds.length} categoría(s)?`,
+      `¿Eliminar ${selectedIds.length} preguntas(s)?`,
       'Esta acción no se puede deshacer.'
     )
     if (!isConfirmed) return
@@ -123,10 +124,10 @@ export const Categories = () => {
     showLoading('Eliminando...', 'Por favor espera.')
 
     try {
-      await Promise.all(selectedIds.map((id) => deleteCategory(id)))
+      await Promise.all(selectedIds.map((id) => deleteFaq(id)))
       showSuccess(
         '¡Eliminado(s)!',
-        `${selectedIds.length} categoría(s) eliminada(s) correctamente.`
+        `${selectedIds.length} pregunta eliminada(s) correctamente.`
       )
       setSelected([])
       await fetchData(page, rowsPerPage)
@@ -137,7 +138,9 @@ export const Categories = () => {
 
   return (
     <>
-      {state.loading && page === 0 && <Loader title="Cargando categorías" />}
+      {loading && (
+        <Loader title="Cargando preguntas frecuentes" fullSize={true} />
+      )}
       <MainWrapper>
         <Paper
           sx={{
@@ -152,14 +155,13 @@ export const Categories = () => {
           <ArrowBack />
 
           <EnhancedTableToolbar
-            title="Categorías"
-            titleAdd="Agregar categoría"
-            handleAdd={handleAdd}
+            title="Preguntas"
+            //titleAdd="Agregar categoría"
+            //handleAdd={handleAdd}
             numSelected={selected.length}
             handleConfirmDelete={() => handleConfirmDelete()}
-           
           />
-          <SearchNameCategory />
+          {/* <SearchNameCategory />*/}
           <TableContainer>
             <Table
               sx={{ minWidth: 750 }}
@@ -167,7 +169,7 @@ export const Categories = () => {
               size="medium"
             >
               <EnhancedTableHead
-                headCells={headCellsCategory}
+                headCells={headCellsFaq}
                 numSelected={selected.length}
                 order={order}
                 orderBy={orderBy}
@@ -178,7 +180,7 @@ export const Categories = () => {
               />
               <TableBody>
                 {rows.map((row, index) => {
-                  const isItemSelected = isSelected(row.idCategory, selected)
+                  const isItemSelected = isSelected(row.idFaq, selected)
                   const labelId = `enhanced-table-checkbox-${index}`
                   const isRowEven = index % 2 === 0
 
@@ -188,11 +190,11 @@ export const Categories = () => {
                       role="checkbox"
                       aria-checked={isItemSelected}
                       tabIndex={-1}
-                      key={row.idCategory}
+                      key={row.idFaq}
                       selected={isItemSelected}
                       className={isRowEven ? 'table-row-even' : 'table-row-odd'}
                       sx={{ cursor: 'pointer' }}
-                      onClick={(event) => handleClick(event, row.idCategory)}
+                      onClick={(event) => handleClick(event, row.idFaq)}
                     >
                       <TableCell padding="checkbox">
                         <Checkbox
@@ -205,17 +207,31 @@ export const Categories = () => {
                         {page * rowsPerPage + index + 1}
                       </TableCell>
 
-                      <TableCell align="left">{row.categoryName}</TableCell>
-                      <TableCell
-                        align="left"
-                        sx={{
-                          whiteSpace: 'normal',
-                          wordBreak: 'break-word',
-                          maxWidth: 500
-                        }}
-                      >
-                        {row.description}
+                      <TableCell align="left">{row.question}</TableCell>
+
+                      <TableCell align="left">{row.answer}</TableCell>
+
+                      <TableCell align="center">
+                        <Checkbox
+                          checked={row.active}
+                          readOnly
+                          disableRipple
+                          size="medium"
+                          sx={{
+                            color: row.active
+                              ? 'var(--color-exito)'
+                              : 'var(--color-secundario)',
+                            '&.Mui-checked': {
+                              color: 'var(--color-exito)'
+                            },
+                            '& .MuiSvgIcon-root': {
+                              fontSize: 22,
+                              borderRadius: '6px'
+                            }
+                          }}
+                        />
                       </TableCell>
+
                       <TableCell align="left">{row.registDate}</TableCell>
                       <TableCell align="left">{row.modifiedDate}</TableCell>
                       <TableCell align="left">
@@ -225,27 +241,29 @@ export const Categories = () => {
                             pointerEvents:
                               selected.length > 0 ? 'none' : 'auto',
                             transition: 'opacity 0.5s ease-in-out',
-                               ...flexRowContainer,
+                            ...flexRowContainer
                           }}
                         >
                           <Tooltip title="Editar">
                             <IconButton
                               onClick={(event) => {
-                                handleEdit(row.idCategory)
+                                handleEdit(row.idFaq)
                                 event.stopPropagation()
                               }}
                             >
-                              <EditIcon sx={{color:"var(--color-info)"}} />
+                              <EditIcon sx={{ color: 'var(--color-info)' }} />
                             </IconButton>
                           </Tooltip>
                           <Tooltip title="Eliminar">
                             <IconButton
                               onClick={(event) => {
-                                handleConfirmDelete(row.idCategory)
+                                handleConfirmDelete(row.idFaq)
                                 event.stopPropagation()
                               }}
                             >
-                              <DeleteIcon sx={{color:"var(--color-error)"}} />
+                              <DeleteIcon
+                                sx={{ color: 'var(--color-error)' }}
+                              />
                             </IconButton>
                           </Tooltip>
                         </Box>
@@ -257,7 +275,7 @@ export const Categories = () => {
                   <TableRow>
                     <TableCell colSpan={7} align="center">
                       <TitleResponsive>
-                        No se encontraron categorías
+                        No hay preguntas registradas aún.
                       </TitleResponsive>
                     </TableCell>
                   </TableRow>
@@ -276,7 +294,7 @@ export const Categories = () => {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={state.categories.totalElements || 0}
+            count={state.faq.totalElements || 0}
             rowsPerPage={rowsPerPage}
             page={safePage}
             onPageChange={handleChangePage}
