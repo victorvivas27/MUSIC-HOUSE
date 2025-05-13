@@ -41,8 +41,8 @@ public class MailManager {
             helper.addInline("whatsappIcon", new ClassPathResource("static/img/whatsapp01.png"));
             helper.addInline("instagramIcon", new ClassPathResource("static/img/instagram01.png"));
             helper.addInline("facebookIcon", new ClassPathResource("static/img/facebook01.png"));
-            helper.addInline("xIcon", new ClassPathResource("static/img/x-twitter01.png"));
-            // helper.addInline("logoImage", new ClassPathResource("static/img/logo-music-house.png"));
+            helper.addInline("xIcon", new ClassPathResource("static/img/x01.png"));
+            helper.addInline("logoImage", new ClassPathResource("static/img/house.png"));
             helper.addInline("backgroundImage", new ClassPathResource("static/img/magen3.png"));
 
             // Debug para verificar existencia
