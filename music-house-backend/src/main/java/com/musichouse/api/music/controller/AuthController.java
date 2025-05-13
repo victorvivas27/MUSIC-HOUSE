@@ -33,7 +33,7 @@ public class AuthController {
     @Value("${cookie.secure}")
     private Boolean cookieSecure;
 
-    @Value("${cookie.same-site:Lax}")
+    @Value("${cookie.same-site}")
     private String cookieSameSite;
 
     /**

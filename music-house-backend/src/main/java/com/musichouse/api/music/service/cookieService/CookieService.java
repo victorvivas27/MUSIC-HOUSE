@@ -11,10 +11,10 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class CookieService {
 
-    @Value("${security.cookie.secure:true}")
+    @Value("${security.cookie.secure}")
     private boolean cookieSecure;
 
-    @Value("${security.cookie.same-site:Strict}")
+    @Value("${security.cookie.same-site}")
     private String cookieSameSite;
 
     public ResponseCookie generateCookie(String token) {
