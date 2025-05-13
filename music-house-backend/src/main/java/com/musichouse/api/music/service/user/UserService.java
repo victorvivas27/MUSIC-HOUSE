@@ -1,18 +1,39 @@
 package com.musichouse.api.music.service.user;
 
+import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
+import com.musichouse.api.music.infra.MailManager;
+import com.musichouse.api.music.repository.AddressRepository;
+import com.musichouse.api.music.repository.FavoriteRepository;
+import com.musichouse.api.music.repository.PhoneRepository;
 import com.musichouse.api.music.repository.UserRepository;
+import com.musichouse.api.music.security.JwtService;
+import com.musichouse.api.music.service.awss3Service.AWSS3Service;
+import com.musichouse.api.music.service.awss3Service.S3FileDeleter;
+import com.musichouse.api.music.service.userAdmin.AuthHelper;
+import com.musichouse.api.music.service.userAdmin.EmailService;
 import com.musichouse.api.music.service.userAdmin.UserBuilder;
 import com.musichouse.api.music.service.userAdmin.UserValidator;
+import com.musichouse.api.music.telegramchat.TelegramService;
+import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
+
+import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Service
 @AllArgsConstructor
@@ -21,6 +42,73 @@ public class UserService {
     private final UserBuilder userBuilder;
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final JwtService jwtService;
+    private final PasswordEncoder passwordEncoder;
+    private final AuthenticationManager authenticationManager;
+    private final AddressRepository addressRepository;
+    private final PhoneRepository phoneRepository;
+    private final TelegramService telegramService;
+    private final FavoriteRepository favoriteRepository;
+    private final AWSS3Service awss3Service;
+    private final S3FileDeleter s3FileDeleter;
+    private final EmailService emailService;
+    private final AuthHelper authHelper;
+    @Autowired
+    private final MailManager mailManager;
+
+
+    @Transactional
+    @CacheEvict(value = "users", allEntries = true)
+    public UserDtoExit createUser(UserDtoEntrance userDtoEntrance, MultipartFile file)
+            throws DataIntegrityViolationException, MessagingException {
+
+
+        userValidator.validateUniqueEmail(userDtoEntrance);
+
+
+        UUID id = UUID.randomUUID();
+        String imageUrl;
+
+        if (file != null && !file.isEmpty()) {
+            imageUrl = awss3Service.uploadFileToS3User(file, id);
+        } else {
+            imageUrl = awss3Service.copyDefaultUserImage(id);
+        }
+
+        User user = userBuilder.buildUserWithImage(userDtoEntrance, id, imageUrl);
+
+        String code = String.valueOf((int) (Math.random() * 900000) + 100000);
+
+        LocalDateTime expiry = LocalDateTime.now().plusMinutes(15);
+
+        user.setVerified(false);
+
+        user.setVerificationCode(code);
+
+        user.setVerificationExpiry(expiry);
+
+        User userSaved = userRepository.save(user);
+
+        //String token = jwtService.generateToken(userSaved);
+
+
+        try {
+
+            emailService.sendVerificationEmail(user, code);
+        } catch (MessagingException e) {
+            throw new MessagingException(
+                    "No se pudo enviar el correo de bienvenida a " + userSaved.getEmail(), e);
+        }
+
+        return UserDtoExit.builder()
+                .idUser(userSaved.getIdUser())
+                .name(userSaved.getName())
+                .lastName(userSaved.getLastName())
+                .email(userSaved.getEmail())
+                .roles(userSaved.getRoles().stream().map(Enum::name).toList())
+                .build();
+    }
+
 
     @CachePut(value = "users", key = "#email")
     public UserDtoExit updateOwnProfile(String email, UserDtoModify dto, MultipartFile file)

@@ -41,7 +41,7 @@ public class UserBuilder {
 
         user.setRoles(roles);
 
-        user.setTelegramChatId(userDtoEntrance.getTelegramChatId());
+        //user.setTelegramChatId(userDtoEntrance.getTelegramChatId());
 
         user.getAddresses().forEach(address -> address.setUser(user));
 

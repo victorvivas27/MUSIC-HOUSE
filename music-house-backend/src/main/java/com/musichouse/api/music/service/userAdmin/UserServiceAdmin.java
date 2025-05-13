@@ -1,7 +1,6 @@
 package com.musichouse.api.music.service.userAdmin;
 
 import com.musichouse.api.music.dto.dto_entrance.LoginDtoEntrance;
-import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
@@ -19,7 +18,6 @@ import com.musichouse.api.music.service.StringValidator;
 import com.musichouse.api.music.service.awss3Service.AWSS3Service;
 import com.musichouse.api.music.service.awss3Service.S3FileDeleter;
 import com.musichouse.api.music.telegramchat.TelegramService;
-import jakarta.mail.MessagingException;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -29,7 +27,6 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -38,7 +35,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
@@ -66,58 +62,6 @@ public class UserServiceAdmin implements UserInterface {
 
     @Autowired
     private final MailManager mailManager;
-
-
-    @Override
-    @Transactional
-    @CacheEvict(value = "users", allEntries = true)
-    public TokenDtoExit createUser(UserDtoEntrance userDtoEntrance, MultipartFile file)
-            throws DataIntegrityViolationException, MessagingException {
-
-
-        userValidator.validateUniqueEmail(userDtoEntrance);
-
-
-        UUID id = UUID.randomUUID();
-        String imageUrl;
-
-        if (file != null && !file.isEmpty()) {
-            imageUrl = awss3Service.uploadFileToS3User(file, id);
-        } else {
-            imageUrl = awss3Service.copyDefaultUserImage(id);
-        }
-
-        User user = userBuilder.buildUserWithImage(userDtoEntrance, id, imageUrl);
-
-        User userSaved = userRepository.save(user);
-
-        String token = jwtService.generateToken(userSaved);
-
-
-        try {
-            emailService.sendWelcomeEmail(userSaved);
-        } catch (MessagingException e) {
-            throw new MessagingException(
-                    "No se pudo enviar el correo de bienvenida a " + userSaved.getEmail(), e);
-        }
-
-        telegramService.enviarMensajeDeBienvenida(
-                userSaved.getTelegramChatId(),
-                userSaved.getName(),
-                userSaved.getLastName(),
-                userSaved.getEmail()
-        );
-
-
-        return TokenDtoExit.builder()
-                .idUser(userSaved.getIdUser())
-                .name(userSaved.getName())
-                .lastName(userSaved.getLastName())
-                .email(userSaved.getEmail())
-                .roles(userSaved.getRoles().stream().map(Enum::name).toList())
-                .token(token)
-                .build();
-    }
 
 
     @Override

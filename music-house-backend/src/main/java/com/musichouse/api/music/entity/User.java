@@ -8,6 +8,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
@@ -93,8 +94,17 @@ public class User extends Person implements UserDetails {
     /**
      * Identificador único de Telegram del usuario.
      */
-    @Column(name = "chat_id")
-    private Long telegramChatId;
+    /*@Column(name = "chat_id")
+    private Long telegramChatId;*/
+
+    @Column(nullable = false)
+    private boolean verified = false;
+
+    @Column(name = "verification_code", length = 10)
+    private String verificationCode;
+
+    @Column(name = "verification_expiry")
+    private LocalDateTime verificationExpiry;
 
 
     @Override
@@ -126,6 +136,6 @@ public class User extends Person implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return true;
+        return verified;
     }
 }

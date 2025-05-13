@@ -7,16 +7,14 @@ export const AvatarUploader = ({
   preview,
   setPreview,
   setFieldValue,
-  showError
+  
 }) => {
   const handleFileChange = (e) => {
     const file = e.currentTarget.files[0]
-    if (file && file.size <= 5 * 1024 * 1024) {
-      setPreview(URL.createObjectURL(file))
-      setFieldValue('picture', file)
-    } else {
-      showError('El archivo supera el límite de 5MB')
-    }
+  if (file) {
+  setPreview(URL.createObjectURL(file))
+  setFieldValue('picture', file)
+}
   }
 
   return (

@@ -2,6 +2,17 @@ import * as Yup from 'yup'
 
 export const userValidationSchema = Yup.object().shape({
   
+  picture: Yup.mixed()
+  .nullable()
+  .test('fileSize', 'La imagen debe pesar menos de 5MB', (value) => {
+    if (!value) return true
+    return value.size <= 5 * 1024 * 1024
+  })
+  .test('fileType', 'Formato no permitido. Usa JPG, PNG o WEBP', (value) => {
+    if (!value) return true
+    return ['image/jpeg', 'image/png', 'image/webp'].includes(value.type)
+  }),
+  
   name: Yup.string().min(3, 'Mínimo 3 caracteres').required('El nombre es obligatorio'),
   lastName: Yup.string().min(3, 'Mínimo 3 caracteres').required('El apellido es obligatorio'),
   email: Yup.string().email('Email inválido').required('El email es obligatorio'),

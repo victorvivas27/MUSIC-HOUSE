@@ -3,7 +3,6 @@ package com.musichouse.api.music.controller;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.musichouse.api.music.dto.dto_entrance.LoginDtoEntrance;
-import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
@@ -13,7 +12,6 @@ import com.musichouse.api.music.service.userAdmin.UserServiceAdmin;
 import com.musichouse.api.music.util.ApiResponse;
 import com.musichouse.api.music.util.FileValidatorImage;
 import jakarta.mail.MessagingException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
@@ -54,72 +52,6 @@ public class UserAdminController {
         this.jwtService = jwtService;
     }
 
-
-    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public HttpEntity<ApiResponse<TokenDtoExit>> createUser(
-            @RequestParam("user") String userJson,
-            @RequestPart(value = "file", required = false) MultipartFile file,
-            HttpServletRequest request // 💡 agregamos el request para inspeccionar cookie
-    ) throws JsonProcessingException, MessagingException {
-
-        UserDtoEntrance userDtoEntrance = objectMapper.readValue(userJson, UserDtoEntrance.class);
-        List<String> fileErrors = FileValidatorImage.validateImage(file);
-        Set<ConstraintViolation<UserDtoEntrance>> violations = validator.validate(userDtoEntrance);
-        List<String> dtoErrors = violations.stream()
-                .map(v -> v.getPropertyPath() + ": " + v.getMessage())
-                .toList();
-
-        List<String> allErrors = new ArrayList<>();
-        allErrors.addAll(fileErrors);
-        allErrors.addAll(dtoErrors);
-
-        if (!allErrors.isEmpty()) {
-            return ResponseEntity.badRequest().body(ApiResponse.<TokenDtoExit>builder()
-                    .status(HttpStatus.BAD_REQUEST)
-                    .statusCode(HttpStatus.BAD_REQUEST.value())
-                    .message("Errores de validación")
-                    .error(allErrors)
-                    .result(null)
-                    .build());
-        }
-
-        // ✅ Crear usuario y generar token
-        TokenDtoExit tokenDtoExit = userService.createUser(userDtoEntrance, file);
-
-        // 💡 Extraer el token de la cookie (si ya hay uno)
-        String existingToken = jwtService.extractJwtFromRequest(request);
-
-        if (existingToken != null && jwtService.validateToken(existingToken)) {
-            // 🙅 Si ya hay sesión activa, no seteamos cookie nueva (caso admin)
-            return ResponseEntity.status(HttpStatus.CREATED)
-                    .body(ApiResponse.<TokenDtoExit>builder()
-                            .status(HttpStatus.CREATED)
-                            .statusCode(HttpStatus.CREATED.value())
-                            .message("Usuario creado con éxito por administrador.")
-                            .error(null)
-                            .result(tokenDtoExit)
-                            .build());
-        }
-
-        // ✅ Si no hay sesión, seteamos la cookie (registro normal)
-        ResponseCookie cookie = ResponseCookie.from("jwt", tokenDtoExit.getToken())
-                .httpOnly(true)
-                .secure(cookieSecure)
-                .sameSite(cookieSameSite)
-                .path("/")
-                .maxAge(60 * 60)
-                .build();
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                .body(ApiResponse.<TokenDtoExit>builder()
-                        .status(HttpStatus.CREATED)
-                        .statusCode(HttpStatus.CREATED.value())
-                        .message("Usuario creado con éxito.")
-                        .error(null)
-                        .result(tokenDtoExit)
-                        .build());
-    }
 
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<TokenDtoExit>> loginUser(@Valid @RequestBody LoginDtoEntrance loginDtoEntrance)

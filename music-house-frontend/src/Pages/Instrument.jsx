@@ -374,6 +374,7 @@ export const Instrument = () => {
               <TitleResponsive sx={{ color: 'var(--texto-secundario)' }}>
                 Valor por día de alquiler:{' '}
                 <Typography
+                  component="span"
                   sx={{
                     color: 'var(--color-info)',
                     fontWeight: 'bold',

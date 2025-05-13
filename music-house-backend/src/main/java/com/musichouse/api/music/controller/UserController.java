@@ -2,6 +2,7 @@ package com.musichouse.api.music.controller;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
@@ -13,9 +14,10 @@ import jakarta.mail.MessagingException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validator;
-import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,13 +27,67 @@ import java.util.List;
 import java.util.Set;
 
 @RestController
-@AllArgsConstructor
+
 @RequestMapping("/api/users")
 public class UserController {
     private final UserService userService;
     private final ObjectMapper objectMapper;
     private final Validator validator;
     private final JwtService jwtService;
+
+    @Value("${cookie.secure}")
+    private Boolean cookieSecure;
+
+    @Value("${cookie.same-site}")
+    private String cookieSameSite;
+
+    public UserController(UserService userService, ObjectMapper objectMapper, Validator validator, JwtService jwtService) {
+        this.userService = userService;
+        this.objectMapper = objectMapper;
+        this.validator = validator;
+        this.jwtService = jwtService;
+    }
+
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public HttpEntity<ApiResponse<UserDtoExit>> createUser(
+            @RequestParam("user") String userJson,
+            @RequestPart(value = "file", required = false) MultipartFile file
+    ) throws JsonProcessingException, MessagingException {
+
+        UserDtoEntrance userDtoEntrance = objectMapper.readValue(userJson, UserDtoEntrance.class);
+        List<String> fileErrors = FileValidatorImage.validateImage(file);
+        Set<ConstraintViolation<UserDtoEntrance>> violations = validator.validate(userDtoEntrance);
+        List<String> dtoErrors = violations.stream()
+                .map(v -> v.getPropertyPath() + ": " + v.getMessage())
+                .toList();
+
+        List<String> allErrors = new ArrayList<>();
+        allErrors.addAll(fileErrors);
+        allErrors.addAll(dtoErrors);
+
+        if (!allErrors.isEmpty()) {
+            return ResponseEntity.badRequest().body(ApiResponse.<UserDtoExit>builder()
+                    .status(HttpStatus.BAD_REQUEST)
+                    .statusCode(HttpStatus.BAD_REQUEST.value())
+                    .message("Errores de validación")
+                    .error(allErrors)
+                    .result(null)
+                    .build());
+        }
+
+        // Crear usuario y enviar email de verificación
+        UserDtoExit userDtoExit = userService.createUser(userDtoEntrance, file);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(ApiResponse.<UserDtoExit>builder()
+                        .status(HttpStatus.CREATED)
+                        .statusCode(HttpStatus.CREATED.value())
+                        .message("Usuario creado con éxito. Verifica tu correo electrónico.")
+                        .error(null)
+                        .result(userDtoExit)
+                        .build());
+    }
+
 
     // 🔹 ACTUALIZAR USUARIO
     @PutMapping("/me") // Aclaramos que este es el endpoint de usuario común
@@ -79,6 +135,7 @@ public class UserController {
                         .result(userDtoExit)
                         .build());
     }
+
 
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserDtoExit>> getCurrentUser(HttpServletRequest request)

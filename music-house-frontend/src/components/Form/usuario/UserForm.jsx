@@ -93,7 +93,7 @@ export const UserForm = ({
         validationSchema={userValidationSchema}
         validateOnChange
         validateOnBlur
-        onSubmit={onSubmit}
+        onSubmit={(values, formikHelpers) => onSubmit(values, formikHelpers)}
         context={{ isUserAdmin }}
       >
         {({ values, errors, touched, setFieldValue, handleSubmit }) => (

@@ -44,7 +44,7 @@ public class ReservationAdminService {
 
         reservationValidator.validateUserAndInstrumentMatchReservation(reservation, idUser, idInstrument);
 
-        telegramService.enviarMensajeDeCancelacion(user.getTelegramChatId(), user.getName(), user.getLastName());
+        //telegramService.enviarMensajeDeCancelacion(user.getTelegramChatId(), user.getName(), user.getLastName());
 
         reservationRepository.delete(reservation);
     }

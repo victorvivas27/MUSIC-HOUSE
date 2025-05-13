@@ -10,13 +10,12 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-
 public class TokenDtoExit {
 
     private UUID idUser;
 
     private String email;
-    
+
     private String name;
 
     private String lastName;

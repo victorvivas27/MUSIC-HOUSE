@@ -42,6 +42,7 @@ public class SecurityConfig {
                          * - /api/auth/** requiere que el usuario esté autenticado (JWT en cookie).
                          */
                         .requestMatchers(HttpMethod.POST, "/api/users/**").permitAll()
+                        .requestMatchers(HttpMethod.POST, "/api/auth/**").permitAll()
                         .requestMatchers(HttpMethod.PUT, "/api/users/me").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/users/me").authenticated()
                         .requestMatchers(HttpMethod.GET, "/api/users/*").authenticated()

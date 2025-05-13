@@ -32,6 +32,7 @@ import { FeedbackAdmin } from "./Pages/Admin/FeedbackAmin"
 import { FaqAdmin } from "./Pages/Admin/FaqAdmin"
 import EditarFaq from "./components/common/faq/EditarFaq"
 import Faqs from "./Pages/Faqs"
+import VerifyForm from "./components/Form/usuario/VerifyForm"
 
 
 
@@ -46,6 +47,7 @@ export const App = () => {
               {/* 🔓 RUTAS PÚBLICAS (acceso sin login) */}
               <Route path="/autentificacion" element={<AuthPage />} />
               <Route path="/noDisponible" element={<ServerError />} />
+              <Route path="/verify" element={<VerifyForm />} />
               <Route path="*" element={<NotFoundPage />} />
 
               {/* 🔐 RUTAS USUARIO LOGUEADO SIN HEADER/FOOTER */}

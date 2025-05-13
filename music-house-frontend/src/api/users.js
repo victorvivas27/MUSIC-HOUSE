@@ -112,6 +112,7 @@ export const UsersApi = {
       handleApiError(error);
     }
   },
+
   logOut: async () => {
     try {
       const response = await axios.get(`${BASE_URL}/auth/logout`)
@@ -120,6 +121,20 @@ export const UsersApi = {
       handleApiError(error)
     }
   },
+
+  userAuthVerify: async (email, code) => {
+  try {
+    const response = await axios.post(
+      `${BASE_URL}/auth/verify`,
+      { email, code }, // 👉 datos requeridos por el backend
+      { withCredentials: true } // 👉 para que guarde la cookie JWT
+    );
+    return response.data;
+  } catch (error) {
+    handleApiError(error);
+    throw error; // opcional si querés manejarlo arriba
+  }
+}
 };
 
 export const searchUserName = 

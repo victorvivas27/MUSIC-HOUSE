@@ -68,7 +68,7 @@ const useAlert = () => {
       text,
       icon: 'success',
       showConfirmButton: false,
-      timer: 3500,
+      timer: 1800,
       timerProgressBar: true,
       background: 'var( --gradiente-vidrio)',
       color: 'var(--color-primario)',

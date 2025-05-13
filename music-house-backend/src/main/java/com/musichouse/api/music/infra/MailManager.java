@@ -118,5 +118,43 @@ public class MailManager {
     }
 
 
+    public void sendVerificationCodeEmail(String email, String name, String lastName, String code) throws MessagingException {
+        MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+
+        try {
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
+            helper.setTo(email);
+            helper.setSubject("Verifica tu cuenta en MusicHouse");
+
+            Context context = new Context();
+            context.setVariable("nombre", name);
+            context.setVariable("apellido", lastName);
+            context.setVariable("codigo", code);
+
+            String content = templateEngine.process("email_verification", context);
+
+            helper.setText(content, true);
+            helper.setFrom(sender);
+
+            // Reutilizamos los íconos e imágenes inline
+            ClassPathResource whatsappIcon = new ClassPathResource("static/img/whatsapp01.png");
+            helper.addInline("whatsappIcon", whatsappIcon);
+            ClassPathResource instagramIcon = new ClassPathResource("static/img/instagram01.png");
+            helper.addInline("instagramIcon", instagramIcon);
+            ClassPathResource facebookIcon = new ClassPathResource("static/img/facebook01.png");
+            helper.addInline("facebookIcon", facebookIcon);
+            ClassPathResource xIcon = new ClassPathResource("static/img/x-twitter01.png");
+            helper.addInline("xIcon", xIcon);
+            ClassPathResource logoImage = new ClassPathResource("static/img/logo-music-house.png");
+            helper.addInline("logoImage", logoImage);
+            ClassPathResource backgroundImage = new ClassPathResource("static/img/magen3.png");
+            helper.addInline("backgroundImage", backgroundImage);
+
+            javaMailSender.send(mimeMessage);
+        } catch (MessagingException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
 }
 

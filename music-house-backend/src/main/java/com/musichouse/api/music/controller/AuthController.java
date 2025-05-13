@@ -1,22 +1,24 @@
 package com.musichouse.api.music.controller;
 
+import com.musichouse.api.music.dto.dto_entrance.VerifyRequest;
 import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.security.JwtService;
+import com.musichouse.api.music.service.cookieService.CookieService;
+import com.musichouse.api.music.service.user.UserAuthService;
 import com.musichouse.api.music.service.userAdmin.UserValidator;
 import com.musichouse.api.music.util.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -25,6 +27,8 @@ public class AuthController {
 
     private final JwtService jwtService;
     private final UserValidator userValidator;
+    private final UserAuthService authService;
+    private final CookieService cookieService;
 
     @Value("${cookie.secure}")
     private Boolean cookieSecure;
@@ -73,6 +77,7 @@ public class AuthController {
      */
     @GetMapping("/logout")
     public ResponseEntity<ApiResponse<Void>> logout(HttpServletResponse response) {
+
         ResponseCookie deleteCookie = ResponseCookie.from("jwt", "")
                 .httpOnly(true)
                 .secure(cookieSecure)
@@ -89,6 +94,23 @@ public class AuthController {
                 .message("Sesión cerrada correctamente.")
                 .result(null)
                 .build());
+    }
+
+
+    @PostMapping("/verify")
+    public ResponseEntity<ApiResponse<TokenDtoExit>> verifyUser(@Valid @RequestBody VerifyRequest request) throws ResourceNotFoundException {
+        TokenDtoExit tokenDtoExit = authService.verifyUser(request.getEmail(), request.getCode());
+
+        ResponseCookie cookie = cookieService.generateCookie(tokenDtoExit.getToken());
+
+        return ResponseEntity.ok()
+                .header(HttpHeaders.SET_COOKIE, cookie.toString())
+                .body(ApiResponse.<TokenDtoExit>builder()
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Cuenta verificada correctamente.")
+                        .result(tokenDtoExit)
+                        .build());
     }
 }
 

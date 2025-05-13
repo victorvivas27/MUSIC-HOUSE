@@ -14,4 +14,8 @@ public class EmailService {
     public void sendWelcomeEmail(User user) throws MessagingException {
         mailManager.sendMessage(user.getEmail(), user.getName(), user.getLastName());
     }
+
+    public void sendVerificationEmail(User user, String code) throws MessagingException {
+        mailManager.sendVerificationCodeEmail(user.getEmail(), user.getName(), user.getLastName(), code);
+    }
 }

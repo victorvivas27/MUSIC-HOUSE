@@ -37,9 +37,26 @@
   --color-select:#f2e592e9;
 
   /* 🌈 Gradientes */
-  --gradiente-primario:linear-gradient(90deg,rgba(227, 217, 27, 0.986) 0%, rgba(199, 199, 87, 0.848) 50%, rgba(237, 221, 83, 0.855) 100%);
+--gradiente-primario: linear-gradient(
+  145deg,
+  rgba(255, 244, 0, 0.95) 10%,
+  rgba(255, 230, 40, 0.8) 40%,
+  rgba(237, 210, 10, 0.85) 75%,
+  rgba(200, 160, 0, 0.9) 100%
+);
   --gradiente-vidrio: linear-gradient(145deg, rgba(244, 181, 22, 0.723), rgba(79, 71, 71, 0.848));
-
+  --gradiente-azul: linear-gradient(145deg, #007cf0, #00dfd8);
+  --gradiente-azul-profundo: linear-gradient(135deg, #1e3c72, #2a5298);
+  --gradiente-verde: linear-gradient(145deg, #00c853, #b2ff59);
+  --gradiente-verde-oscuro: linear-gradient(135deg, #1b5e20, #388e3c);
+  --gradiente-negro: linear-gradient(135deg, #000000, #434343);
+  --gradiente-carbono: linear-gradient(145deg, #2c2c2c, #1a1a1a);
+  --gradiente-marron: linear-gradient(145deg, #8d6e63, #bcaaa4);
+--gradiente-cafe: linear-gradient(135deg, #4e342e, #795548);
+--gradiente-dorado: linear-gradient(145deg, #fff176, #fbc02d, #f57f17);
+--gradiente-morado: linear-gradient(145deg, #8e24aa, #d500f9);
+--gradiente-rojo: linear-gradient(145deg, #d32f2f, #ff5252);
+--gradiente-rosa: linear-gradient(145deg, #ec407a, #f8bbd0);
   /* 🌟 Sombras */
   --box-shadow: 
     rgba(0, 0, 0, 0.25) 0px 54px 55px,

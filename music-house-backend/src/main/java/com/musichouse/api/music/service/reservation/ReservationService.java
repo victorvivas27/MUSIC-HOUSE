@@ -148,6 +148,7 @@ public class ReservationService implements ReservationInterface {
 
         // Marcar como cancelada
         reservation.setCancelled(true);
+        
         reservationRepository.save(reservation);
 
         // Si la cancelación es dentro de las 24h, liberar las fechas
