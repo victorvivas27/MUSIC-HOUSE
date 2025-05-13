@@ -22,46 +22,46 @@ import java.time.LocalDate;
 @NoArgsConstructor
 @Component
 public class MailManager {
-    private final static Logger LOGGER = LoggerFactory.getLogger(MailManager.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MailManager.class);
+
     @Autowired
     private JavaMailSender javaMailSender;
+
     @Autowired
     private SpringTemplateEngine templateEngine;
 
     @Value("${spring.mail.username}")
     private String sender;
 
+    private void addInlineImages(MimeMessageHelper helper) throws MessagingException {
+        helper.addInline("whatsappIcon", new ClassPathResource("img/whatsapp01.png"));
+        helper.addInline("instagramIcon", new ClassPathResource("img/instagram01.png"));
+        helper.addInline("facebookIcon", new ClassPathResource("img/facebook01.png"));
+        helper.addInline("xIcon", new ClassPathResource("img/x-twitter01.png"));
+        helper.addInline("logoImage", new ClassPathResource("img/logo-music-house.png"));
+        helper.addInline("backgroundImage", new ClassPathResource("img/magen3.png"));
+    }
+
     public void sendMessage(String email, String name, String lastName) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
         try {
-            mimeMessage.setSubject("Confirmación de Registro");
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setTo(email);
+            helper.setSubject("Confirmación de Registro");
 
-            // Set the content using Thymeleaf template
             Context context = new Context();
             context.setVariable("nombre", name);
             context.setVariable("apellido", lastName);
-            String content = templateEngine.process("email_register", context);
 
+            String content = templateEngine.process("email_register", context);
             helper.setText(content, true);
             helper.setFrom(sender);
 
-            ClassPathResource whatsappIcon = new ClassPathResource("static/img/whatsapp01.png");
-            helper.addInline("whatsappIcon", whatsappIcon);
-            ClassPathResource instagramIcon = new ClassPathResource("static/img/instagram01.png");
-            helper.addInline("instagramIcon", instagramIcon);
-            ClassPathResource facebookIcon = new ClassPathResource("static/img/facebook01.png");
-            helper.addInline("facebookIcon", facebookIcon);
-            ClassPathResource xIcon = new ClassPathResource("static/img/x-twitter01.png");
-            helper.addInline("xIcon", xIcon);
-            ClassPathResource logoImage = new ClassPathResource("static/img/logo-music-house.png");
-            helper.addInline("logoImage", logoImage);
-            ClassPathResource backgroundImage = new ClassPathResource("static/img/magen3.png");
-            helper.addInline("backgroundImage", backgroundImage);
-
+            addInlineImages(helper);
             javaMailSender.send(mimeMessage);
+
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
@@ -75,48 +75,35 @@ public class MailManager {
                                             LocalDate endDate,
                                             String reservationCode,
                                             BigDecimal totalPrice,
-                                            String imageURL)
-            throws MessagingException {
+                                            String imageURL) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
 
-        Context context = new Context();
-        context.setVariable("nombre", name);
-        context.setVariable("apellido", lastName);
-        context.setVariable("instrumento", instrumentName);
-        context.setVariable("fechaInicio", startDate.toString());
-        context.setVariable("fechaFin", endDate.toString());
-        context.setVariable("codigoReserva", reservationCode);
-        context.setVariable("precioTotal", totalPrice.toString());
-        context.setVariable("imagenURL", imageURL);
-
-        String content = templateEngine.process("email_reservation", context);
-
         try {
-            mimeMessage.setSubject("Confirmación de Reserva");
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
             helper.setTo(email);
+            helper.setSubject("Confirmación de Reserva");
+
+            Context context = new Context();
+            context.setVariable("nombre", name);
+            context.setVariable("apellido", lastName);
+            context.setVariable("instrumento", instrumentName);
+            context.setVariable("fechaInicio", startDate.toString());
+            context.setVariable("fechaFin", endDate.toString());
+            context.setVariable("codigoReserva", reservationCode);
+            context.setVariable("precioTotal", totalPrice.toString());
+            context.setVariable("imagenURL", imageURL);
+
+            String content = templateEngine.process("email_reservation", context);
             helper.setText(content, true);
             helper.setFrom(sender);
 
-            ClassPathResource whatsappIcon = new ClassPathResource("static/img/whatsapp01.png");
-            helper.addInline("whatsappIcon", whatsappIcon);
-            ClassPathResource instagramIcon = new ClassPathResource("static/img/instagram01.png");
-            helper.addInline("instagramIcon", instagramIcon);
-            ClassPathResource facebookIcon = new ClassPathResource("static/img/facebook01.png");
-            helper.addInline("facebookIcon", facebookIcon);
-            ClassPathResource xIcon = new ClassPathResource("static/img/x-twitter01.png");
-            helper.addInline("xIcon", xIcon);
-            ClassPathResource logoImage = new ClassPathResource("static/img/logo-music-house.png");
-            helper.addInline("logoImage", logoImage);
-            ClassPathResource backgroundImage = new ClassPathResource("static/img/magen3.png");
-            helper.addInline("backgroundImage", backgroundImage);
-
+            addInlineImages(helper);
             javaMailSender.send(mimeMessage);
+
         } catch (MessagingException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
-
 
     public void sendVerificationCodeEmail(String email, String name, String lastName, String code) throws MessagingException {
         MimeMessage mimeMessage = javaMailSender.createMimeMessage();
@@ -132,15 +119,15 @@ public class MailManager {
             context.setVariable("codigo", code);
 
             String content = templateEngine.process("email_verification", context);
-
             helper.setText(content, true);
             helper.setFrom(sender);
 
+            addInlineImages(helper);
             javaMailSender.send(mimeMessage);
+
         } catch (MessagingException e) {
             throw new RuntimeException(e);
         }
     }
-
 }
 

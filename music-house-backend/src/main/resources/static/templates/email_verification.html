@@ -2,19 +2,59 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Verificación de cuenta</title>
+    <title>Verificación de cuenta - Music House</title>
 </head>
-<body style="font-family: Arial, sans-serif; padding: 20px; background-color: #f4f4f4; color: #333;">
-<div style="max-width: 500px; margin: 0 auto; background-color: #fff; border-radius: 6px; padding: 30px; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
-    <h2 style="text-align: center; color: #FBC02D;">Verificación de cuenta</h2>
-    <p>Hola [[${nombre}]] [[${apellido}]],</p>
-    <p>Gracias por registrarte en <strong>Music House</strong>. Tu código de verificación es:</p>
-    <div style="text-align: center; margin: 20px 0;">
-        <strong style="font-size: 24px; background-color: #fff9c4; padding: 10px 20px; border-radius: 6px; display: inline-block;">
-            [[${codigo}]]
-        </strong>
+<body style="margin: 0; padding: 0; font-family: 'Roboto', Arial, sans-serif; background-color: #fef7e0;">
+
+<div style="max-width: 600px; margin: 40px auto; background-color: #ffffffb7; border-radius: 10px; overflow: hidden; box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px, rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px, rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;">
+
+    <!-- Imagen superior -->
+    <img src="cid:backgroundImage" alt="Banner" style="width: 100%; height: 100px; object-fit: cover;">
+
+    <!-- Contenido principal -->
+    <div style="padding: 30px 20px; color: #483f3f;">
+        <h1 style="color: #FBC02D; font-size: 22px; text-align: center; margin-bottom: 10px;">
+            Verifica tu cuenta, [[${nombre}]] [[${apellido}]]
+        </h1>
+
+        <p style="font-size: 16px; line-height: 1.6; color: #000000;">
+            Gracias por registrarte en <strong>Music House</strong>. Para completar tu registro y comenzar a explorar
+            nuestros instrumentos, por favor verifica tu cuenta usando el siguiente código:
+        </p>
+
+        <div style="text-align: center; margin: 30px 0;">
+            <span style="font-size: 28px; letter-spacing: 2px; font-weight: bold; color: #2b2b2b; background-color: #fff5c3; padding: 12px 24px; border-radius: 8px; display: inline-block;">
+                [[${codigo}]]
+            </span>
+        </div>
+
+        <p style="font-size: 14px; color: #000000; text-align: center;">
+            Este código es válido por 15 minutos.
+        </p>
     </div>
-    <p style="font-size: 14px; color: #555;">Este código es válido por 15 minutos.</p>
+
+    <!-- Pie de página -->
+    <footer style="background-color: rgba(92, 92, 92, 0.1); text-align: center; padding: 20px; font-size: 12px; color: #483f3f;">
+        <img src="cid:logoImage" alt="Logo" style="width: 60px; margin-bottom: 10px;">
+
+        <p><strong>Music House</strong><br>
+            Calle Falsa 123, Ciudad, País<br>
+            <a href="tel:+1234567890" style="color: #FBC02D; text-decoration: none;">(123) 456-7890</a><br>
+            <a href="mailto:musichousevivas@gmail.com" style="color: #FBC02D; text-decoration: none;">musichousevivas@gmail.com</a>
+        </p>
+
+        <div style="margin-top: 10px;">
+            <a href="https://wa.me/+56986841970"><img src="cid:whatsappIcon" alt="WhatsApp"
+                                                      style="width: 24px; margin: 0 5px;"></a>
+            <a href="https://facebook.com"><img src="cid:facebookIcon" alt="Facebook"
+                                                style="width: 24px; margin: 0 5px;"></a>
+            <a href="https://twitter.com"><img src="cid:xIcon" alt="X" style="width: 24px; margin: 0 5px;"></a>
+            <a href="https://instagram.com"><img src="cid:instagramIcon" alt="Instagram"
+                                                 style="width: 24px; margin: 0 5px;"></a>
+        </div>
+
+        <p style="font-size: 10px; color: #9E9E9E;">&copy; 2024 Music House. Todos los derechos reservados.</p>
+    </footer>
 </div>
 </body>
 </html>
