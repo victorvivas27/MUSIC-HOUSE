@@ -35,12 +35,17 @@ public class MailManager {
     private String sender;
 
     private void addInlineImages(MimeMessageHelper helper) throws MessagingException {
-        helper.addInline("whatsappIcon", new ClassPathResource("img/whatsapp01.png"));
-        helper.addInline("instagramIcon", new ClassPathResource("img/instagram01.png"));
-        helper.addInline("facebookIcon", new ClassPathResource("img/facebook01.png"));
-        helper.addInline("xIcon", new ClassPathResource("img/x-twitter01.png"));
-        helper.addInline("logoImage", new ClassPathResource("img/logo-music-house.png"));
-        helper.addInline("backgroundImage", new ClassPathResource("img/magen3.png"));
+        try {
+            helper.addInline("whatsappIcon", new ClassPathResource("img/whatsapp01.png"));
+            helper.addInline("instagramIcon", new ClassPathResource("img/instagram01.png"));
+            helper.addInline("facebookIcon", new ClassPathResource("img/facebook01.png"));
+            helper.addInline("xIcon", new ClassPathResource("img/x-twitter01.png"));
+            helper.addInline("logoImage", new ClassPathResource("img/logo-music-house.png"));
+            helper.addInline("backgroundImage", new ClassPathResource("img/magen3.png"));
+        } catch (Exception ex) {
+            LOGGER.error("Error al cargar imágenes inline para email: {}", ex.getMessage());
+            throw ex;
+        }
     }
 
     public void sendMessage(String email, String name, String lastName) throws MessagingException {
