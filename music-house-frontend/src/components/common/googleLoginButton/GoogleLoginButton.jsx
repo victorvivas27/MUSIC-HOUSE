@@ -5,7 +5,8 @@ import { ContainerBottom, CustomButton } from "@/components/styles/ResponsiveCom
 
 const GoogleLoginButton = () => {
   const handleGoogleLogin = () => {
-    window.location.href = 'http://localhost:9090/oauth2/authorization/google';
+      const baseUrl = import.meta.env.VITE_BASE_URL;
+      window.location.href = `${baseUrl}/oauth2/authorization/google`;
   };
 
   return (
