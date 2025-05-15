@@ -1,13 +1,14 @@
 import { inputStyles } from '@/components/styles/styleglobal'
-import { FormControl, Grid, TextField } from '@mui/material'
+import { FormControl, Grid, TextField, useTheme } from '@mui/material'
 import { Field } from 'formik'
 import PropTypes from 'prop-types'
 
 export const BasicInfoFields = ({ values, touched, errors }) => {
+  const theme = useTheme()
   return (
-    <Grid container spacing={2}>
-      <Grid item xs={12} md={6}>
-        <FormControl sx={{ ...inputStyles }}>
+    <Grid container  justifyContent="center" spacing={2}   >
+      <Grid  item xs={6} sm={5} md={5} lg={4} >
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             label="🏷️Nombre"
@@ -18,8 +19,8 @@ export const BasicInfoFields = ({ values, touched, errors }) => {
           />
         </FormControl>
       </Grid>
-      <Grid item xs={12} md={6}>
-        <FormControl sx={{ ...inputStyles }}>
+      <Grid  item xs={6} sm={5} md={5} lg={4}>
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             label="👤Apellido"
@@ -33,8 +34,8 @@ export const BasicInfoFields = ({ values, touched, errors }) => {
         </FormControl>
       </Grid>
 
-      <Grid item xs={12}>
-        <FormControl sx={{ ...inputStyles }}>
+      <Grid  item xs={6} sm={6} md={5} lg={5} >
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             label="📧 Email"

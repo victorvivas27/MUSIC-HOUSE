@@ -1,5 +1,5 @@
 import { inputStyles } from '@/components/styles/styleglobal'
-import { FormControl, Grid, TextField } from '@mui/material'
+import { FormControl, Grid, TextField, useTheme } from '@mui/material'
 import { Field } from 'formik'
 
 export const AddressFields = ({
@@ -8,24 +8,24 @@ export const AddressFields = ({
   errors,
   setFieldValue
 }) => {
- 
+  const theme = useTheme()
   return addresses.map((address, index) => (
-    <Grid
-      container
-      spacing={2}
-      key={index}
-      >
-      <Grid item xs={12} md={6}>
+    <Grid container  justifyContent="center" spacing={1}   key={index}>
+      <Grid item xs={6} sm={5} md={5} lg={5}>
         {/* Calle */}
 
-        <FormControl sx={{ ...inputStyles, mt: 2 }}>
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             label="🏠Calle"
             name={`addresses[${index}].street`}
             value={address.street}
             error={touched?.[index]?.street && Boolean(errors?.[index]?.street)}
-            helperText={touched?.[index]?.street && errors?.[index]?.street}
+            helperText={
+              touched?.[index]?.street && errors?.[index]?.street
+                ? errors[index].street
+                : ' '
+            }
             onChange={(e) =>
               setFieldValue(`addresses[${index}].street`, e.target.value)
             }
@@ -34,16 +34,18 @@ export const AddressFields = ({
       </Grid>
 
       {/* Número */}
-      <Grid item xs={12} md={6}>
-        <FormControl sx={{ ...inputStyles, mt: 2 }}>
+      <Grid  item xs={6} sm={5} md={5} lg={5}>
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             label="🔢Número"
             name={`addresses[${index}].number`}
             value={address.number}
             error={touched?.[index]?.number && Boolean(errors?.[index]?.number)}
-            helperText={touched?.[index]?.number && errors?.[index]?.number}
-            
+            helperText={touched?.[index]?.number && errors?.[index]?.number
+               ? 
+               errors[index].number : ' '
+              }
             onChange={(e) =>
               setFieldValue(`addresses[${index}].number`, e.target.value)
             }
@@ -52,15 +54,19 @@ export const AddressFields = ({
       </Grid>
 
       {/* Ciudad */}
-      <Grid item xs={12} md={4}>
-        <FormControl sx={{ ...inputStyles, mt: 2 }}>
+      <Grid  item xs={6} sm={5} md={5} lg={4}>
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             label="🌆Ciudad"
             name={`addresses[${index}].city`}
             value={address.city}
             error={touched?.[index]?.city && Boolean(errors?.[index]?.city)}
-            helperText={touched?.[index]?.city && errors?.[index]?.city}
+            helperText={touched?.[index]?.city && errors?.[index]?.city
+  ? 
+               errors[index].city : ' '
+
+            }
             onChange={(e) =>
               setFieldValue(`addresses[${index}].city`, e.target.value)
             }
@@ -69,15 +75,18 @@ export const AddressFields = ({
       </Grid>
 
       {/* Estado */}
-      <Grid item xs={12} md={4}>
-        <FormControl sx={{ ...inputStyles, mt: 2 }}>
+      <Grid  item xs={6} sm={5} md={5} lg={4}>
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             label="🏛️Estado"
             name={`addresses[${index}].state`}
             value={address.state}
             error={touched?.[index]?.state && Boolean(errors?.[index]?.state)}
-            helperText={touched?.[index]?.state && errors?.[index]?.state}
+            helperText={touched?.[index]?.state && errors?.[index]?.state
+                ? 
+               errors[index].state : ' '
+            }
             onChange={(e) =>
               setFieldValue(`addresses[${index}].state`, e.target.value)
             }
@@ -86,8 +95,8 @@ export const AddressFields = ({
       </Grid>
 
       {/* País */}
-      <Grid item xs={12} md={4}>
-        <FormControl sx={{ ...inputStyles, mt: 2 }}>
+      <Grid  item xs={6} sm={4} md={5} lg={5}>
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             label="🌍País"
@@ -96,7 +105,10 @@ export const AddressFields = ({
             error={
               touched?.[index]?.country && Boolean(errors?.[index]?.country)
             }
-            helperText={touched?.[index]?.country && errors?.[index]?.country}
+            helperText={touched?.[index]?.country && errors?.[index]?.country
+                ? 
+               errors[index].country : ' '
+            }
             onChange={(e) =>
               setFieldValue(`addresses[${index}].country`, e.target.value)
             }

@@ -7,18 +7,20 @@ import {
   MenuItem,
   Select,
   TextField,
-  Typography
+  Typography,
+  useTheme
 } from '@mui/material'
 import PropTypes from 'prop-types'
 
 export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
+  const theme = useTheme()
   return (
-    <Grid container spacing={2}>
+    <Grid container>
       {phones.map((phone, index) => (
-        <Grid container spacing={2} key={index}>
+        <Grid container justifyContent="center" spacing={1} key={index}>
           {/* Select para código de país */}
-          <Grid item xs={12} md={4}>
-            <FormControl sx={{ ...inputStyles, mt: 2 }}>
+          <Grid item xs={5} sm={4} md={4} lg={4}>
+            <FormControl sx={inputStyles(theme)}>
               <Select
                 displayEmpty
                 value={phone.countryCode || ''}
@@ -36,34 +38,26 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
                     updatedFullNumber
                   )
                 }}
-                sx={{
-                 borderRadius: 2,
-                }}
                 MenuProps={{
                   PaperProps: {
                     sx: {
-                      backgroundColor: 'var(--color-select)', 
-                      color: 'var( --texto-primario)', 
-                      maxHeight: 250,
-                      borderRadius: 1
+                      backgroundColor: 'var(--color-select)',
+                      color: 'var( --texto-primario)'
                     }
                   }
                 }}
               >
                 <MenuItem value="" disabled>
-                  <Typography>🔢Código País</Typography>
+                  <Typography >
+                    🔢Código País
+                  </Typography>
                 </MenuItem>
 
                 {countryCodes.map((country) => (
                   <MenuItem
                     key={country.code}
                     value={country.code}
-                    sx={{
-                      '&:hover': {
-                        backgroundColor: 'var(--color-primario-hover)',
-                        color: 'var( --color-exito)'
-                      }
-                    }}
+                  
                   >
                     {country.country} ({country.code})
                   </MenuItem>
@@ -71,10 +65,11 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
               </Select>
             </FormControl>
           </Grid>
+
           {/* Campo del número de teléfono */}
-          <Grid item xs={12} md={8}>
+          <Grid item xs={6} sm={5} md={5} lg={4}>
             <TextField
-              sx={{ ...inputStyles, mt: 2 }}
+             sx={inputStyles(theme)}
               placeholder="Teléfono"
               name={`phones[${index}].phoneNumber`}
               value={phones[index].phoneNumber.replace(phone.countryCode, '')}
@@ -89,8 +84,11 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
               }
               helperText={
                 touched?.[index]?.phoneNumber && errors?.[index]?.phoneNumber
+                  ? errors[index].phoneNumber
+                  : ' '
               }
               InputProps={{
+               
                 startAdornment: (
                   <InputAdornment position="start">
                     {phone.countryCode || '📞'}

@@ -1,11 +1,12 @@
-import { fontSizeResponsi, inputStyles } from '@/components/styles/styleglobal'
+import { inputStyles } from '@/components/styles/styleglobal'
 import { Visibility, VisibilityOff } from '@mui/icons-material'
 import {
   FormControl,
   Grid,
   IconButton,
   InputAdornment,
-  TextField
+  TextField,
+  useTheme
 } from '@mui/material'
 import { Field } from 'formik'
 import PropTypes from 'prop-types'
@@ -14,12 +15,13 @@ import { useState } from 'react'
 export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
   const [showPassword, setShowPassword] = useState(false)
   const [showPasswordRepeat, setShowPasswordRepeat] = useState(false)
+   const theme = useTheme()
 
   return (
-    <Grid container spacing={2}>
+    <Grid container justifyContent="center" spacing={1}  >
       {/* Campo de contraseña */}
-      <Grid item xs={12} md={6}>
-        <FormControl sx={{ ...inputStyles, mt: 2 }}>
+      <Grid  item xs={6} sm={5} md={5} lg={4}>
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             name="password"
@@ -44,14 +46,14 @@ export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
                       <VisibilityOff
                         sx={{
                           color: 'var(--color-exito)',
-                          ...fontSizeResponsi
+                        
                         }}
                       />
                     ) : (
                       <Visibility
                         sx={{
                           color: 'var(--color-secundario)',
-                          ...fontSizeResponsi
+                         
                         }}
                       />
                     )}
@@ -63,8 +65,8 @@ export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
         </FormControl>
       </Grid>
 
-      <Grid item xs={12} md={6}>
-        <FormControl sx={{ ...inputStyles, mt: 2 }}>
+      <Grid  item xs={6} sm={5} md={5} lg={4}>
+        <FormControl sx={inputStyles(theme)}>
           <Field
             as={TextField}
             name="repeatPassword"
@@ -89,14 +91,14 @@ export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
                       <VisibilityOff
                         sx={{
                           color: 'var(--color-exito)',
-                          ...fontSizeResponsi
+                         
                         }}
                       />
                     ) : (
                       <Visibility
                         sx={{
                           color: 'var(--color-secundario)',
-                          ...fontSizeResponsi
+                         
                         }}
                       />
                     )}

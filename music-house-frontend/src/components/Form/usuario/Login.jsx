@@ -3,7 +3,8 @@ import {
   Grid,
   InputAdornment,
   IconButton,
-  TextField
+  TextField,
+  useTheme
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import { useFormik } from 'formik'
@@ -21,7 +22,7 @@ import {
   ParagraphResponsive,
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
-import { fontSizeResponsi, inputStyles } from '@/components/styles/styleglobal'
+import {  inputStyles } from '@/components/styles/styleglobal'
 import { loginValidationSchema } from '@/validations/login'
 import useAlert from '@/hook/useAlert'
 import { getErrorMessage } from '@/api/getErrorMessage'
@@ -38,6 +39,7 @@ const Login = ({ onSwitch }) => {
   const { showSuccess, showError } = useAlert()
   const handleClickShowPassword = () => setShowPassword((show) => !show)
   const [loading, setLoading] = useState(false)
+   const theme = useTheme()
 
   const formik = useFormik({
     initialValues: {
@@ -81,7 +83,7 @@ const Login = ({ onSwitch }) => {
           <Grid>
             <TitleResponsive>Iniciar Sesión</TitleResponsive>
             <Grid>
-              <FormControl fullWidth margin="normal" sx={{ ...inputStyles }}>
+              <FormControl fullWidth margin="normal" sx={inputStyles(theme)}>
                 <TextField
                   sx={{ width: { xs: '90%' }, marginLeft: 2 }}
                   label="📧 Email"
@@ -96,7 +98,7 @@ const Login = ({ onSwitch }) => {
                 />
               </FormControl>
 
-              <FormControl fullWidth margin="normal" sx={{ ...inputStyles }}>
+              <FormControl fullWidth margin="normal" sx={inputStyles(theme)}>
                 <TextField
                   sx={{ width: { xs: '90%' }, marginLeft: 2 }}
                   label="🔒 Password"
@@ -124,14 +126,14 @@ const Login = ({ onSwitch }) => {
                             <VisibilityOff
                               sx={{
                                 color: 'var(--color-exito)',
-                                ...fontSizeResponsi
+                               
                               }}
                             />
                           ) : (
                             <Visibility
                               sx={{
                                 color: 'var(--color-secundario)',
-                                ...fontSizeResponsi
+                               
                               }}
                             />
                           )}

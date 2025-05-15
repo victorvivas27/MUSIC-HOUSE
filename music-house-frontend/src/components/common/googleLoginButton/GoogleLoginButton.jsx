@@ -11,28 +11,10 @@ const GoogleLoginButton = () => {
   return (
     <ContainerBottom>
       <CustomButton
-        variant="outlined"
+       
         onClick={handleGoogleLogin}
-        startIcon={<FcGoogle size={20} />}
+        startIcon={<FcGoogle size={25} />}
         sx={{
-          width: {
-            xs: "100%",
-            sm: "80%",
-            md: "60%",
-            lg: "45%",
-            xl: "35%"
-          },
-          py: 1.5,
-          fontSize: {
-            xs: "0.875rem",
-            sm: "1rem"
-          },
-          fontWeight: 500,
-          color: 'text.secondary',
-          borderColor: 'divider',
-          borderRadius: '8px',
-          textTransform: 'none',
-          boxShadow: '0 2px 4px rgba(0,0,0,0.05)',
           transition: 'all 0.3s ease',
           '&:hover': {
             backgroundColor: 'rgba(66, 133, 244, 0.08)',

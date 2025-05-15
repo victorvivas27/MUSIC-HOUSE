@@ -1,44 +1,47 @@
 import { ParagraphResponsive } from '@/components/styles/ResponsiveComponents'
+import {
+  flexColumnContainer,
+ 
+} from '@/components/styles/styleglobal'
 import { Avatar, Box, Typography } from '@mui/material'
 import { ErrorMessage } from 'formik'
 import PropTypes from 'prop-types'
 
-export const AvatarUploader = ({
-  preview,
-  setPreview,
-  setFieldValue,
-  
-}) => {
+export const AvatarUploader = ({ preview, setPreview, setFieldValue }) => {
   const handleFileChange = (e) => {
     const file = e.currentTarget.files[0]
-  if (file) {
-  setPreview(URL.createObjectURL(file))
-  setFieldValue('picture', file)
-}
+    if (file) {
+      setPreview(URL.createObjectURL(file))
+      setFieldValue('picture', file)
+    }
   }
 
   return (
     <Box
       sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
+        ...flexColumnContainer,
         gap: 1,
-        padding: 2,
-        border: '2px dashed #ccc',
-        borderRadius: 3,
-        backgroundColor: 'var(--color-primario)',
-        width: 'fit-content',
-        margin: '0 auto'
+        padding: 2
       }}
     >
       <label htmlFor="avatar-upload" style={{ cursor: 'pointer' }}>
         <Avatar
           src={preview}
           sx={{
-            width: 100,
-            height: 100,
+            width: {
+              xs: 50,
+              sm: 60,
+              md: 70,
+              lg: 75,
+              xl: 80
+            },
+            height: {
+              xs: 50,
+              sm: 60,
+              md: 70,
+              lg: 75,
+              xl: 80
+            },
             border: '2px solid #1976d2',
             transition: 'transform 0.3s ease',
             '&:hover': {

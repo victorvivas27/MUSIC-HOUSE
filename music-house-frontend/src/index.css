@@ -27,7 +27,7 @@
   --texto-inverso: #ffffff;
 
   /* 🧱 Fondos */
-  --background-claro: #ffffffb7;
+  --background-claro: #ffffffa7;
   --background-oscuro: #1E1E1E;
   --background-transparente: rgba(92, 92, 92, 0.49);
   --background-disabled: rgba(134, 118, 46, 0.48);
@@ -53,7 +53,7 @@
   --gradiente-carbono: linear-gradient(145deg, #2c2c2c, #1a1a1a);
   --gradiente-marron: linear-gradient(145deg, #8d6e63, #bcaaa4);
 --gradiente-cafe: linear-gradient(135deg, #4e342e, #795548);
---gradiente-dorado: linear-gradient(145deg, #fff176, #fbc02d, #f57f17);
+--gradiente-dorado: linear-gradient(145deg, #fff17660, #fbc12d7b, #f57f1794);
 --gradiente-morado: linear-gradient(145deg, #8e24aa, #d500f9);
 --gradiente-rojo: linear-gradient(145deg, #d32f2f, #ff5252);
 --gradiente-rosa: linear-gradient(145deg, #ec407a, #f8bbd0);

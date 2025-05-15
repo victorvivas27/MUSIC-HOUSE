@@ -4,7 +4,8 @@ import {
   FormControlLabel,
   Checkbox,
   styled,
-  Grid
+  Grid,
+  Box
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import PropTypes from 'prop-types'
@@ -29,13 +30,20 @@ import { BasicInfoFields } from './BasicInfoFields'
 //import { TelegramField } from './TelegramField'
 import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
 import GoogleLoginButton from '@/components/common/googleLoginButton/GoogleLoginButton'
+import { flexRowContainer } from '@/components/styles/styleglobal'
+
 const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
   color: 'black',
   '&.Mui-checked': {
     color: theme.palette.secondary.main
   },
   '& .MuiSvgIcon-root': {
-    fontSize: 32
+    fontSize: {
+      xs: '10px',
+      sm: '13px',
+      md: '14px',
+      lg: '15px'
+    }
   }
 }))
 
@@ -61,7 +69,7 @@ export const UserForm = ({
     ? 'Mi perfil'
     : initialFormData.idUser
       ? 'Editar cuenta usuario'
-      : 'Crear una cuenta'
+      : 'Crear cuenta'
 
   const combinedLoading = loading || isSubmitting
   const buttonText =
@@ -88,7 +96,7 @@ export const UserForm = ({
   }
 
   return (
-    <>
+    <Box sx={{height:"100vh"}}>
       <Formik
         initialValues={formikInitialValues}
         validationSchema={userValidationSchema}
@@ -98,24 +106,32 @@ export const UserForm = ({
         context={{ isUserAdmin }}
       >
         {({ values, errors, touched, setFieldValue, handleSubmit }) => (
-          <form
-            onSubmit={handleSubmit}
-            style={{
-              backgroundColor: 'var(--background-claro)',
-              borderRadius: '12px',
-              marginBottom: '20px',
-              padding: '24px',
-              width: '100%',
-              maxWidth: '1100px',
-              marginInline: 'auto'
-            }}
-          >
+       <Box
+  component="form"
+  onSubmit={handleSubmit}
+  sx={{
+    ...flexRowContainer,
+    background: 'var(--gradiente-dorado)',
+    padding: {
+      xs: 2, // 16px en móviles
+      sm: 3, // 24px
+      md: 4  // 32px
+    },
+    width: '100%',
+    maxWidth: '800px',
+    maxHeight: '90vh',
+    overflowY: 'auto',
+    boxShadow: 'var(--box-shadow)',
+    borderRadius: 2
+  }}
+>
             <fieldset
               disabled={loading}
               style={{ border: 'none', padding: 0, margin: 0 }}
             >
               <TitleResponsive sx={{ mb: 4 }}>{title}</TitleResponsive>
-              <Grid container spacing={3}>
+              
+              <Grid container>
                 <Grid item xs={12}>
                   <AvatarUploader
                     preview={preview}
@@ -126,7 +142,7 @@ export const UserForm = ({
                 </Grid>
 
                 <Grid item xs={12}>
-                  <TitleResponsive>Información Personal</TitleResponsive>
+                  {/*<TitleResponsive>Información Personal</TitleResponsive>*/}
                   <BasicInfoFields
                     values={values}
                     touched={touched}
@@ -135,7 +151,7 @@ export const UserForm = ({
                 </Grid>
 
                 <Grid item xs={12}>
-                  <TitleResponsive>Dirección</TitleResponsive>
+                  {/*<TitleResponsive>Dirección</TitleResponsive>*/}
                   <AddressFields
                     addresses={values.addresses}
                     touched={touched.addresses}
@@ -145,7 +161,7 @@ export const UserForm = ({
                 </Grid>
 
                 <Grid item xs={12}>
-                  <TitleResponsive>Teléfono</TitleResponsive>
+                  {/*<TitleResponsive>Teléfono</TitleResponsive>*/}
                   <PhoneFields
                     phones={values.phones}
                     touched={touched.phones}
@@ -156,7 +172,7 @@ export const UserForm = ({
 
                 {initialFormData?.idUser && (
                   <Grid item xs={12}>
-                    <TitleResponsive>Roles del Usuario</TitleResponsive>
+                    {/*<TitleResponsive>Roles del Usuario</TitleResponsive>*/}
                     <UserRolesSection
                       roles={values.roles}
                       isUserAdmin={isUserAdmin}
@@ -168,7 +184,7 @@ export const UserForm = ({
 
                 {showPasswordFields && (
                   <Grid item xs={12}>
-                    <TitleResponsive>Contraseña</TitleResponsive>
+                    {/*<TitleResponsive>Contraseña</TitleResponsive>*/}
                     <PasswordFields
                       values={values}
                       touched={touched}
@@ -250,10 +266,10 @@ export const UserForm = ({
                 </Grid>
               </Grid>
             </fieldset>
-          </form>
+          </Box>
         )}
       </Formik>
-    </>
+    </Box>
   )
 }
 

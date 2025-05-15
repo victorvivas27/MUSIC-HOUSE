@@ -1,50 +1,62 @@
-export const inputStyles = {
-  width: '99%',
-  color: 'var(--texto-primario)',
-  margin: 2,
+export const inputStyles = (theme) => ({
+  width: '100%',
+
+  
+  // 👉 Borde custom solo en left y right
+  '& .MuiOutlinedInput-notchedOutline': {
+    boxShadow:"var(--box-shadow)",
+    border: 'none',
+    borderLeft: '1px solid var(--color-primario)',
+    borderRight: 'none',
+    borderTop: 'none' ,
+    borderBottom: '1px solid var(--color-primario)',
+    borderRadius: 1,
+    
+  },
 
   '& .MuiInputBase-input': {
-    color: 'var(--texto-primario)',
-    fontSize: '18px',
-     '&::placeholder': {
-      color: 'var(  --texto-primario)', 
-      opacity: 1,
+    color: 'var(---texto-inverso)',
+    fontSize: '0.8rem',
+    height: 10,
+[theme.breakpoints.up('sm')]: {
+      height: 11,
+     fontSize: '0.9rem',
     },
-
-   
-    '&:-webkit-autofill': {
-      WebkitBoxShadow: '0 0 0 1000px rgba(255,255,255,0) inset',
-      WebkitTextFillColor: 'var(--texto-primario)',
-      transition: 'background-color 9999s ease-in-out 0s'
+    [theme.breakpoints.up('md')]: {
+      height: 12,
+       fontSize: '1rem',
+    },
+    [theme.breakpoints.up('lg')]: {
+      height: 13,
+       fontSize: '1rem',
     }
   },
 
-  '& .MuiOutlinedInput-root': {
-    '& fieldset': {
-      borderColor: 'var(--color-secundario)',
-      borderWidth: '2px',
-      borderRadius: '8px',
-      fontSize: '18px'
-    },
-    '&:hover fieldset': {
-      borderColor: 'var(--color-primario)',
-      fontSize: '18px'
-    },
-    '&.Mui-focused fieldset': {
-      borderColor: 'var(--color-exito)',
-      fontSize: '18px'
-    }
-  },
+'& .MuiInputLabel-root': {
+    color: 'var(--texto-inverso)',
+    fontSize: '0.8rem',
 
-  '& .MuiInputLabel-root': {
-    color: 'var(--texto-primario)',
-    fontSize: '18px'
+    [theme.breakpoints.up('sm')]: {
+      fontSize: '0.9rem',
+    },
+    [theme.breakpoints.up('md')]: {
+       fontSize: '1rem',
+    },
+    [theme.breakpoints.up('lg')]: {
+      fontSize: '1rem',
+    }
   },
   '& .MuiInputLabel-root.Mui-focused': {
-    color: 'var(--texto-primario)',
-    fontSize: '18px'
-  }
-}
+    color: 'var(--texto-inverso)'
+  },
+   '& .MuiSelect-select': {
+    padding: '10px',
+    fontSize: '15px',
+    color: 'var(--texto-inverso)',
+  },
+  
+ 
+})
 
 export const flexRowContainer = {
   display: 'flex',

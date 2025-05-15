@@ -8,7 +8,7 @@ export const CustomButton = styled(Button, {
   width: '80%',
   display: 'flex',
   justifyContent: 'space-evenly',
-  height: '40px',
+  height: '30px',
   color: 'var(--color-secundario)',
   backgroundColor: 'var(--color-primario)',
   fontFamily: 'Roboto',
@@ -16,6 +16,7 @@ export const CustomButton = styled(Button, {
   borderRadius: '8px',
   transition: '0.3s',
   margin:3,
+   boxShadow:"var(--box-shadow)",
   '&:hover': {
     backgroundColor: 'var(--color-primario)',
     color: 'var(--color-info)'
@@ -28,16 +29,16 @@ export const CustomButton = styled(Button, {
   },
 
   [theme.breakpoints.up('sm')]: {
-    width: '42%'
+    width: '58%'
   },
   [theme.breakpoints.up('md')]: {
-    width: '45%'
+    width: '57%'
   },
   [theme.breakpoints.up('lg')]: {
-    width: '40%'
+    width: '56%'
   },
   [theme.breakpoints.up('xl')]: {
-    width: '60%'
+    width: '55%'
   },
 
   ...sx
@@ -47,6 +48,7 @@ export const ContainerBottom = styled(Grid, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
   ...flexColumnContainer,
+    width: '100%',
 
   [theme.breakpoints.up('sm')]: {
     width: '100%'
@@ -71,7 +73,7 @@ export const ContainerForm = styled(Grid, {
   height: '50vh',
   padding: theme.spacing(1),
   borderRadius: '16px',
-  backgroundColor: 'var( --background-claro)',
+  background: 'var(--gradiente-dorado)',
   [theme.breakpoints.up('sm')]: {
     width: '95vw',
     height: '50vh',
@@ -154,7 +156,7 @@ export const ParagraphResponsive = styled(Typography, {
   textOverflow: 'ellipsis',
 
   [theme.breakpoints.up('sm')]: {
-    fontSize: '0.1rem'
+    fontSize: '0.7rem'
   },
   [theme.breakpoints.up('md')]: {
     fontSize: '0.8rem'

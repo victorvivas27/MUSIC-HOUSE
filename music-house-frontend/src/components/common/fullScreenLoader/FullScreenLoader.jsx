@@ -11,8 +11,7 @@ const FullScreenLoader = ({ bgLoaded, text = "Cargando" }) => {
           left: 0,
           width: '100%',
           height: '100vh',
-          background:
-            'linear-gradient(135deg, rgba(30, 30, 30, 0.44) 0%, rgba(45, 45, 45, 0.38) 100%)',
+          background: 'var(--gradiente-dorado)',
           zIndex: 9999,
           backdropFilter: 'blur(4px)',
           display: 'flex',

@@ -1,4 +1,4 @@
-import { Box, Button, FormControl } from '@mui/material'
+import { Box, Button, FormControl, useTheme } from '@mui/material'
 import PropTypes from 'prop-types'
 import { RoleSelect } from './RoleSelect'
 import { flexRowContainer, inputStyles } from '@/components/styles/styleglobal'
@@ -8,6 +8,7 @@ import { useState } from 'react'
 export const UserRolesSection = ({ roles, isUserAdmin, setFieldValue }) => {
   const { showConfirm, showError, showSuccess } = useAlert()
   const [selectedRole, setSelectedRole] = useState('')
+  const theme = useTheme()
 
   const handleRemoveRole = async (roleToRemove) => {
     if (!isUserAdmin) return
@@ -79,7 +80,7 @@ export const UserRolesSection = ({ roles, isUserAdmin, setFieldValue }) => {
       )}
 
       <Box sx={{ mt: 2, display: 'flex', gap: 2 }}>
-        <FormControl sx={{ ...inputStyles, flex: 1 }}>
+        <FormControl sx={inputStyles(theme)}>
           <RoleSelect
             selectedRole={selectedRole}
             onChange={(value) => setSelectedRole(value)}
