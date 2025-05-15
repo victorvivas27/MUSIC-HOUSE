@@ -80,14 +80,9 @@ public class UserServiceAdmin implements UserInterface {
         String token = jwtService.generateToken(userDetails);
 
 
-        return TokenDtoExit.builder()
-                .idUser(user.getIdUser())
-                .name(user.getName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .roles(user.getRoles().stream().map(Enum::name).toList())
-                .token(token)
-                .build();
+        TokenDtoExit tokenDtoExit = userBuilder.fromUserExit(user, token);
+
+        return tokenDtoExit;
     }
 
     @Cacheable(

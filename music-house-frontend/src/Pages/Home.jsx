@@ -18,7 +18,7 @@ import Feedback from './Feedback'
 import ModalFeedback from '@/components/common/feedback/ModalFeedback'
 import { useLocation } from 'react-router-dom'
 import { AuthContext } from '@/components/utils/context/AuthContext'
-import FaqPublic from './Faq'
+import Faq from './Faq'
 
 export const Home = () => {
   const { state, dispatch } = useAppStates()
@@ -202,7 +202,8 @@ useEffect(() => {
         />
       )}
 
-      <FaqPublic/>
+      {!isUser && (<Faq/>
+      )}
     </>
   )
 }

@@ -8,6 +8,7 @@ import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.security.JwtService;
+import com.musichouse.api.music.service.cookieService.CookieService;
 import com.musichouse.api.music.service.userAdmin.UserServiceAdmin;
 import com.musichouse.api.music.util.ApiResponse;
 import com.musichouse.api.music.util.FileValidatorImage;
@@ -15,9 +16,9 @@ import jakarta.mail.MessagingException;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Valid;
 import jakarta.validation.Validator;
+import lombok.AllArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.*;
@@ -30,8 +31,24 @@ import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
-
+/**
+ * Controlador para la gestión administrativa de usuarios.
+ *
+ * <p>Incluye operaciones de login, lectura, búsqueda, actualización y eliminación de usuarios
+ * por parte de administradores del sistema.</p>
+ * <p>
+ * Endpoints principales:
+ * - POST /login: Autenticación y emisión de cookie JWT.
+ * - GET /: Listado paginado de usuarios.
+ * - GET /{idUser}: Obtener usuario por ID.
+ * - PUT /: Actualizar usuario desde el panel admin.
+ * - DELETE /{idUser}: Eliminar usuario.
+ * - GET /search: Buscar usuario por nombre.
+ * <p>
+ * Requiere roles con privilegios administrativos.
+ */
 @RestController
+@AllArgsConstructor
 @RequestMapping("/api/users")
 public class UserAdminController {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserAdminController.class);
@@ -39,33 +56,24 @@ public class UserAdminController {
     private final ObjectMapper objectMapper;
     private final Validator validator;
     private final JwtService jwtService;
-    @Value("${cookie.secure}")
-    private Boolean cookieSecure;
+    private final CookieService cookieService;
 
-    @Value("${cookie.same-site}")
-    private String cookieSameSite;
-
-    public UserAdminController(UserServiceAdmin userService, ObjectMapper objectMapper, Validator validator, JwtService jwtService) {
-        this.userService = userService;
-        this.objectMapper = objectMapper;
-        this.validator = validator;
-        this.jwtService = jwtService;
-    }
-
-
+    /**
+     * Endpoint de inicio de sesión para usuarios.
+     *
+     * <p>Valida credenciales y devuelve un JWT embebido en una cookie HttpOnly.</p>
+     *
+     * @param loginDtoEntrance Credenciales de acceso (email y contraseña).
+     * @return Token encapsulado en la respuesta junto con la cookie, o error de autenticación.
+     * @throws ResourceNotFoundException si el usuario no existe o no verificó su email.
+     */
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<TokenDtoExit>> loginUser(@Valid @RequestBody LoginDtoEntrance loginDtoEntrance)
             throws ResourceNotFoundException {
         try {
             TokenDtoExit tokenDtoExit = userService.loginUserAndCheckEmail(loginDtoEntrance);
 
-            ResponseCookie cookie = ResponseCookie.from("jwt", tokenDtoExit.getToken())
-                    .httpOnly(true)
-                    .secure(cookieSecure)
-                    .sameSite(cookieSameSite)
-                    .path("/")
-                    .maxAge(60 * 60)
-                    .build();
+            ResponseCookie cookie = cookieService.generateCookie(tokenDtoExit.getToken());
 
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
@@ -89,8 +97,12 @@ public class UserAdminController {
         }
     }
 
-
-    // 🔹 OBTENER TODOS LOS USUARIOS
+    /**
+     * Obtiene una lista paginada de todos los usuarios registrados.
+     *
+     * @param pageable Información de paginación y orden.
+     * @return Página con usuarios y metainformación de la respuesta.
+     */
     @GetMapping()
     public ResponseEntity<ApiResponse<Page<UserDtoExit>>> getAllUsers(Pageable pageable) {
 
@@ -106,7 +118,13 @@ public class UserAdminController {
 
     }
 
-    // 🔹 OBTENER USUARIO POR ID
+    /**
+     * Obtiene los datos de un usuario a partir de su UUID.
+     *
+     * @param idUser UUID del usuario a buscar.
+     * @return Datos del usuario si es encontrado.
+     * @throws ResourceNotFoundException si el usuario no existe.
+     */
     @GetMapping("{idUser}")
     public ResponseEntity<ApiResponse<UserDtoExit>> getUserById(@PathVariable UUID idUser)
             throws ResourceNotFoundException {
@@ -123,7 +141,18 @@ public class UserAdminController {
 
     }
 
-    // 🔹 ACTUALIZAR USUARIO
+    /**
+     * Actualiza los datos de un usuario desde el panel de administración.
+     *
+     * <p>Se espera un JSON como string en el parámetro `user`, y una imagen opcional.</p>
+     *
+     * @param userJson JSON serializado con los campos a modificar (UserDtoModify).
+     * @param file     Imagen de perfil opcional.
+     * @return Usuario actualizado o errores de validación.
+     * @throws JsonProcessingException   si falla el parseo del JSON.
+     * @throws MessagingException        si ocurre un error de envío de email.
+     * @throws ResourceNotFoundException si el usuario no se encuentra.
+     */
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public HttpEntity<ApiResponse<UserDtoExit>> updateUser(
             @RequestParam("user") String userJson,
@@ -131,13 +160,12 @@ public class UserAdminController {
     ) throws JsonProcessingException, MessagingException, ResourceNotFoundException {
 
 
-        // 📌 1️⃣ Convertir el JSON String a un objeto UserDtoEntrance
         UserDtoModify userDtoModify = objectMapper.readValue(userJson, UserDtoModify.class);
 
-        // 2. Validar archivos subidos
+
         List<String> fileErrors = FileValidatorImage.validateImage(file);
 
-        // 3. Validar DTO manualmente (porque viene como JSON string)
+
         Set<ConstraintViolation<UserDtoModify>> violations = validator.validate(userDtoModify);
 
         List<String> dtoErrors = violations.stream()
@@ -145,7 +173,7 @@ public class UserAdminController {
                         v.getPropertyPath() + ": " + v.getMessage())
                 .toList();
 
-        // 4. Unificar errores
+
         List<String> allErrors = new ArrayList<>();
         allErrors.addAll(fileErrors);
         allErrors.addAll(dtoErrors);
@@ -160,7 +188,7 @@ public class UserAdminController {
                     .build());
         }
 
-        // 5. Crear usuario
+
         UserDtoExit userDtoExit = userService.updateUser(userDtoModify, file);
 
 
@@ -176,7 +204,13 @@ public class UserAdminController {
     }
 
 
-    // 🔹 ELIMINAR USUARIO
+    /**
+     * Elimina un usuario según su ID.
+     *
+     * @param idUser UUID del usuario a eliminar.
+     * @return Confirmación de eliminación.
+     * @throws ResourceNotFoundException si el usuario no existe.
+     */
     @DeleteMapping("{idUser}")
     public ResponseEntity<ApiResponse<?>> deleteUser(@PathVariable UUID idUser)
             throws ResourceNotFoundException {
@@ -194,9 +228,15 @@ public class UserAdminController {
 
     }
 
-    // 🔹 BUSCAR USUARIO POR NOMBRE
+    /**
+     * Busca usuarios por nombre de forma paginada.
+     *
+     * @param name     Nombre o fragmento de nombre a buscar.
+     * @param pageable Información de paginación.
+     * @return Lista de usuarios cuyo nombre coincida parcial o totalmente.
+     */
     @GetMapping("/search")
-    public ResponseEntity<ApiResponse<Page<UserDtoExit>>> searchThemeByName(
+    public ResponseEntity<ApiResponse<Page<UserDtoExit>>> searchUserByName(
             @RequestParam String name,
             Pageable pageable) {
 
@@ -210,7 +250,5 @@ public class UserAdminController {
                 .error(null)
                 .result(userDtoExits)
                 .build());
-
-
     }
 }

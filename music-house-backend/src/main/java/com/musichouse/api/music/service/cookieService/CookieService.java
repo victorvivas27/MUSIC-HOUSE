@@ -10,7 +10,7 @@ import java.time.Duration;
 @Service
 @RequiredArgsConstructor
 public class CookieService {
-    
+
     @Value("${cookie.secure}")
     private Boolean cookieSecure;
 
@@ -18,12 +18,24 @@ public class CookieService {
     private String cookieSameSite;
 
     public ResponseCookie generateCookie(String token) {
+
         return ResponseCookie.from("jwt", token)
                 .httpOnly(true)
                 .secure(cookieSecure)
                 .sameSite(cookieSameSite)
                 .path("/")
                 .maxAge(Duration.ofHours(1))
+                .build();
+    }
+
+    public ResponseCookie deleteCookie() {
+
+        return ResponseCookie.from("jwt", "")
+                .httpOnly(true)
+                .secure(cookieSecure)
+                .sameSite(cookieSameSite)
+                .path("/")
+                .maxAge(0)
                 .build();
     }
 }

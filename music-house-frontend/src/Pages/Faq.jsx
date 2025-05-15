@@ -29,7 +29,7 @@ const Faq = () => {
     <Box
       sx={{
        ...flexColumnContainer,
-        mt: 60,
+        mt: 110,
          width: { xs: 330, sm: 350, md: 1000, lg:1000,xl:1400 },
       }}
       id="faq-preview-home"
@@ -38,6 +38,13 @@ const Faq = () => {
         <TitleResponsive
           className={inView ? 'text-focus-in' : ''}
           sx={{
+             fontSize: {
+              xs: '1.2rem',
+              sm: '1.7rem',
+              md: '1.8rem',
+              lg: '1.9rem',
+              xl: '2rem'
+            },
            visibility: inView ? 'visible' : 'hidden',
             opacity: inView ? 1 : 0
           }}
@@ -53,9 +60,7 @@ const Faq = () => {
           </Grid>
         ))}
       </Grid>
-
-     
-    </Box>
+</Box>
   )
 }
 

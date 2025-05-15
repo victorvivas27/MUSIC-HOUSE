@@ -9,7 +9,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Component;
@@ -36,23 +35,12 @@ public class MailManager {
     private String sender;
 
     private void addInlineImages(MimeMessageHelper helper) throws MessagingException {
-        try {
-            // Cargar imágenes
-            helper.addInline("whatsappIcon", new ClassPathResource("static/img/whatsapp01.png"));
-            helper.addInline("instagramIcon", new ClassPathResource("static/img/instagram01.png"));
-            helper.addInline("facebookIcon", new ClassPathResource("static/img/facebook01.png"));
-            helper.addInline("xIcon", new ClassPathResource("static/img/x01.png"));
-            helper.addInline("logoImage", new ClassPathResource("static/img/house.png"));
-            helper.addInline("backgroundImage", new ClassPathResource("static/img/magen3.png"));
-
-            // Debug para verificar existencia
-            Resource res = new ClassPathResource("static/img/whatsapp01.png");
-            LOGGER.info("🔍 Imagen whatsapp01.png - exists: {}, path: {}", res.exists(), ((ClassPathResource) res).getPath());
-
-        } catch (Exception ex) {
-            LOGGER.error("❌ Error al cargar imágenes inline para email: {}", ex.getMessage(), ex);
-            throw new MessagingException("Error al cargar imágenes inline", ex);
-        }
+        helper.addInline("whatsappIcon", new ClassPathResource("static/img/whatsapp01.png"));
+        helper.addInline("instagramIcon", new ClassPathResource("static/img/instagram01.png"));
+        helper.addInline("facebookIcon", new ClassPathResource("static/img/facebook01.png"));
+        helper.addInline("xIcon", new ClassPathResource("static/img/x01.png"));
+        helper.addInline("logoImage", new ClassPathResource("static/img/house.png"));
+        helper.addInline("backgroundImage", new ClassPathResource("static/img/magen3.png"));
     }
 
     public void sendMessage(String email, String name, String lastName) throws MessagingException {

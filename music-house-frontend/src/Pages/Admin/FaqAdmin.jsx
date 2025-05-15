@@ -1,4 +1,4 @@
-import { deleteFaq, getAllFaq } from '@/api/faq'
+import { deleteFaq, getAllFaqA } from '@/api/faq'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { Loader } from '@/components/common/loader/Loader'
 import {
@@ -69,7 +69,7 @@ export const FaqAdmin = () => {
     const sort = `${orderBy},${order}`
 
     try {
-      const data = await getAllFaq(pageToUse, sizeToUse, sort)
+      const data = await getAllFaqA(pageToUse, sizeToUse, sort)
       dispatch({ type: actions.SET_FAQ, payload: data.result })
     } catch {
       dispatch({

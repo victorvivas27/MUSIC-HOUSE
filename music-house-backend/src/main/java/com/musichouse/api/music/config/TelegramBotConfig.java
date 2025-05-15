@@ -1,12 +1,11 @@
 package com.musichouse.api.music.config;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class TelegramBotConfig {
 
-    @Value("${telegram.bot.username}")
+   /* @Value("${telegram.bot.username}")
     private String botUsername;
 
     @Value("${telegram.bot.token}")
@@ -18,5 +17,5 @@ public class TelegramBotConfig {
 
     public String getBotToken() {
         return botToken;
-    }
+    }*/
 }

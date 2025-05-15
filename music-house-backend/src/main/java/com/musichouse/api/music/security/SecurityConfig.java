@@ -1,7 +1,10 @@
 package com.musichouse.api.music.security;
 
+import com.musichouse.api.music.service.cookieService.CookieService;
+import com.musichouse.api.music.service.user.UserService;
+import com.musichouse.api.music.service.userAdmin.UserBuilder;
 import com.musichouse.api.music.util.RoleConstants;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -22,15 +25,23 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class SecurityConfig {
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
     private final AuthenticationProvider authenticationProvider;
     private final CorsConfigurationSource corsConfigurationSource;
     private final CustomAccessDeniedHandler accessDeniedHandler;
+    private final CustomOAuth2SuccessHandler customOAuth2SuccessHandler;
+
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    public SecurityFilterChain securityFilterChain(
+            HttpSecurity http,
+            JwtService jwtService,
+            UserService userService,
+            CookieService cookieService,
+            UserBuilder userBuilder
+    ) throws Exception {
         http.exceptionHandling(ex ->
                         ex.accessDeniedHandler(accessDeniedHandler))
                 .csrf(csrf -> csrf.disable())
@@ -163,7 +174,12 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.PATCH, "/api/faq/**").hasRole(RoleConstants.ADMIN)
 
                         .anyRequest().authenticated()
-                ).sessionManagement(sessionManager -> sessionManager
+                )
+
+                .oauth2Login(oauth -> oauth
+                        .successHandler(customOAuth2SuccessHandler)
+                )
+                .sessionManagement(sessionManager -> sessionManager
                         .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)

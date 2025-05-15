@@ -36,12 +36,18 @@ public class FaqService {
     }
 
 
+    // Para usuarios: solo preguntas activas
     @Cacheable(value = "faq", key = "#pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort")
     public Page<FaqDtoExit> faqAll(Pageable pageable) {
+        return faqRepository.findAllByIsActiveTrue(pageable)
+                .map(faqBuilder::fromDtoExit);
+    }
 
-        Page<FAQ> faqPage = faqRepository.findAll(pageable);
-
-        return faqPage.map(faqBuilder::fromDtoExit);
+    // Para admin: todas las preguntas
+    @Cacheable(value = "faq", key = "'admin-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort")
+    public Page<FaqDtoExit> getAllFaqsAdmin(Pageable pageable) {
+        return faqRepository.findAll(pageable)
+                .map(faqBuilder::fromDtoExit);
     }
 
     @CacheEvict(value = "faq", allEntries = true)

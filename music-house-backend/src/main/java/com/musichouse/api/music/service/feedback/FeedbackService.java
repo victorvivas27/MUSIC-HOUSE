@@ -29,7 +29,7 @@ public class FeedbackService {
     private final FeedbackValidator feedbackValidator;
     private final FeedbackBuilder feedbackBuilder;
 
-    @CacheEvict(value = "feedbacks", allEntries = true)
+    @CacheEvict(value = "feedback", allEntries = true)
     public FeedbackDtoExit userAddFeedback(FeedbackDtoEntrance feedbackDtoEntrance) throws ResourceNotFoundException {
 
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();

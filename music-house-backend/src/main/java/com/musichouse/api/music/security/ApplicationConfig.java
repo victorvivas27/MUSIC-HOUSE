@@ -76,5 +76,4 @@ public class ApplicationConfig {
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario not found"));
     }
 
-
 }

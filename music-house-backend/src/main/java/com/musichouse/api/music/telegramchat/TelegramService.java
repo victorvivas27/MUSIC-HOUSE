@@ -1,19 +1,12 @@
 package com.musichouse.api.music.telegramchat;
 
-import com.musichouse.api.music.dto.dto_exit.ReservationDtoExit;
-import com.musichouse.api.music.util.CodeGenerator;
 import lombok.AllArgsConstructor;
-import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 @Service
 @AllArgsConstructor
 public class TelegramService {
-    private final MyTelegramBot telegramBot;
+    /*private final MyTelegramBot telegramBot;
 
     @Async
     public void enviarMensajeDeBienvenida(Long telegramChatId, String userName, String lastName, String email) {
@@ -114,5 +107,5 @@ public class TelegramService {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }

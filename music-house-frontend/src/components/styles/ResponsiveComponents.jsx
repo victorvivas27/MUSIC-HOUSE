@@ -15,6 +15,7 @@ export const CustomButton = styled(Button, {
   textTransform: 'none',
   borderRadius: '8px',
   transition: '0.3s',
+  margin:3,
   '&:hover': {
     backgroundColor: 'var(--color-primario)',
     color: 'var(--color-info)'
@@ -88,7 +89,7 @@ export const ContainerForm = styled(Grid, {
   },
   [theme.breakpoints.up('xl')]: {
     width: '50vw',
-    height: '50vh',
+    height: '55vh',
     marginBottom: 10
   },
 

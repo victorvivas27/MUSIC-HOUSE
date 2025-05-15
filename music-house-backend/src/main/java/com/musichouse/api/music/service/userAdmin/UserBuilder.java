@@ -1,6 +1,7 @@
 package com.musichouse.api.music.service.userAdmin;
 
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
+import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.entity.Roles;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.service.ImageCleaner;
@@ -64,6 +65,24 @@ public class UserBuilder {
         }
 
         return userToUpdate;
+    }
+
+    public TokenDtoExit fromUserExit(User user, String token) {
+        return TokenDtoExit.builder()
+                .idUser(user.getIdUser())
+                .name(user.getName())
+                .lastName(user.getLastName())
+                .email(user.getEmail())
+                .roles(user.getRoles().stream().map(Enum::name).toList())
+                .token(token)
+                .build();
+    }
+
+    /**
+     * Variante de utilidad que no requiere token (lo deja como null).
+     */
+    public TokenDtoExit fromUserExit(User user) {
+        return fromUserExit(user, null);
     }
 
 

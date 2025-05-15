@@ -1,8 +1,10 @@
 package com.musichouse.api.music.service.user;
 
 import com.musichouse.api.music.dto.dto_entrance.UserDtoEntrance;
+import com.musichouse.api.music.dto.dto_exit.TokenDtoExit;
 import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
+import com.musichouse.api.music.entity.Roles;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.infra.MailManager;
@@ -33,6 +35,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Service
@@ -59,7 +62,7 @@ public class UserService {
 
     @Transactional
     @CacheEvict(value = "users", allEntries = true)
-    public UserDtoExit createUser(UserDtoEntrance userDtoEntrance, MultipartFile file)
+    public TokenDtoExit createUser(UserDtoEntrance userDtoEntrance, MultipartFile file)
             throws DataIntegrityViolationException, MessagingException {
 
 
@@ -100,13 +103,10 @@ public class UserService {
                     "No se pudo enviar el correo de bienvenida a " + userSaved.getEmail(), e);
         }
 
-        return UserDtoExit.builder()
-                .idUser(userSaved.getIdUser())
-                .name(userSaved.getName())
-                .lastName(userSaved.getLastName())
-                .email(userSaved.getEmail())
-                .roles(userSaved.getRoles().stream().map(Enum::name).toList())
-                .build();
+
+        TokenDtoExit tokenDtoExit = userBuilder.fromUserExit(user);
+
+        return tokenDtoExit;
     }
 
 
@@ -136,5 +136,31 @@ public class UserService {
     public UserDtoExit getUserByEmail(String email) throws ResourceNotFoundException {
         User user = userValidator.validateUserExistsByEmail(email);
         return modelMapper.map(user, UserDtoExit.class);
+    }
+
+    public User findOrCreateGoogleUser(String email, String fullName, String picture) {
+
+        return userRepository.findByEmail(email)
+                .orElseGet(() -> createGoogleUser(email, fullName, picture));
+    }
+
+    private User createGoogleUser(String email, String fullName, String picture) {
+
+        String[] parts = fullName.trim().split(" ", 2);
+
+        String name = parts.length > 0 ? parts[0] : "Usuario";
+
+        String lastName = parts.length > 1 ? parts[1] : "Google";
+
+        return userRepository.save(User.builder()
+                .idUser(UUID.randomUUID())
+                .email(email)
+                .name(name)
+                .lastName(lastName)
+                .picture(picture)
+                .verified(true)
+                .roles(Set.of(Roles.USER))
+                .password(UUID.randomUUID().toString())
+                .build());
     }
 }

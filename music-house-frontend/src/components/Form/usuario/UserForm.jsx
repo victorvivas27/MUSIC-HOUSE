@@ -28,6 +28,7 @@ import { UserRolesSection } from './UserRolesSection'
 import { BasicInfoFields } from './BasicInfoFields'
 //import { TelegramField } from './TelegramField'
 import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
+import GoogleLoginButton from '@/components/common/googleLoginButton/GoogleLoginButton'
 const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
   color: 'black',
   '&.Mui-checked': {
@@ -177,7 +178,7 @@ export const UserForm = ({
                   </Grid>
                 )}
 
-               {/* <Grid item xs={12}>
+                {/* <Grid item xs={12}>
                   <TitleResponsive>Telegram</TitleResponsive>
                   <TelegramField
                     values={values}
@@ -235,7 +236,7 @@ export const UserForm = ({
                         }}
                       />
                     )}
-
+                    <GoogleLoginButton />
                     {!initialFormData.idUser && !isUserAdmin && (
                       <Link onClick={onSwitch}>
                         <ParagraphResponsive

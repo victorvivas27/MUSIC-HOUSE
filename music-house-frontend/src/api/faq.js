@@ -21,6 +21,16 @@ export const submitFaq = async (data) => {
          handleApiError(error)
      }
  }
+  export const getAllFaqA = async (page = 0, size = 5, sort = 'registDate,desc') => {
+     try {
+         const response = await axios.get(`${BASE_URL}/faq/admin`, {
+             params: { page, size, sort }
+         })
+         return response.data
+     } catch (error) {
+         handleApiError(error)
+     }
+ }
 
  export const deleteFaq = async (idFaq) => {
   try {

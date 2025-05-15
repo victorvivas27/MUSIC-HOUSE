@@ -27,6 +27,7 @@ import useAlert from '@/hook/useAlert'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { useAppStates } from '@/components/utils/global.context'
 import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
+import GoogleLoginButton from '@/components/common/googleLoginButton/GoogleLoginButton'
 
 
 const Login = ({ onSwitch }) => {
@@ -147,6 +148,7 @@ const Login = ({ onSwitch }) => {
                 Iniciar Sesión
               </CustomButton>
 
+              <GoogleLoginButton />
               <Link href="" underline="always" onClick={onSwitch}>
                 <ParagraphResponsive
                   sx={{ fontWeight: '600', color: 'var(--color-azul)' }}
@@ -156,7 +158,7 @@ const Login = ({ onSwitch }) => {
                 </ParagraphResponsive>
               </Link>
             </ContainerBottom>
-          </Grid>
+          </Grid> 
         </ContainerForm>
       </fieldset>
     </form>

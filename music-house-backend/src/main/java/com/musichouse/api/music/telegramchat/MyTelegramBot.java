@@ -1,23 +1,11 @@
 package com.musichouse.api.music.telegramchat;
 
 
-import com.musichouse.api.music.config.TelegramBotConfig;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.telegram.telegrambots.bots.TelegramLongPollingBot;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendVideo;
-import org.telegram.telegrambots.meta.api.objects.InputFile;
-import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
-
-import java.io.File;
-import java.util.HashMap;
-import java.util.Map;
 
 @Service
-public class MyTelegramBot extends TelegramLongPollingBot {
-    private final TelegramBotConfig telegramBotConfig;
+public class MyTelegramBot {
+   /*private final TelegramBotConfig telegramBotConfig;
     private final Map<Long, Boolean> inicializacionCompletadaMap = new HashMap<>();
 
     @Autowired
@@ -180,6 +168,6 @@ public class MyTelegramBot extends TelegramLongPollingBot {
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
 

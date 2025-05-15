@@ -6,6 +6,7 @@ import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.repository.UserRepository;
 import com.musichouse.api.music.security.JwtService;
 import com.musichouse.api.music.service.cookieService.CookieService;
+import com.musichouse.api.music.service.userAdmin.UserBuilder;
 import com.musichouse.api.music.service.userAdmin.UserValidator;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,6 +21,7 @@ public class UserAuthService {
     private final JwtService jwtService;
     private final CookieService cookieService;
     private final UserValidator userValidator;
+    private final UserBuilder userBuilder;
 
     public TokenDtoExit verifyUser(String email, String code) throws ResourceNotFoundException {
         User user = userValidator.validateUserExistsByEmail(email);
@@ -44,13 +46,8 @@ public class UserAuthService {
 
         String token = jwtService.generateToken(user);
 
-        return TokenDtoExit.builder()
-                .idUser(user.getIdUser())
-                .name(user.getName())
-                .lastName(user.getLastName())
-                .email(user.getEmail())
-                .roles(user.getRoles().stream().map(Enum::name).toList())
-                .token(token)
-                .build();
+        TokenDtoExit tokenDtoExit = userBuilder.fromUserExit(user, token);
+
+        return tokenDtoExit;
     }
 }

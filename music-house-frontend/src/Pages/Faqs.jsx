@@ -15,13 +15,11 @@ const Faqs = () => {
     const res = await getAllFaq(pageToLoad, pageSize, 'registDate,desc')
     const content = res?.result?.content || []
 
-    const activeFaqs = content.filter((faq) => faq.active)
+    setFaqs((prev) => [...prev, ...content])
 
-    if (activeFaqs.length < pageSize) {
+    if (res.result.last || content.length < pageSize) {
       setHasMore(false)
     }
-
-    setFaqs((prev) => [...prev, ...activeFaqs])
   }
 
   useEffect(() => {
@@ -37,9 +35,8 @@ const Faqs = () => {
   return (
     <Box
       sx={{
-       
-        mt:{xs: 25, sm: 26, md:31, lg:35, xl:42 },
-        width: { }
+        mt: { xs: 40, sm: 45, md: 50, lg:55, xl: 60 },
+        width: {}
       }}
       id="faq-preview-home"
     >
@@ -55,7 +52,7 @@ const Faqs = () => {
         <Box mt={4} textAlign="center">
           <Button onClick={handleLoadMore} variant="outlined" color="primary">
             <ParagraphResponsive>
-            Cargar más preguntas
+              Cargar más preguntas
             </ParagraphResponsive>
           </Button>
         </Box>

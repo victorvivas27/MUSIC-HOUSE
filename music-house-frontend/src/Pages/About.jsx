@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles'
 import {
   CssBaseline,
-  Typography,
+ 
   Box,
   Container,
   useTheme,
@@ -17,9 +17,10 @@ import ImageWithLoader from '@/components/common/imageWithLoader/ImageWithLoader
 import { useContext } from 'react'
 import { AuthContext } from '@/components/utils/context/AuthContext'
 import Feedback from './Feedback'
+import Faq from './Faq'
 
 
-const CustomTypography = styled(Typography)(({ theme, bgColor }) => ({
+const CustomTypography = styled(Box)(({ theme, bgColor }) => ({
   padding: '1rem 1rem',
   fontWeight: 'bold',
   width: 'fit-content',
@@ -141,6 +142,8 @@ const shouldShowFeedback = isUser && !isUserAdmin;
       </MainWrapper>
 
       {shouldShowFeedback && <Feedback />}
+
+       {shouldShowFeedback && (<Faq/>)}
     </main>
   )
 }

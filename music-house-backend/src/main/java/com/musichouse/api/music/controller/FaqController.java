@@ -56,7 +56,20 @@ public class FaqController {
                 .build());
     }
 
-    // 🔹 ELIMINAR FEEDBCK
+    @GetMapping("/admin")
+    public ResponseEntity<ApiResponse<Page<FaqDtoExit>>> getAllFaqsAdmin(Pageable pageable) {
+        Page<FaqDtoExit> faqs = faqService.getAllFaqsAdmin(pageable);
+        return ResponseEntity.ok(
+                ApiResponse.<Page<FaqDtoExit>>builder()
+                        .status(HttpStatus.OK)
+                        .statusCode(HttpStatus.OK.value())
+                        .message("Listado completo para administrador.")
+                        .result(faqs)
+                        .build()
+        );
+    }
+
+    // 🔹 ELIMINAR PREGUNTA FRECUENTE
     @DeleteMapping("{idFaq}")
     public ResponseEntity<ApiResponse<String>> deleteFaq(@PathVariable UUID idFaq) throws ResourceNotFoundException {
 
@@ -89,7 +102,7 @@ public class FaqController {
                 .build());
     }
 
-    // 🔹 BUSCAR CATEGORÍA POR ID
+    // 🔹 BUSCAR PREGUNTA FRECUENTE
     @GetMapping("/{idFaq}")
     public ResponseEntity<ApiResponse<FaqDtoExit>> searchFaqById(@PathVariable UUID idFaq) throws ResourceNotFoundException {
         FaqDtoExit faqDtoExit = faqService.getFaqById(idFaq);
