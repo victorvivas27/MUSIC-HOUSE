@@ -15,8 +15,8 @@ export const CustomButton = styled(Button, {
   textTransform: 'none',
   borderRadius: '8px',
   transition: '0.3s',
-  margin:3,
-   boxShadow:"var(--box-shadow)",
+  margin: 3,
+  boxShadow: 'var(--box-shadow)',
   '&:hover': {
     backgroundColor: 'var(--color-primario)',
     color: 'var(--color-info)'
@@ -48,8 +48,8 @@ export const ContainerBottom = styled(Grid, {
   shouldForwardProp: (prop) => prop !== 'sx'
 })(({ theme, sx = {} }) => ({
   ...flexColumnContainer,
-    width: '100%',
-
+  width: '100%',
+margin:15,
   [theme.breakpoints.up('sm')]: {
     width: '100%'
   },
@@ -103,6 +103,8 @@ export const TitleResponsive = styled(Typography)(({ theme }) => ({
   textShadow: '0 4px 4px var(--texto-primario)',
   fontWeight: 350,
   fontSize: '1.3rem',
+  position: 'relative',
+  zIndex: 2,
 
   [theme.breakpoints.up('sm')]: {
     fontSize: '1.1rem'
@@ -154,6 +156,8 @@ export const ParagraphResponsive = styled(Typography, {
   WebkitBoxOrient: 'vertical',
   overflow: 'hidden',
   textOverflow: 'ellipsis',
+  position: 'relative',
+  zIndex: 2,
 
   [theme.breakpoints.up('sm')]: {
     fontSize: '0.7rem'
@@ -215,8 +219,11 @@ export const BoxLogoSuperior = styled(Grid)(() => ({
   display: 'flex',
   flexDirection: 'column',
   alignItems: 'flex-end',
-  marginTop: 20
+  marginTop: 20,
+  position: 'relative',
+  zIndex: 2
 }))
+
 const background =
   'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround.avif'
 

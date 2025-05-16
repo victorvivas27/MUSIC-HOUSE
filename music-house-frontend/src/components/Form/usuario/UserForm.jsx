@@ -9,7 +9,6 @@ import {
 } from '@mui/material'
 import Link from '@mui/material/Link'
 import PropTypes from 'prop-types'
-import ContactSupportRoundedIcon from '@mui/icons-material/ContactSupportRounded'
 import { useAuth } from '@/hook/useAuth'
 import useAlert from '@/hook/useAlert'
 import {
@@ -35,7 +34,7 @@ import { flexRowContainer } from '@/components/styles/styleglobal'
 const CustomCheckbox = styled(Checkbox)(() => ({
   color: 'blue',
   '&.Mui-checked': {
-    color: "red"
+    color: 'red'
   },
   '& .MuiSvgIcon-root': {
     fontSize: {
@@ -96,7 +95,11 @@ export const UserForm = ({
   }
 
   return (
-    <Box sx={{ height: '100vh' }}>
+    <Box sx={{
+      marginBottom:10,
+     
+
+      }}>
       <Formik
         initialValues={formikInitialValues}
         validationSchema={userValidationSchema}
@@ -111,9 +114,8 @@ export const UserForm = ({
             onSubmit={handleSubmit}
             sx={{
               ...flexRowContainer,
-              width: '100%',
-              maxWidth: '800px',
-              maxHeight: '80vh'
+              width:"95vw",
+              maxWidth: '900px'
             }}
           >
             <fieldset
@@ -205,13 +207,7 @@ export const UserForm = ({
                       />
                     }
                     label={
-                      <ParagraphResponsive sx={{
-                         fontWeight: 'bold',
-                         color:"var(--texto-inverso)",
-                         background:"var( --gradiente-vidrio)",
-                         borderRadius:20, 
-                         padding:1
-                         }}>
+                      <ParagraphResponsive>
                         Acepto los términos y condiciones del servicio
                       </ParagraphResponsive>
                     }
@@ -222,8 +218,8 @@ export const UserForm = ({
                         sx={{
                           margin: '5px',
                           color: 'var(--color-error)',
-                        textAlign: 'center',
-                        fontSize:"0.5rem"
+                          textAlign: 'center',
+                          fontSize: '0.5rem'
                         }}
                       >
                         {msg}
@@ -251,11 +247,56 @@ export const UserForm = ({
                     )}
                     <GoogleLoginButton />
                     {!initialFormData.idUser && !isUserAdmin && (
-                      <Link onClick={onSwitch}>
+                      <Link
+                        onClick={onSwitch}
+                        underline="none"
+                        sx={{
+                          display: 'inline-block',
+                          transition: 'all 0.3s ease',
+                          '&:hover': {
+                            transform: 'translateY(-2px)'
+                          }
+                        }}
+                      >
                         <ParagraphResponsive
-                          sx={{ color: 'var(--color-info)' }}
+                          sx={{
+                            fontWeight: '700',
+                            color: 'white',
+                            position: 'relative',
+                            zIndex: 2,
+                            background:
+                              'linear-gradient(45deg, #8B5A2B 0%, #D2B48C 50%, #A67C52 100%)',
+                            borderRadius: '20px',
+                            padding: '12px 24px',
+                            marginTop: 4,
+                            boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+                            textAlign: 'center',
+                            textTransform: 'uppercase',
+                            letterSpacing: '0.5px',
+
+                            overflow: 'hidden',
+                            '&:before': {
+                              content: '""',
+                              position: 'absolute',
+                              top: 0,
+                              left: 0,
+                              width: '100%',
+                              height: '100%',
+                              background:
+                                'linear-gradient(45deg, #A67C52 0%, #D2B48C 50%, #8B5A2B 100%)',
+                              opacity: 0,
+                              transition: 'opacity 0.3s ease',
+                              zIndex: -1
+                            },
+                            '&:hover': {
+                              boxShadow: '0 6px 12px rgba(0, 0, 0, 0.15)',
+                              '&:before': {
+                                opacity: 1
+                              }
+                            }
+                          }}
                         >
-                          Ya tengo una cuenta <ContactSupportRoundedIcon />
+                          <strong>Ya tengo una cuenta </strong>
                         </ParagraphResponsive>
                       </Link>
                     )}

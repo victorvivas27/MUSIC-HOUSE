@@ -53,7 +53,7 @@
   --gradiente-carbono: linear-gradient(145deg, #2c2c2c, #1a1a1a);
   --gradiente-marron: linear-gradient(145deg, #8d6e63, #bcaaa4);
 --gradiente-cafe: linear-gradient(135deg, #4e342e, #795548);
---gradiente-dorado: linear-gradient(145deg, #fff17660, #fbc12d7b, #f57f1794);
+--gradiente-dorado: linear-gradient(145deg, #fff1764f, #fbc12d65, #f57f1775);
 --gradiente-morado: linear-gradient(145deg, #8e24aa, #d500f9);
 --gradiente-rojo: linear-gradient(145deg, #d32f2f, #ff5252);
 --gradiente-rosa: linear-gradient(145deg, #ec407a, #f8bbd0);
@@ -358,4 +358,22 @@ body::after {
 
 .MuiRating-root {
   width: 100% !important;
+}
+
+
+
+/* 🔧 Evita el fondo amarillo del autocompletado de Chrome */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  transition: background-color 9999s ease-in-out 0s;
+  background-color: transparent !important;
+  -webkit-text-fill-color: var(--texto-primario);
+  box-shadow: 0 0 0px 1000px transparent inset !important;
 }

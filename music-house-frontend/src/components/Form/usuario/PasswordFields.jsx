@@ -48,14 +48,14 @@ export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
                       <VisibilityOff
                         sx={{
                           color: 'var(--color-exito)',
-                        zIndex:23344
+                     
                         }}
                       />
                     ) : (
                       <Visibility
                         sx={{
                           color: 'var(--color-secundario)',
-                            zIndex:23344
+                          
                         }}
                       />
                     )}

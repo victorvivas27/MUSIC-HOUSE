@@ -1,5 +1,3 @@
-
-
 export const inputStyles = (theme) => ({
   width: '100%',
 // 👉 Borde custom solo en left y right
@@ -11,14 +9,11 @@ export const inputStyles = (theme) => ({
     borderTop: 'none',
     borderBottom: '1px solid var(--color-primario)',
     borderRadius: 1,
-    background: 'var(--gradiente-vidrio)',
-
-  },
+ },
 
   '& .MuiInputBase-input': {
-    fontSize: '1rem',
+    fontSize: '0.9rem',
     height: 10,
-    zIndex: 1223,
     [theme.breakpoints.up('sm')]: {
       height: 15,
       fontSize: '0.9rem',
@@ -33,7 +28,7 @@ export const inputStyles = (theme) => ({
     }
   },
   '& .MuiInputLabel-root.MuiInputLabel-shrink': {
-    fontSize: '1rem',
+    fontSize: '0.9rem',
     transform: 'translate(10px, -18px) scale(1)',
     [theme.breakpoints.up('sm')]: {
       fontSize: '0.9rem',
@@ -48,7 +43,7 @@ export const inputStyles = (theme) => ({
 
   '& .MuiInputLabel-root': {
     color: 'var(--texto-inverso)',
-    fontSize: '1rem',
+    fontSize: '0.9rem',
 
 
     [theme.breakpoints.up('sm')]: {

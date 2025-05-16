@@ -15,6 +15,7 @@ import {
 } from '@/components/styles/ResponsiveComponents'
 import useBackgroundLoader from '@/hook/useBackgroundLoader'
 import FullScreenLoader from '@/components/common/fullScreenLoader/FullScreenLoader'
+import { Box } from '@mui/material'
 const background =
   'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround.avif'
 
@@ -38,6 +39,19 @@ const AuthPage = () => {
 
   return (
     <MainCrearUsuario container bgLoaded={bgLoaded}>
+
+        {/* 👉 Fondo tipo vidrio */}
+  {bgLoaded && (
+    <Box
+      sx={{
+        position: 'absolute',
+        inset: 0,
+        //backdropFilter: 'blur(7px) brightness(1)',
+        background: 'var(--gradiente-dorado)',
+        zIndex: 0
+      }}
+    />
+  )}
       <FullScreenLoader bgLoaded={bgLoaded} text="Cargando" />
 
       <BoxLogoSuperior>
