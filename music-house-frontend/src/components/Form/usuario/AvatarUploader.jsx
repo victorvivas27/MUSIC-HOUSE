@@ -1,8 +1,5 @@
 import { ParagraphResponsive } from '@/components/styles/ResponsiveComponents'
-import {
-  flexColumnContainer,
- 
-} from '@/components/styles/styleglobal'
+import { flexColumnContainer } from '@/components/styles/styleglobal'
 import { Avatar, Box, Typography } from '@mui/material'
 import { ErrorMessage } from 'formik'
 import PropTypes from 'prop-types'
@@ -63,7 +60,7 @@ export const AvatarUploader = ({ preview, setPreview, setFieldValue }) => {
 
       <ParagraphResponsive
         variant="body2"
-        color="text.secondary"
+        color="var(--texto-inverso)"
         sx={{ textAlign: 'center' }}
       >
         Haz clic en la imagen para subir una nueva (máx 5MB)

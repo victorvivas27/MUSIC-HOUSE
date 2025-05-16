@@ -126,6 +126,7 @@ const Login = ({ onSwitch }) => {
                             <VisibilityOff
                               sx={{
                                 color: 'var(--color-exito)',
+                                zIndex:122
                                
                               }}
                             />
@@ -133,7 +134,7 @@ const Login = ({ onSwitch }) => {
                             <Visibility
                               sx={{
                                 color: 'var(--color-secundario)',
-                               
+                               zIndex:122
                               }}
                             />
                           )}

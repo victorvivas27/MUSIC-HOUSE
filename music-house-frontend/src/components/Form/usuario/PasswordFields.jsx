@@ -35,6 +35,8 @@ export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
                 ? errors.password
                 : ' '
             }
+
+ 
             InputProps={{
               endAdornment: (
                 <InputAdornment position="end">
@@ -46,14 +48,14 @@ export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
                       <VisibilityOff
                         sx={{
                           color: 'var(--color-exito)',
-                        
+                        zIndex:23344
                         }}
                       />
                     ) : (
                       <Visibility
                         sx={{
                           color: 'var(--color-secundario)',
-                         
+                            zIndex:23344
                         }}
                       />
                     )}
@@ -91,14 +93,14 @@ export const PasswordFields = ({ values, touched, errors, setFieldValue }) => {
                       <VisibilityOff
                         sx={{
                           color: 'var(--color-exito)',
-                         
+                          zIndex:23344
                         }}
                       />
                     ) : (
                       <Visibility
                         sx={{
                           color: 'var(--color-secundario)',
-                         
+                          zIndex:23344
                         }}
                       />
                     )}

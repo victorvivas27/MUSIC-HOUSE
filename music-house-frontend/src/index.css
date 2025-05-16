@@ -44,7 +44,7 @@
   rgba(237, 210, 10, 0.85) 75%,
   rgba(200, 160, 0, 0.9) 100%
 );
-  --gradiente-vidrio: linear-gradient(145deg, rgba(244, 181, 22, 0.723), rgba(79, 71, 71, 0.848));
+  --gradiente-vidrio: linear-gradient(145deg,rgba(79, 71, 71, 0.848), rgba(244, 181, 22, 0.723));
   --gradiente-azul: linear-gradient(145deg, #007cf0, #00dfd8);
   --gradiente-azul-profundo: linear-gradient(135deg, #1e3c72, #2a5298);
   --gradiente-verde: linear-gradient(145deg, #00c853, #b2ff59);

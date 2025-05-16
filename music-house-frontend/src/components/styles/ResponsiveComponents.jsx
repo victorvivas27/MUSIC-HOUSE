@@ -73,7 +73,7 @@ export const ContainerForm = styled(Grid, {
   height: '50vh',
   padding: theme.spacing(1),
   borderRadius: '16px',
-  background: 'var(--gradiente-dorado)',
+  //background: 'var(--gradiente-dorado)',
   [theme.breakpoints.up('sm')]: {
     width: '95vw',
     height: '50vh',

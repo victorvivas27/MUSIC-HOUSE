@@ -32,10 +32,10 @@ import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
 import GoogleLoginButton from '@/components/common/googleLoginButton/GoogleLoginButton'
 import { flexRowContainer } from '@/components/styles/styleglobal'
 
-const CustomCheckbox = styled(Checkbox)(({ theme }) => ({
-  color: 'black',
+const CustomCheckbox = styled(Checkbox)(() => ({
+  color: 'blue',
   '&.Mui-checked': {
-    color: theme.palette.secondary.main
+    color: "red"
   },
   '& .MuiSvgIcon-root': {
     fontSize: {
@@ -96,7 +96,7 @@ export const UserForm = ({
   }
 
   return (
-    <Box sx={{height:"100vh"}}>
+    <Box sx={{ height: '100vh' }}>
       <Formik
         initialValues={formikInitialValues}
         validationSchema={userValidationSchema}
@@ -106,31 +106,22 @@ export const UserForm = ({
         context={{ isUserAdmin }}
       >
         {({ values, errors, touched, setFieldValue, handleSubmit }) => (
-       <Box
-  component="form"
-  onSubmit={handleSubmit}
-  sx={{
-    ...flexRowContainer,
-    background: 'var(--gradiente-dorado)',
-    padding: {
-      xs: 2, // 16px en móviles
-      sm: 3, // 24px
-      md: 4  // 32px
-    },
-    width: '100%',
-    maxWidth: '800px',
-    maxHeight: '90vh',
-    overflowY: 'auto',
-    boxShadow: 'var(--box-shadow)',
-    borderRadius: 2
-  }}
->
+          <Box
+            component="form"
+            onSubmit={handleSubmit}
+            sx={{
+              ...flexRowContainer,
+              width: '100%',
+              maxWidth: '800px',
+              maxHeight: '80vh'
+            }}
+          >
             <fieldset
               disabled={loading}
               style={{ border: 'none', padding: 0, margin: 0 }}
             >
               <TitleResponsive sx={{ mb: 4 }}>{title}</TitleResponsive>
-              
+
               <Grid container>
                 <Grid item xs={12}>
                   <AvatarUploader
@@ -214,7 +205,13 @@ export const UserForm = ({
                       />
                     }
                     label={
-                      <ParagraphResponsive sx={{ fontWeight: 'bold' }}>
+                      <ParagraphResponsive sx={{
+                         fontWeight: 'bold',
+                         color:"var(--texto-inverso)",
+                         background:"var( --gradiente-vidrio)",
+                         borderRadius:20, 
+                         padding:1
+                         }}>
                         Acepto los términos y condiciones del servicio
                       </ParagraphResponsive>
                     }
@@ -223,10 +220,10 @@ export const UserForm = ({
                     {(msg) => (
                       <Typography
                         sx={{
-                          marginTop: '5px',
+                          margin: '5px',
                           color: 'var(--color-error)',
-                          minHeight: '40px',
-                          textAlign: 'center'
+                        textAlign: 'center',
+                        fontSize:"0.5rem"
                         }}
                       >
                         {msg}

@@ -1,46 +1,61 @@
+
+
 export const inputStyles = (theme) => ({
   width: '100%',
-
-  
-  // 👉 Borde custom solo en left y right
+// 👉 Borde custom solo en left y right
   '& .MuiOutlinedInput-notchedOutline': {
-    boxShadow:"var(--box-shadow)",
+    boxShadow: "var(--box-shadow)",
     border: 'none',
     borderLeft: '1px solid var(--color-primario)',
     borderRight: 'none',
-    borderTop: 'none' ,
+    borderTop: 'none',
     borderBottom: '1px solid var(--color-primario)',
     borderRadius: 1,
-    
+    background: 'var(--gradiente-vidrio)',
+
   },
 
   '& .MuiInputBase-input': {
-    color: 'var(---texto-inverso)',
-    fontSize: '0.8rem',
+    fontSize: '1rem',
     height: 10,
-[theme.breakpoints.up('sm')]: {
-      height: 11,
-     fontSize: '0.9rem',
+    zIndex: 1223,
+    [theme.breakpoints.up('sm')]: {
+      height: 15,
+      fontSize: '0.9rem',
     },
     [theme.breakpoints.up('md')]: {
       height: 12,
-       fontSize: '1rem',
+      fontSize: '1rem',
     },
     [theme.breakpoints.up('lg')]: {
       height: 13,
-       fontSize: '1rem',
+      fontSize: '1rem',
     }
   },
+  '& .MuiInputLabel-root.MuiInputLabel-shrink': {
+    fontSize: '1rem',
+    transform: 'translate(10px, -18px) scale(1)',
+    [theme.breakpoints.up('sm')]: {
+      fontSize: '0.9rem',
+    },
+    [theme.breakpoints.up('md')]: {
+      fontSize: '1rem',
+    },
+    [theme.breakpoints.up('lg')]: {
+      fontSize: '1rem',
+    },
+  },
 
-'& .MuiInputLabel-root': {
+  '& .MuiInputLabel-root': {
     color: 'var(--texto-inverso)',
-    fontSize: '0.8rem',
+    fontSize: '1rem',
+
 
     [theme.breakpoints.up('sm')]: {
       fontSize: '0.9rem',
     },
     [theme.breakpoints.up('md')]: {
-       fontSize: '1rem',
+      fontSize: '1rem',
     },
     [theme.breakpoints.up('lg')]: {
       fontSize: '1rem',
@@ -49,20 +64,18 @@ export const inputStyles = (theme) => ({
   '& .MuiInputLabel-root.Mui-focused': {
     color: 'var(--texto-inverso)'
   },
-   '& .MuiSelect-select': {
+  '& .MuiSelect-select': {
     padding: '10px',
     fontSize: '15px',
-    color: 'var(--texto-inverso)',
+
   },
-  
- 
 })
 
 export const flexRowContainer = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
- 
+
 
 
 };
@@ -90,10 +103,10 @@ export const paginationStyles = {
     color: 'var(--color-exito)'
   },
   '& .MuiTablePagination-actions button': {
-   color: 'var( --texto-primario)',
+    color: 'var( --texto-primario)',
   },
   '& .MuiSvgIcon-root': {
-    fontSize: '2rem', 
+    fontSize: '2rem',
   }
 }
 

@@ -69,6 +69,7 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
           {/* Campo del número de teléfono */}
           <Grid item xs={6} sm={5} md={5} lg={4}>
             <TextField
+             
              sx={inputStyles(theme)}
               placeholder="Teléfono"
               name={`phones[${index}].phoneNumber`}
@@ -88,9 +89,9 @@ export const PhoneFields = ({ phones, touched, errors, setFieldValue }) => {
                   : ' '
               }
               InputProps={{
-               
+             
                 startAdornment: (
-                  <InputAdornment position="start">
+                  <InputAdornment sx={{zIndex:23344}} position="start">
                     {phone.countryCode || '📞'}
                   </InputAdornment>
                 )
