@@ -125,13 +125,12 @@ export const ContainerLogo = styled(Box, {
 })(({ theme, sx = {} }) => ({
   height: 'auto',
   width: 80,
-  margin: 12,
 
   [theme.breakpoints.up('sm')]: {
     width: 83
   },
   [theme.breakpoints.up('md')]: {
-    width: 86
+    width: 80
   },
   [theme.breakpoints.up('lg')]: {
     width: 89

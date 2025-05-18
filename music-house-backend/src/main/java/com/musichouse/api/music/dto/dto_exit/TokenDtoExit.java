@@ -24,6 +24,7 @@ public class TokenDtoExit {
 
     private String token;
 
+    private String picture;
 
     @Builder.Default
     private String tokenType = "Bearer ";

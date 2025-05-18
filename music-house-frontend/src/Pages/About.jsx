@@ -20,6 +20,7 @@ import Feedback from './Feedback'
 import Faq from './Faq'
 
 
+
 const CustomTypography = styled(Box)(({ theme, bgColor }) => ({
   padding: '1rem 1rem',
   fontWeight: 'bold',
@@ -43,6 +44,7 @@ const shouldShowFeedback = isUser && !isUserAdmin;
     <main>
       <CssBaseline />
       <MainWrapper>
+          
         <Container
           sx={{
             display: 'flex',

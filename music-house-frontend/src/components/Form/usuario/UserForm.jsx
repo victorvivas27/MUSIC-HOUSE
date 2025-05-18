@@ -28,8 +28,8 @@ import { UserRolesSection } from './UserRolesSection'
 import { BasicInfoFields } from './BasicInfoFields'
 //import { TelegramField } from './TelegramField'
 import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
-import GoogleLoginButton from '@/components/common/googleLoginButton/GoogleLoginButton'
 import { flexRowContainer } from '@/components/styles/styleglobal'
+import OAuthLoginButton from '@/components/common/googleLoginButton/OAuthLoginButton'
 
 const CustomCheckbox = styled(Checkbox)(() => ({
   color: 'blue',
@@ -95,11 +95,11 @@ export const UserForm = ({
   }
 
   return (
-    <Box sx={{
-      marginBottom:10,
-     
-
-      }}>
+    <Box
+      sx={{
+        marginBottom: 10
+      }}
+    >
       <Formik
         initialValues={formikInitialValues}
         validationSchema={userValidationSchema}
@@ -114,7 +114,7 @@ export const UserForm = ({
             onSubmit={handleSubmit}
             sx={{
               ...flexRowContainer,
-              width:"95vw",
+              width: '95vw',
               maxWidth: '900px'
             }}
           >
@@ -245,7 +245,12 @@ export const UserForm = ({
                         }}
                       />
                     )}
-                    <GoogleLoginButton />
+
+
+                    <OAuthLoginButton provider="google" />
+                    <OAuthLoginButton provider="github" />
+
+
                     {!initialFormData.idUser && !isUserAdmin && (
                       <Link
                         onClick={onSwitch}

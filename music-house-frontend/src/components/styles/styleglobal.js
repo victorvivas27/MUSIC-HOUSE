@@ -1,19 +1,35 @@
 export const inputStyles = (theme) => ({
   width: '100%',
-// 👉 Borde custom solo en left y right
+
+  // 🔲 Personalización del borde del input
   '& .MuiOutlinedInput-notchedOutline': {
-    boxShadow: "var(--box-shadow)",
-    border: 'none',
-    borderLeft: '1px solid var(--color-primario)',
+    boxShadow: 'var(--box-shadow)', // Sombra general
+    border: 'none',                 // Borde desactivado por defecto
+    borderLeft: '1px solid var(--color-primario)', // Solo borde izquierdo visible
     borderRight: 'none',
     borderTop: 'none',
-    borderBottom: '1px solid var(--color-primario)',
-    borderRadius: 1,
- },
+    borderBottom: '1px solid var(--color-primario)', // Borde inferior personalizado
+    borderRadius: 1, // Bordes suaves
+  },
 
+  // 🟡 Comportamiento cuando se hace hover sobre el input
+  '&:hover .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'var(--color-primario)',
+    borderBottom: '2px solid var(--color-primario)',
+  },
+
+  // 🔵 Comportamiento cuando el input está enfocado (activo)
+  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+    borderColor: 'var(--color-primario)',
+    borderBottom: '2px solid var(--color-primario)',
+  },
+
+  // ✍️ Estilos para el texto dentro del input
   '& .MuiInputBase-input': {
     fontSize: '0.9rem',
     height: 10,
+    color: 'var(--texto-inverso)',
+
     [theme.breakpoints.up('sm')]: {
       height: 15,
       fontSize: '0.9rem',
@@ -25,11 +41,14 @@ export const inputStyles = (theme) => ({
     [theme.breakpoints.up('lg')]: {
       height: 13,
       fontSize: '1rem',
-    }
+    },
   },
+
+  // 🏷️ Label cuando está shrink (desplazada hacia arriba)
   '& .MuiInputLabel-root.MuiInputLabel-shrink': {
     fontSize: '0.9rem',
     transform: 'translate(10px, -18px) scale(1)',
+
     [theme.breakpoints.up('sm')]: {
       fontSize: '0.9rem',
     },
@@ -41,11 +60,11 @@ export const inputStyles = (theme) => ({
     },
   },
 
+  // 🏷️ Label por defecto (sin foco)
   '& .MuiInputLabel-root': {
     color: 'var(--texto-inverso)',
     fontSize: '0.9rem',
 
-
     [theme.breakpoints.up('sm')]: {
       fontSize: '0.9rem',
     },
@@ -54,17 +73,21 @@ export const inputStyles = (theme) => ({
     },
     [theme.breakpoints.up('lg')]: {
       fontSize: '1rem',
-    }
+    },
   },
+
+  // 🟢 Color del label cuando el input está enfocado
   '& .MuiInputLabel-root.Mui-focused': {
     color: 'var(--texto-inverso)'
   },
+
+  // 🔽 Estilos para selects (opcional, si usás el mismo estilo para Select)
   '& .MuiSelect-select': {
     padding: '10px',
     fontSize: '15px',
-
+    color: 'var(--texto-inverso)',
   },
-})
+});
 
 export const flexRowContainer = {
   display: 'flex',

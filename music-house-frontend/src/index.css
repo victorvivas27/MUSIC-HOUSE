@@ -34,17 +34,15 @@
   --background-vidrio: rgba(251, 193, 45, 0.19);
   --background-vidrio-soft: rgba(251, 193, 45, 0.07);
   --color-hover-card: #fef7e0;
-  --color-select:#f2e592e9;
+  --color-select: #f2e592e9;
 
   /* 🌈 Gradientes */
---gradiente-primario: linear-gradient(
-  145deg,
-  rgba(255, 244, 0, 0.95) 10%,
-  rgba(255, 230, 40, 0.8) 40%,
-  rgba(237, 210, 10, 0.85) 75%,
-  rgba(200, 160, 0, 0.9) 100%
-);
-  --gradiente-vidrio: linear-gradient(145deg,rgba(79, 71, 71, 0.848), rgba(244, 181, 22, 0.723));
+  --gradiente-primario: linear-gradient(145deg,
+      rgba(255, 244, 0, 0.95) 10%,
+      rgba(255, 230, 40, 0.8) 40%,
+      rgba(237, 210, 10, 0.85) 75%,
+      rgba(200, 160, 0, 0.9) 100%);
+  --gradiente-vidrio: linear-gradient(145deg, rgba(79, 71, 71, 0.848), rgba(244, 181, 22, 0.723));
   --gradiente-azul: linear-gradient(145deg, #007cf0, #00dfd8);
   --gradiente-azul-profundo: linear-gradient(135deg, #1e3c72, #2a5298);
   --gradiente-verde: linear-gradient(145deg, #00c853, #b2ff59);
@@ -52,13 +50,13 @@
   --gradiente-negro: linear-gradient(135deg, #000000, #434343);
   --gradiente-carbono: linear-gradient(145deg, #2c2c2c, #1a1a1a);
   --gradiente-marron: linear-gradient(145deg, #8d6e63, #bcaaa4);
---gradiente-cafe: linear-gradient(135deg, #4e342e, #795548);
---gradiente-dorado: linear-gradient(145deg, #fff1764f, #fbc12d65, #f57f1775);
---gradiente-morado: linear-gradient(145deg, #8e24aa, #d500f9);
---gradiente-rojo: linear-gradient(145deg, #d32f2f, #ff5252);
---gradiente-rosa: linear-gradient(145deg, #ec407a, #f8bbd0);
+  --gradiente-cafe: linear-gradient(135deg, #4e342ee1, #795548d3);
+  --gradiente-dorado: linear-gradient(145deg, #fff1764f, #fbc12d65, #f57f1775);
+  --gradiente-morado: linear-gradient(145deg, #8e24aa, #d500f9);
+  --gradiente-rojo: linear-gradient(145deg, #d32f2f, #ff5252);
+  --gradiente-rosa: linear-gradient(145deg, #ec407a, #f8bbd0);
   /* 🌟 Sombras */
-  --box-shadow: 
+  --box-shadow:
     rgba(0, 0, 0, 0.25) 0px 54px 55px,
     rgba(0, 0, 0, 0.12) 0px -12px 30px,
     rgba(0, 0, 0, 0.12) 0px 4px 6px,
@@ -75,10 +73,13 @@
   box-sizing: border-box;
   font-family: var(--font-family);
   font-weight: 800;
-  -webkit-tap-highlight-color: transparent; /* ✅ Elimina fondo azul al tocar en móvil */
+  -webkit-tap-highlight-color: transparent;
+  /* ✅ Elimina fondo azul al tocar en móvil */
 }
 
-img, video, svg {
+img,
+video,
+svg {
   max-width: 100%;
   height: auto;
   display: block;
@@ -104,6 +105,7 @@ a {
   color: inherit;
   cursor: pointer;
 }
+
 button {
   cursor: pointer;
 }
@@ -115,7 +117,7 @@ html {
   -moz-osx-font-smoothing: grayscale;
   text-size-adjust: 100%;
   color: var(--texto-primario);
-    scroll-behavior: smooth;
+  scroll-behavior: smooth;
 }
 
 body {
@@ -127,8 +129,8 @@ body {
 
 body::before {
   content: "";
-  background-image: 
-  url('https://music-house-78.s3.us-east-1.amazonaws.com/Leonardo_Phoenix_10_Highresolution_wideangle_photo_of_a_stylis_0.jpg');
+  background-image:
+    url('https://music-house-78.s3.us-east-1.amazonaws.com/Leonardo_Phoenix_10_Highresolution_wideangle_photo_of_a_stylis_0.jpg');
   background-size: cover;
   background-position: center;
   background-attachment: fixed;
@@ -142,7 +144,8 @@ body::before {
 
 body::after {
   content: "";
-  background: rgba(0, 0, 0, 0.61); /* Color negro con 40% opacidad */
+  background: rgba(0, 0, 0, 0.61);
+  /* Color negro con 40% opacidad */
   position: fixed;
   top: 0;
   left: 0;
@@ -162,12 +165,16 @@ body::after {
 
 /* Contenedor principal del modal */
 .custom-swal {
-  border-radius: 40px 12px !important;          /* Forma creativa y personalizada */
+  border-radius: 40px 12px !important;
+  /* Forma creativa y personalizada */
   width: 500px !important;
   max-width: 90vw;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);    /* Sombra para profundidad */
-  border: 2px solid var(--color-primario);      /* Borde destacado con color institucional */
-  z-index: 9999 !important;                     /* Asegura que quede por encima */
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+  /* Sombra para profundidad */
+  border: 2px solid var(--color-primario);
+  /* Borde destacado con color institucional */
+  z-index: 9999 !important;
+  /* Asegura que quede por encima */
 }
 
 
@@ -253,64 +260,132 @@ body::after {
 ::-webkit-scrollbar {
   width: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: #f0f0f0;
 }
+
 ::-webkit-scrollbar-thumb {
   background: var(--color-secundario);
   border-radius: 10px;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: var(--color-primario);
 }
 
 /* 🚀 Animaciones */
 @keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
+
 .fade-in {
   animation: fadeIn 0.3s ease-in-out;
 }
 
 @keyframes pulse {
-  0% { transform: scale(1); }
-  50% { transform: scale(1.1); }
-  100% { transform: scale(1); }
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.1);
+  }
+
+  100% {
+    transform: scale(1);
+  }
 }
+
 .pulse {
   animation: pulse 2s infinite;
 }
 
 @keyframes aparecer {
-  from { opacity: 0; transform: translateY(20px) scale(0.9); }
-  to { opacity: 1; transform: translateY(0) scale(1); }
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.9);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
 }
+
 .fade-in-up {
   animation: aparecer 0.8s ease-out forwards;
 }
 
 @keyframes desaparecerSuave {
-  0% { opacity: 1; transform: translateY(0) scale(1); }
-  30% { opacity: 0.9; transform: translateY(4px) scale(0.98); }
-  60% { opacity: 0.7; transform: translateY(6px) scale(0.96); }
-  80% { opacity: 0.3; transform: translateY(8px) scale(0.95); }
-  100% { opacity: 0; transform: translateY(10px) scale(0.93); }
+  0% {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+
+  30% {
+    opacity: 0.9;
+    transform: translateY(4px) scale(0.98);
+  }
+
+  60% {
+    opacity: 0.7;
+    transform: translateY(6px) scale(0.96);
+  }
+
+  80% {
+    opacity: 0.3;
+    transform: translateY(8px) scale(0.95);
+  }
+
+  100% {
+    opacity: 0;
+    transform: translateY(10px) scale(0.93);
+  }
 }
+
 .fade-out-soft {
   animation: desaparecerSuave 1s ease-in forwards;
 }
 
 @keyframes vibrate-2 {
-  0% { transform: translate(0); }
-  20% { transform: translate(2px, -2px); }
-  40% { transform: translate(2px, 2px); }
-  60% { transform: translate(-2px, 2px); }
-  80% { transform: translate(-2px, -2px); }
-  100% { transform: translate(0); }
+  0% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform: translate(2px, -2px);
+  }
+
+  40% {
+    transform: translate(2px, 2px);
+  }
+
+  60% {
+    transform: translate(-2px, 2px);
+  }
+
+  80% {
+    transform: translate(-2px, -2px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
 }
+
 .vibrate-2 {
   animation: vibrate-2 0.6s linear infinite both;
+  color: #95ff00;
+
 }
 
 /* ✨ Mejoras adicionales */
@@ -322,19 +397,39 @@ body::after {
   font-size: 1.3rem;
   font-weight: bold;
 }
+
 @keyframes vibrate-2 {
-  0% { transform: translate(0); }
-  20% { transform: translate(2px, -2px); }
-  40% { transform: translate(2px, 2px); }
-  60% { transform: translate(-2px, 2px); }
-  80% { transform: translate(-2px, -2px); }
-  100% { transform: translate(0); }
-}  
+  0% {
+    transform: translate(0);
+  }
+
+  20% {
+    transform: translate(2px, -2px);
+  }
+
+  40% {
+    transform: translate(2px, 2px);
+  }
+
+  60% {
+    transform: translate(-2px, 2px);
+  }
+
+  80% {
+    transform: translate(-2px, -2px);
+  }
+
+  100% {
+    transform: translate(0);
+  }
+}
+
 @keyframes fadeSlideDown {
   0% {
     opacity: 0;
     transform: translateY(-10px);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0);
@@ -346,6 +441,7 @@ body::after {
     filter: blur(12px);
     opacity: 0;
   }
+
   100% {
     filter: blur(0px);
     opacity: 1;

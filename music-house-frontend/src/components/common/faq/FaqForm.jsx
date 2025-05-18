@@ -8,12 +8,13 @@ import {
 } from '@/components/styles/ResponsiveComponents'
 import { inputStyles } from '@/components/styles/styleglobal'
 import useAlert from '@/hook/useAlert'
-import { Box, Stack, TextField } from '@mui/material'
+import { Box, FormControl, TextField, useTheme } from '@mui/material'
 import { useFormik } from 'formik'
 import * as Yup from 'yup'
 
 const FaqForm = () => {
   const { showSuccess, showError } = useAlert()
+  const theme = useTheme()
 
   const formik = useFormik({
     initialValues: {
@@ -41,16 +42,19 @@ const FaqForm = () => {
   return (
     <Box
       sx={{
-        maxWidth: 550
+        maxWidth: 550,
+        display: 'flex',
+        flexDirection: 'column',
+        gap: 2
       }}
     >
       <TitleResponsive gutterBottom>¿Tienes una pregunta?</TitleResponsive>
-      <ParagraphResponsive variant="body2" gutterBottom>
+      <ParagraphResponsive>
         Envíala aquí y podríamos incluirla en nuestra sección de preguntas
         frecuentes.
       </ParagraphResponsive>
       <form onSubmit={formik.handleSubmit}>
-        <Stack spacing={1}>
+        <FormControl sx={inputStyles(theme)}>
           <TextField
             name="question"
             fullWidth
@@ -65,17 +69,17 @@ const FaqForm = () => {
                 : ' '
             }
             sx={{
-              ...inputStyles,
               '& .MuiInputBase-input': {
                 color: 'var( --texto-inverso)',
                 fontSize: '18px'
-              }
+              },
+              boxShadow: 'var(--box-shadow)'
             }}
           />
-          <ContainerBottom>
-            <CustomButton type="submit">Enviar</CustomButton>
-          </ContainerBottom>
-        </Stack>
+        </FormControl>
+        <ContainerBottom>
+          <CustomButton type="submit">Enviar</CustomButton>
+        </ContainerBottom>
       </form>
     </Box>
   )

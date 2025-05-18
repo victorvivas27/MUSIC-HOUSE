@@ -28,7 +28,7 @@ import useAlert from '@/hook/useAlert'
 import { getErrorMessage } from '@/api/getErrorMessage'
 import { useAppStates } from '@/components/utils/global.context'
 import LoaderOverlay from '@/components/common/loader/LoaderOverlay'
-import GoogleLoginButton from '@/components/common/googleLoginButton/GoogleLoginButton'
+import OAuthLoginButton from '@/components/common/googleLoginButton/OAuthLoginButton'
 
 const Login = ({ onSwitch }) => {
   const navigate = useNavigate()
@@ -146,7 +146,8 @@ const Login = ({ onSwitch }) => {
                   Iniciar Sesión
                 </CustomButton>
 
-                <GoogleLoginButton />
+                <OAuthLoginButton provider="google" />
+                <OAuthLoginButton provider="github" />
 
                 <Link
                   href=""

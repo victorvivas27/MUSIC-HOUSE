@@ -163,4 +163,33 @@ public class UserService {
                 .password(UUID.randomUUID().toString())
                 .build());
     }
+
+    public User findOrCreateGitHubUser(String email, String fullName, String avatarUrl) {
+        return userRepository.findByEmail(email)
+                .orElseGet(() -> createGitHubUser(email, fullName, avatarUrl));
+    }
+
+    private User createGitHubUser(String email, String fullName, String avatarUrl) {
+        String[] parts = fullName.trim().split(" ", 2);
+        String name = parts.length > 0 ? parts[0] : "Usuario";
+        String lastName = parts.length > 1 ? parts[1] : "GitHub";
+
+        return userRepository.save(User.builder()
+                .idUser(UUID.randomUUID())
+                .email(email)
+                .name(name)
+                .lastName(lastName)
+                .picture(avatarUrl)
+                .verified(true)
+                .roles(Set.of(Roles.USER))
+                .password(UUID.randomUUID().toString())
+                .build());
+    }
+
+    @CacheEvict(value = "users", allEntries = true)
+    public void evictAllUsersCache() {
+        // Método vacío, sólo para invalidar la lista paginada de usuarios.
+    }
+
+  
 }

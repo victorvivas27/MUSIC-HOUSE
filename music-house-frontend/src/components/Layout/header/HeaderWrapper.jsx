@@ -13,6 +13,7 @@ export const HeaderWrapper = styled(AppBar, {
   backgroundSize: 'cover',
   backgroundPosition: 'center top',
   zIndex: 1201,
+ 
 
   '&::before': {
     content: '""',
@@ -22,8 +23,8 @@ export const HeaderWrapper = styled(AppBar, {
     width: '100%',
     height: '100%',
  
-    backdropFilter: 'blur(4px)',
-    WebkitBackdropFilter: 'blur(4px)',
+    backdropFilter: 'blur(10px)',
+    WebkitBackdropFilter: 'blur(10px)',
     zIndex: 0
   },
 

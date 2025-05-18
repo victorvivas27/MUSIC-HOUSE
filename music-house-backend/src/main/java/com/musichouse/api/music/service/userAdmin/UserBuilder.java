@@ -72,6 +72,7 @@ public class UserBuilder {
                 .idUser(user.getIdUser())
                 .name(user.getName())
                 .lastName(user.getLastName())
+                .picture(user.getPicture())
                 .email(user.getEmail())
                 .roles(user.getRoles().stream().map(Enum::name).toList())
                 .token(token)

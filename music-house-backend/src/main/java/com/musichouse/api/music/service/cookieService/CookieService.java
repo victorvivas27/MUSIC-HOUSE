@@ -38,4 +38,14 @@ public class CookieService {
                 .maxAge(0)
                 .build();
     }
+
+    public ResponseCookie deleteSessionCookie() {
+        return ResponseCookie.from("JSESSIONID", "")
+                .httpOnly(true)
+                .secure(cookieSecure)
+                .sameSite(cookieSameSite)
+                .path("/")
+                .maxAge(0)
+                .build();
+    }
 }

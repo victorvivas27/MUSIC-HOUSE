@@ -16,6 +16,7 @@ export const AuthProvider = ({ children }) => {
   const [userRoles, setUserRoles] = useState([])
   const navigate = useNavigate()
   const [isLoadingAuth, setIsLoadingAuth] = useState(true)
+  const [userPicture, setUserPicture] = useState(null)
 
   const fetchUser = async () => {
    
@@ -31,6 +32,7 @@ export const AuthProvider = ({ children }) => {
         setUserName(user.name)
         setUserLastName(user.lastName)
         setUserRoles(user.roles || [])
+        setUserPicture(user.picture ?? null)
       }
     } catch (error) {
     
@@ -58,6 +60,7 @@ export const AuthProvider = ({ children }) => {
     setUserName(null)
     setUserLastName(null)
     setUserRoles([])
+    setUserPicture(null)
     navigate('/', { replace: true })
   }
   return (
@@ -76,6 +79,7 @@ export const AuthProvider = ({ children }) => {
         logOut,
         fetchUser,
         isLoadingAuth,
+         userPicture,
       }}
     >
       {children}

@@ -2,12 +2,12 @@ import { styled } from '@mui/material/styles'
 import Toolbar from '@mui/material/Toolbar'
 
 export const UpperStyledToolbar = styled(Toolbar)(({ theme }) => ({
+  display:"felx",
+  justifyContent:"space-between",
   alignItems: 'center',
   flexDirection: 'row-reverse',
-  paddingTop: theme.spacing(1),
-  paddingBottom: theme.spacing(1),
-  
-
+ 
+ 
   [theme.breakpoints.up('md')]: {
     flexDirection: 'row'
   }
@@ -16,8 +16,7 @@ export const UpperStyledToolbar = styled(Toolbar)(({ theme }) => ({
 export const MiddleStyledToolbar = styled(Toolbar)(() => ({
   alignItems: 'flex-start',
   flexDirection: 'row-reverse',
-  paddingTop: 0,
-  paddingBottom: 0
+ 
 }))
 
 export const LowerStyledToolbar = styled(Toolbar)(({ theme }) => ({
