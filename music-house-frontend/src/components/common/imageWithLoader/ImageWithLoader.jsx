@@ -3,7 +3,6 @@ import PropTypes from 'prop-types'
 import { Box, keyframes } from '@mui/material'
 import useImageLoader from '@/hook/useImageLoader'
 
-import { useState } from 'react'
 const fadeOut = keyframes`
   0% { opacity: 1; visibility: visible; }
   80% { opacity: 0.2; }
@@ -29,14 +28,11 @@ const ImageWithLoader = ({
   variant = 'circular',
   border = '1px solid #ccc',
   borderRadius = '50%',
-  fallbackSrc = '/src/assets/instrumento_general_03.jpg',
   delay = 10,
-
   onLoad = () => {},
   onError = () => {}
 }) => {
   const loaded = useImageLoader(src, delay)
-  const [hasError, setHasError] = useState(false)
 
   return (
     <Box
@@ -48,19 +44,12 @@ const ImageWithLoader = ({
         borderRadius: variant === 'circular' ? '50%' : borderRadius
       }}
     >
-      {/* Imagen principal con fallback si falla */}
       <Box
         component="img"
-        src={hasError ? fallbackSrc : src}
+        src={src}
         alt={alt}
-        onLoad={() => {
-          onLoad()
-          setHasError(false)
-        }}
-        onError={() => {
-          onError()
-          setHasError(true)
-        }}
+        onLoad={onLoad}
+        onError={onError}
         sx={{
           width: '100%',
           height: '100%',
@@ -74,7 +63,6 @@ const ImageWithLoader = ({
         }}
       />
 
-      {/* Loader con fade */}
       <Box
         sx={{
           position: 'absolute',
@@ -102,7 +90,7 @@ const ImageWithLoader = ({
 }
 
 ImageWithLoader.propTypes = {
-  src: PropTypes.string,
+  src: PropTypes.string.isRequired,
   alt: PropTypes.string,
   width: PropTypes.oneOfType([
     PropTypes.number,
@@ -117,9 +105,7 @@ ImageWithLoader.propTypes = {
   variant: PropTypes.oneOf(['circular', 'rectangular']),
   border: PropTypes.string,
   borderRadius: PropTypes.string,
-  fallbackSrc: PropTypes.string,
   delay: PropTypes.number,
-  showText: PropTypes.bool,
   onLoad: PropTypes.func,
   onError: PropTypes.func
 }

@@ -44,30 +44,21 @@ const HeaderUserMenuDesktop = () => {
               }
             }}
           >
-            <Avatar
-              src={userPicture || undefined}
-              sx={{
-                height: {
-                  md: 35,
-                  lg: 40
-                },
-                width: {
-                  md: 35,
-                  lg: 40
-                },
-                fontSize: 18,
-                bgcolor: 'var(--color-claro)',
-                color: 'var(--color-primario)',
-                fontWeight: 'bold'
-              }}
-            >
-              {!userPicture && userName && userLastName
-                ? `${userName.charAt(0)}${userLastName.charAt(0)}`
-                : null}
-            </Avatar>
+            {userPicture && (
+              <Avatar
+                src={userPicture}
+                sx={{
+                  height: { md: 35, lg: 40 },
+                  width: { md: 35, lg: 40 },
+                  fontSize: 18,
+                  bgcolor: 'var(--color-claro)',
+                  color: 'var(--color-primario)',
+                  fontWeight: 'bold'
+                }}
+              />
+            )}
             <ParagraphResponsive
               sx={{
-                
                 whiteSpace: 'nowrap',
                 overflow: 'hidden',
                 textOverflow: 'ellipsis'
@@ -96,7 +87,7 @@ const HeaderUserMenuDesktop = () => {
             width: {
               md: '18%',
               lg: '20%',
-              xl:'15%'
+              xl: '15%'
             },
             border: '2px solid var(--color-primario)'
           },

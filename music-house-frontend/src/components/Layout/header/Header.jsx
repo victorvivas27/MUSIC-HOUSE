@@ -12,6 +12,8 @@ import { ContainerLogo } from '@/components/styles/ResponsiveComponents'
 import { Logo } from '@/components/Images/Logo'
 import { useHeaderScrollVisibility } from '@/hook/useHeaderScrollVisibility'
 import HeaderUserMenuDesktop from './HeaderUserMenuDesktop'
+import OpenMateo from '@/components/common/openMeteo/OpenMeteo'
+
 
 export const Header = () => {
   const { authGlobal } = useAuth()
@@ -19,6 +21,9 @@ export const Header = () => {
   const visible = useHeaderScrollVisibility(toggleHeaderVisibility)
   const { pathname } = useLocation()
   const isHome = pathname === '/'
+ 
+
+
 
   return (
     <HeaderWrapper
@@ -47,6 +52,7 @@ export const Header = () => {
         <LowerStyledToolbar sx={{ display: `${isHome ? 'flex' : 'none'}` }}>
           <Finder />
         </LowerStyledToolbar>
+   <OpenMateo/>
       </Container>
     </HeaderWrapper>
   )

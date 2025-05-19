@@ -28,16 +28,14 @@ export const HeaderWrapper = styled(AppBar, {
     zIndex: 0
   },
 
-  '& svg': {
-    height: '4rem'
-  },
+  
 
-  height: height || 160, 
+  height: height || 200, 
   [theme.breakpoints.up('sm')]: {
-    height: height || 200
+    height: height || 220
   },
   [theme.breakpoints.up('md')]: {
-    height: height || 240
+    height: height || 260
   },
   [theme.breakpoints.up('lg')]: {
     height: height || 280

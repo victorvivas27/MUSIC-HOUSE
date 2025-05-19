@@ -87,4 +87,25 @@ public class UserBuilder {
     }
 
 
+    public User buildOAuthUser(String email, String fullName, String pictureUrl, String provider) {
+
+        String[] parts = fullName != null ? fullName.trim().split(" ", 2) : new String[0];
+
+        String name = parts.length > 0 ? parts[0] : "Usuario";
+
+        String lastName = parts.length > 1 ? parts[1] : provider;
+
+        return User.builder()
+                .idUser(UUID.randomUUID())
+                .email(email)
+                .name(name)
+                .lastName(lastName)
+                .picture(pictureUrl)
+                .verified(true)
+                .roles(Set.of(Roles.USER))
+                .password(UUID.randomUUID().toString()) // random password, not used
+                .build();
+    }
+
+
 }

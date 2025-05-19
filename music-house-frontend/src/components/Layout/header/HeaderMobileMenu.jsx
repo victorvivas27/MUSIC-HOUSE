@@ -16,8 +16,6 @@ const HeaderMobileMenu = () => {
     logOut,
     isUserAdmin,
     isUser,
-    userName,
-    userLastName,
     userPicture
   } = useAuth()
 
@@ -34,17 +32,25 @@ const HeaderMobileMenu = () => {
       }}
       onClick={handleToggle}
     >
-      <Box>
-        {authGlobal ? (
-          <Avatar sx={{ width: 50, height: 50 }} src={userPicture || undefined}>
-            {!userPicture && userName && userLastName
-              ? `${userName.charAt(0)}${userLastName.charAt(0)}`
-              : null}
-          </Avatar>
-        ) : (
-          <MenuIcon />
-        )}
-      </Box>
+    <Box>
+  {authGlobal ? (
+    userPicture ? (
+      <Avatar
+        src={userPicture}
+        sx={{
+          height: { md: 35, lg: 40 },
+          width: { md: 35, lg: 40 },
+          fontSize: 18,
+          bgcolor: 'var(--color-claro)',
+          color: 'var(--color-primario)',
+          fontWeight: 'bold'
+        }}
+      />
+    ) : null
+  ) : (
+    <MenuIcon />
+  )}
+</Box>
 
       <Menu
         anchorEl={anchorEl}
