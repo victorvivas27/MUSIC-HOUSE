@@ -22,7 +22,12 @@ public class WeatherController {
             @RequestParam double longitude
     ) {
         String url = String.format(
-                "https://api.open-meteo.com/v1/forecast?latitude=%f&longitude=%f&current=temperature_2m,wind_speed_10m&hourly=temperature_2m,relative_humidity_2m,wind_speed_10m",
+                "https://api.open-meteo.com/v1/forecast?" +
+                        "latitude=%f&" +
+                        "longitude=%f&" +
+                        "current=temperature_2m,wind_speed_10m,weathercode&" +
+                        "hourly=temperature_2m,relative_humidity_2m,wind_speed_10m"
+                ,
                 latitude, longitude
         );
 

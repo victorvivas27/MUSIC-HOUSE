@@ -1,15 +1,21 @@
 import { getOpenMeteo } from '@/api/open-meteo'
-import { CITIES } from '@/components/utils/roles/constants'
-import { FormControl, MenuItem, Select } from '@mui/material'
+import { CITIES, weatherMap } from '@/components/utils/roles/constants'
+import { FormControl, MenuItem, Select, Skeleton } from '@mui/material'
 import { useEffect, useState } from 'react'
 
 const OpenMeteo = () => {
   const [selectedCity, setSelectedCity] = useState(CITIES[0])
   const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     if (!selectedCity) return
-    getOpenMeteo(selectedCity.lat, selectedCity.lon).then(setData)
+    setLoading(true)
+    getOpenMeteo(selectedCity.lat, selectedCity.lon).then((result) => {
+    
+      setData(result)
+      setLoading(false)
+    })
   }, [selectedCity])
 
   return (
@@ -37,9 +43,8 @@ const OpenMeteo = () => {
                 lg: 21,
                 xl: 20
               },
-
-             
-              background: 'var( --gradiente-cafe)',
+              height: 150,
+              background: 'var(--gradiente-cafe)',
               borderRadius: 2,
               border: '1px solid red',
               color: 'white',
@@ -64,8 +69,6 @@ const OpenMeteo = () => {
           color: 'var(--color-info)',
           bgcolor: 'transparent',
           boxShadow: 'none',
-          border: '1px solid var(--color-primario)',
-          borderRadius: 1,
           textAlign: 'center',
           width: {
             xs: 200,
@@ -78,7 +81,7 @@ const OpenMeteo = () => {
             padding: 0,
             whiteSpace: 'nowrap',
             overflow: 'hidden',
-            textOverflow: 'ellipsis' // corta con "..."
+            textOverflow: 'ellipsis'
           },
           '& .MuiSelect-icon': {
             display: 'none'
@@ -113,18 +116,45 @@ const OpenMeteo = () => {
         ))}
       </Select>
 
-      {data?.current && (
-        <div
-          style={{
-            marginTop: '10px',
-            fontSize: '14px',
-            color: 'yellow'
-          }}
-        >
-          🌡️ {data.current.temperature_2m}°C | 💨 {data.current.wind_speed_10m}{' '}
-          km/h
-        </div>
-      )}
+      {/* Clima actual o skeleton */}
+      <div style={{ margin: '10px', fontSize: '14px', color: 'yellow' }}>
+        {loading ? (
+          <>
+            <Skeleton
+              width={130}
+              height={25}
+              animation="wave"
+              sx={{
+                backgroundColor: '#444', // color base del skeleton
+                '&::after': {
+                  background: 'linear-gradient(90deg, #444, #555, #444)' // efecto de onda
+                }
+              }}
+            />
+            <Skeleton
+              width={80}
+              height={25}
+              animation="wave"
+              sx={{
+                backgroundColor: '#444', // color base del skeleton
+                '&::after': {
+                  background: 'linear-gradient(90deg, #444, #555, #444)' // efecto de onda
+                }
+              }}
+            />
+          </>
+        ) : (
+          data?.current && (
+            <>
+              🌡️ {data.current.temperature_2m}°C | 💨{' '}
+              {data.current.wind_speed_10m} km/h
+              <br />
+              {weatherMap[data.current.weathercode]?.icon}{' '}
+              {weatherMap[data.current.weathercode]?.desc}
+            </>
+          )
+        )}
+      </div>
     </FormControl>
   )
 }
