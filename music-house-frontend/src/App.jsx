@@ -33,6 +33,7 @@ import { FaqAdmin } from "./Pages/Admin/FaqAdmin"
 import EditarFaq from "./components/common/faq/EditarFaq"
 import Faqs from "./Pages/Faqs"
 import VerifyForm from "./components/Form/usuario/VerifyForm"
+import FormularioPagoReserva from "./components/Form/formularioPagoReserva/FormularioPagoReserva"
 
 
 
@@ -67,6 +68,7 @@ export const App = () => {
                   <Route path="/perfil" element={<Perfil />} />
                   <Route path="/favorites" element={<Favorites />} />
                   <Route path="/reservations" element={<MisReservas />} />
+                  <Route path='/reserva/pago' element={<FormularioPagoReserva/>} />
                 </Route>
               </Route>
 

@@ -1,6 +1,7 @@
 package com.musichouse.api.music.dto.dto_entrance;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -30,6 +31,10 @@ public class ReservationDtoEntrance {
     @NotNull(message = "Fecha disponible no puede ser nula")
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDate endDate;
+
+    @NotNull(message = "La información de pago es obligatoria")
+    @Valid
+    private PaymentDtoEntrance paymentDtoEntrance;
 
 
 }

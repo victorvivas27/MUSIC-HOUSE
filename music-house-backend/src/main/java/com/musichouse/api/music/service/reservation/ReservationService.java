@@ -1,19 +1,16 @@
 package com.musichouse.api.music.service.reservation;
 
+import com.musichouse.api.music.dto.dto_entrance.PaymentDtoEntrance;
 import com.musichouse.api.music.dto.dto_entrance.ReservationDtoEntrance;
+import com.musichouse.api.music.dto.dto_exit.PaymentDtoExit;
 import com.musichouse.api.music.dto.dto_exit.ReservationDtoExit;
-import com.musichouse.api.music.entity.AvailableDate;
-import com.musichouse.api.music.entity.Instrument;
-import com.musichouse.api.music.entity.Reservation;
-import com.musichouse.api.music.entity.User;
+import com.musichouse.api.music.entity.*;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.infra.MailManager;
 import com.musichouse.api.music.interfaces.ReservationInterface;
-import com.musichouse.api.music.repository.AvailableDateRepository;
-import com.musichouse.api.music.repository.InstrumentRepository;
-import com.musichouse.api.music.repository.ReservationRepository;
-import com.musichouse.api.music.repository.UserRepository;
+import com.musichouse.api.music.repository.*;
 import com.musichouse.api.music.service.instrument.InstrumentValidator;
+import com.musichouse.api.music.service.paymant.PaymentBuilder;
 import com.musichouse.api.music.service.userAdmin.UserValidator;
 import com.musichouse.api.music.telegramchat.TelegramService;
 import com.musichouse.api.music.util.CodeGenerator;
@@ -49,6 +46,8 @@ public class ReservationService implements ReservationInterface {
     private final ReservationBuilder reservationBuilder;
     private final ReservationNotifier reservationNotifier;
     private final AvailableDateRepository availableDateRepository;
+    private final PaymentRepository paymentRepository;
+    private final PaymentBuilder paymentBuilder;
     @Autowired
     private final MailManager mailManager;
 
@@ -73,6 +72,17 @@ public class ReservationService implements ReservationInterface {
                 reservationDtoEntrance.getStartDate(),
                 reservationDtoEntrance.getEndDate()
         );
+
+        // 🔽 Esta parte es donde se usa toBuilder()
+        PaymentDtoEntrance originalDto = reservationDtoEntrance.getPaymentDtoEntrance();
+
+        PaymentDtoEntrance dtoWithAmount = originalDto.toBuilder()
+                .amount(totalPrice)
+                .build();
+
+        Payment payment = paymentBuilder.buildPayment(dtoWithAmount);
+        Payment savedPayment = paymentRepository.save(payment);
+        PaymentDtoExit paymentResponse = paymentBuilder.buildPaymentExit(savedPayment);
 
         Reservation reservation = reservationBuilder.
                 buildReservation(
@@ -148,7 +158,7 @@ public class ReservationService implements ReservationInterface {
 
         // Marcar como cancelada
         reservation.setCancelled(true);
-        
+
         reservationRepository.save(reservation);
 
         // Si la cancelación es dentro de las 24h, liberar las fechas

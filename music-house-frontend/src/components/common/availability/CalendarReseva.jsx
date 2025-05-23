@@ -14,7 +14,7 @@ import { useAuth } from '@/hook/useAuth'
 import useAlert from '@/hook/useAlert'
 import { getAllAvailableDatesByInstrument } from '@/api/availability'
 import { getErrorMessage } from '@/api/getErrorMessage'
-import { createReservation, getReservationById } from '@/api/reservations'
+import { getReservationById } from '@/api/reservations'
 import { flexColumnContainer } from '@/components/styles/styleglobal'
 import utc from 'dayjs/plugin/utc'
 import timezone from 'dayjs/plugin/timezone'
@@ -24,7 +24,7 @@ import {
   ParagraphResponsive,
   TitleResponsive
 } from '@/components/styles/ResponsiveComponents'
-import LoaderOverlay from '../loader/LoaderOverlay'
+
 dayjs.extend(utc)
 dayjs.extend(timezone)
 const formatDate = (date) => dayjs(date).format('YYYY-MM-DD')
@@ -33,12 +33,23 @@ const CalendarReserva = ({ instrument }) => {
   const [availableDates, setAvailableDates] = useState([])
   const [selectedDates, setSelectedDates] = useState([])
   const [reservedDates, setReservedDates] = useState([])
-  const [loading, setLoading] = useState(false)
   const [isInstrumentReserved, setIsInstrumentReserved] = useState(false)
   const idInstrument = instrument?.result?.idInstrument
   const { idUser } = useAuth()
   const navigate = useNavigate()
-  const { showSuccess, showError } = useAlert()
+  const { showError } = useAlert()
+
+  // Calculamos las fechas de inicio y fin
+  const startDate = selectedDates.length > 0 ? dayjs(selectedDates[0]) : null
+  const endDate =
+    selectedDates.length > 0
+      ? dayjs(selectedDates[selectedDates.length - 1])
+      : null
+  const totalDays =
+    startDate && endDate ? endDate.diff(startDate, 'day') + 1 : 0
+  const pricePerDay = instrument?.result?.rentalPrice || 0
+  const totalPrice = pricePerDay * totalDays
+  const isRangeValid = selectedDates.length >= 1
 
   useEffect(() => {
     const fetchAvailableDates = async () => {
@@ -57,7 +68,11 @@ const CalendarReserva = ({ instrument }) => {
   }, [idInstrument, showError])
 
   const handleDateSelect = (date) => {
-    const formatted = dayjs.utc(date).tz('America/Santiago').format('YYYY-MM-DD')
+    const formatted = dayjs
+      .utc(date)
+      .tz('America/Santiago')
+      .format('YYYY-MM-DD')
+
     if (!availableDates.includes(formatted)) {
       const isPast = dayjs(formatted).isBefore(dayjs(), 'day')
       showError(
@@ -67,31 +82,73 @@ const CalendarReserva = ({ instrument }) => {
       )
       return
     }
-    setSelectedDates((prev) => {
-      const updated = prev.includes(formatted)
-        ? prev.filter((d) => d !== formatted)
-        : [...prev, formatted]
-      return updated.sort((a, b) => dayjs(a).unix() - dayjs(b).unix())
-    })
+
+    // Si no hay fechas seleccionadas o se hace shift+click, seleccionamos rango
+    if (
+      selectedDates.length === 0 ||
+      (window.event && window.event.shiftKey && startDate)
+    ) {
+      const start = startDate || dayjs(formatted)
+      const end = dayjs(formatted)
+      const range = []
+
+      // Ordenamos las fechas por si el usuario selecciona primero la fecha mayor
+      const [from, to] = start.isBefore(end) ? [start, end] : [end, start]
+
+      // Generamos todas las fechas en el rango
+      for (let d = from; d.isBefore(to) || d.isSame(to); d = d.add(1, 'day')) {
+        const dateStr = formatDate(d)
+        if (
+          availableDates.includes(dateStr) &&
+          !reservedDates.includes(dateStr)
+        ) {
+          range.push(dateStr)
+        }
+      }
+
+      setSelectedDates(range)
+    } else {
+      // Selección/deselección individual
+      setSelectedDates((prev) => {
+        const updated = prev.includes(formatted)
+          ? prev.filter((d) => d !== formatted)
+          : [...prev, formatted]
+        return updated.sort((a, b) => dayjs(a).unix() - dayjs(b).unix())
+      })
+    }
   }
 
-  const handleConfirmReservation = async () => {
-    setLoading(true)
-    const startDate = selectedDates[0]
-    const endDate = selectedDates[selectedDates.length - 1]
-    try {
-      await createReservation(idUser, idInstrument, startDate, endDate)
-      showSuccess(
-        '¡Reserva realizada!',
-        `Tu reserva ha sido confirmada del ${startDate} al ${endDate}.`
-      )
-      setSelectedDates([])
-      setTimeout(() => navigate('/'), 1500)
-    } catch (err) {
-      showError(`❌ ${getErrorMessage(err)}`)
-    } finally {
-      setLoading(false)
+  // Recuperar el estado al cargar el componente desde localStorage
+  useEffect(() => {
+    const savedReservation = localStorage.getItem('currentReservation')
+    if (savedReservation) {
+      const { selectedDates: savedDates } = JSON.parse(savedReservation)
+      setSelectedDates(savedDates)
     }
+  }, [])
+
+  const handleConfirmReservation = () => {
+    // Guardar en localStorage antes de navegar
+    const reservationData = {
+      idInstrument,
+      idUser,
+      startDate: startDate.format('YYYY-MM-DD'),
+      endDate: endDate.format('YYYY-MM-DD'),
+      totalPrice,
+      selectedDates,
+      instrumentName: instrument?.result?.name,
+      rentalPrice: instrument?.result?.rentalPrice
+    }
+
+    localStorage.setItem('currentReservation', JSON.stringify(reservationData))
+
+    navigate('/reserva/pago')
+  }
+
+  // Función para cancelar y limpiar la reserva
+  const handleCancelReservation = () => {
+    localStorage.removeItem('currentReservation')
+    setSelectedDates([])
   }
 
   const fetchReservedDates = useCallback(async () => {
@@ -128,28 +185,51 @@ const CalendarReserva = ({ instrument }) => {
   }, [fetchReservedDates, idUser])
 
   const CustomDayComponent = (props) => {
-    const { day, ...other } = props
+    const { day, outsideCurrentMonth=false, ...other } = props
     const formattedDay = formatDate(day)
     const isAvailable = availableDates.includes(formattedDay)
     const isSelected = selectedDates.includes(formattedDay)
     const isReserved = reservedDates.includes(formattedDay)
+    const isInRange =
+      startDate && endDate && day.isAfter(startDate) && day.isBefore(endDate)
+
+    if (outsideCurrentMonth) {
+      return <PickersDay {...other} outsideCurrentMonth day={day} />
+    }
 
     return (
       <PickersDay
         {...other}
         day={day}
+      outsideCurrentMonth={outsideCurrentMonth}
         onClick={() => !isReserved && handleDateSelect(day)}
         sx={{
           bgcolor: isReserved
-            ? 'var( --color-primario-active) !important'
+            ? 'var(--color-primario-active) !important'
             : isSelected
               ? 'var(--color-info) !important'
-              : isAvailable
-                ? 'var(--color-exito) !important'
-                : 'var(--calendario-color-no-disponible) !important',
-          color: 'var( --color-primario) !important',
+              : isInRange
+                ? 'rgba(0, 123, 255, 0.3) !important'
+                : isAvailable
+                  ? 'var(--color-exito) !important'
+                  : 'var(--calendario-color-no-disponible) !important',
+          color: isReserved
+            ? 'var(--color-primario) !important'
+            : isSelected || isInRange
+              ? 'white !important'
+              : 'inherit',
           pointerEvents: isReserved ? 'none' : 'auto',
-          cursor: isReserved ? 'not-allowed' : 'pointer'
+          cursor: isReserved ? 'not-allowed' : 'pointer',
+          border: isInRange ? '1px solid var(--color-info)' : 'none',
+          borderRadius: isInRange ? '0' : '50%',
+          '&:first-of-type': {
+            borderTopLeftRadius: '50%',
+            borderBottomLeftRadius: '50%'
+          },
+          '&:last-of-type': {
+            borderTopRightRadius: '50%',
+            borderBottomRightRadius: '50%'
+          }
         }}
       />
     )
@@ -157,43 +237,33 @@ const CalendarReserva = ({ instrument }) => {
 
   CustomDayComponent.propTypes = {
     day: PropTypes.object.isRequired,
-    selected: PropTypes.bool
+    outsideCurrentMonth: PropTypes.bool
   }
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box sx={{ position: 'relative', minHeight: '600px', width: '100%' }}>
+      <Box sx={{}}>
         <Box sx={{ ...flexColumnContainer, gap: 2, padding: 2 }}>
-          <Box
-            sx={{
-              width: '100%',
-              maxHeight: { xs: 280, sm: 320, md: 360 },
-              overflowY: 'auto',
-              display: 'flex',
-              justifyContent: 'center',
-              p: 1
-            }}
-          >
+          <Box>
             <DateCalendar
               slots={{ day: CustomDayComponent }}
               sx={{
                 backgroundColor: 'rgba(251, 193, 45, 0.57)',
-                borderRadius: 2, // opcional: bordes redondeados
-                width: { xs: '90%', sm: '90%', md: '80%', lg: '40%' },
-                minWidth: 280
+                borderRadius: 2
               }}
             />
           </Box>
 
-          {selectedDates.length > 0 && !isInstrumentReserved && (
+          {startDate && endDate && isRangeValid && !isInstrumentReserved && (
             <Box
               sx={{
                 mt: 3,
-                p: 2,
+                p: 3,
                 backgroundColor: 'var(--color-exito)',
                 borderRadius: 2,
                 color: 'var(--texto-inverso-black)',
-                textAlign: 'center',
+                maxWidth: 500,
+                mx: 'auto',
                 width: {
                   xs: '100%',
                   sm: '100%',
@@ -203,9 +273,33 @@ const CalendarReserva = ({ instrument }) => {
                 }
               }}
             >
-              <TitleResponsive>📅 Fechas seleccionadas:</TitleResponsive>
+              <TitleResponsive>📋 Resumen de reserva</TitleResponsive>
               <ParagraphResponsive>
-                {selectedDates.join(' • ')}
+                <strong>Instrumento:</strong> {instrument?.result?.name}
+              </ParagraphResponsive>
+              <ParagraphResponsive>
+                <strong>Desde:</strong>{' '}
+                {startDate.format('dddd, D [de] MMMM [de] YYYY')}
+              </ParagraphResponsive>
+              <ParagraphResponsive>
+                <strong>Hasta:</strong>{' '}
+                {endDate.format('dddd, D [de] MMMM [de] YYYY')}
+              </ParagraphResponsive>
+              <ParagraphResponsive>
+                <strong>Días totales:</strong> {totalDays}
+              </ParagraphResponsive>
+              <ParagraphResponsive>
+                <strong>Precio por día:</strong> ${pricePerDay.toLocaleString()}
+              </ParagraphResponsive>
+              <ParagraphResponsive
+                sx={{ fontSize: '1.1rem', fontWeight: 'bold' }}
+              >
+                <strong>Total a pagar:</strong> ${totalPrice.toLocaleString()}
+              </ParagraphResponsive>
+              <ParagraphResponsive sx={{ mt: 1, fontStyle: 'italic' }}>
+                {selectedDates.length > 1
+                  ? `(${selectedDates.length} días seleccionados)`
+                  : '(1 día seleccionado)'}
               </ParagraphResponsive>
             </Box>
           )}
@@ -217,7 +311,6 @@ const CalendarReserva = ({ instrument }) => {
           >
             <CustomButton
               onClick={handleConfirmReservation}
-              disabled={loading}
               sx={{
                 visibility:
                   selectedDates.length > 0 && !isInstrumentReserved
@@ -229,30 +322,34 @@ const CalendarReserva = ({ instrument }) => {
                 selectedDates.length > 1 ? 'fade-in-up' : 'fade-out-soft'
               }
             >
-              Reservar
+              Confirmar Reserva
+            </CustomButton>
+          </ContainerBottom>
+
+          {/* Botón de cancelar reserva */}
+          <ContainerBottom
+           sx={{
+              width: { xs: '100%', sm: '100%', md: '90%', lg: '70%', xl: '30%' }
+            }}>
+            <CustomButton
+              onClick={handleCancelReservation}
+              sx={{
+                backgroundColor: 'var(--color-error)',
+
+                visibility:
+                  selectedDates.length > 0 && !isInstrumentReserved
+                    ? 'visible'
+                    : 'hidden',
+                boxShadow: 'var(--box-shadow)'
+              }}
+              className={
+                selectedDates.length > 1 ? 'fade-in-up' : 'fade-out-soft'
+              }
+            >
+              Cancelar Reserva
             </CustomButton>
           </ContainerBottom>
         </Box>
-
-        {loading && (
-          <LoaderOverlay
-            texto={'Cargando reserva'}
-            containerProps={{
-              position: 'absolute',
-              top: 0,
-              left: 0,
-              width: '100%',
-              height: '100%',
-              borderRadius: '8px',
-              background: 'rgba(255, 255, 255, 0.08)',
-              zIndex: 10,
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-               color: 'var( --color-primario) !important',
-            }}
-          />
-        )}
       </Box>
     </LocalizationProvider>
   )
@@ -261,7 +358,9 @@ const CalendarReserva = ({ instrument }) => {
 CalendarReserva.propTypes = {
   instrument: PropTypes.shape({
     result: PropTypes.shape({
-      idInstrument: PropTypes.string.isRequired
+      idInstrument: PropTypes.string.isRequired,
+      name: PropTypes.string,
+      rentalPrice: PropTypes.number
     })
   })
 }

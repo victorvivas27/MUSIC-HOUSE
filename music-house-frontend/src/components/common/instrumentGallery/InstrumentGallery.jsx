@@ -26,7 +26,7 @@ export const InstrumentGallery = ({ itemData }) => {
               src={item.imageUrl}
               fallbackSrc="/src/assets/instrumento_general_03.jpg"
               alt="Instrumento de galería"
-              variant="rounded"
+               variant="rectangular"
               width="100%"
               height="auto"
               borderRadius="10px"

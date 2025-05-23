@@ -58,16 +58,11 @@ export const cancelReservation = async (idInstrument, idUser, idReservation) => 
 };
 
 
-export const createReservation = async (idUser, idInstrument, startDate, endDate) => {
+export const createReservation = async (reservationPayload) => {
   try {
-    const response = await axios.post(`${BASE_URL}/reservations`, {
-      idUser,
-      idInstrument,
-      startDate,
-      endDate,
-    });
-    return response.data;
+    const response = await axios.post(`${BASE_URL}/reservations`, reservationPayload)
+    return response.data
   } catch (error) {
-    handleApiError(error);
+    handleApiError(error)
   }
-};
+}

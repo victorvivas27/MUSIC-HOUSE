@@ -189,12 +189,15 @@ export const Instrument = () => {
                 disableElevation
               >
                 <ImageWithLoader
-                  src={instrumentSelected?.imageUrls?.[0]?.imageUrl}
-                  alt={instrumentSelected?.name}
+                  src={instrumentSelected?.imageUrls?.[0]?.imageUrl || null} // Asegura que sea null si no existe
+                  alt={instrumentSelected?.name || 'Imagen del instrumento'}
                   variant="rectangular"
                   width="100%"
                   height="100%"
                   borderRadius="0.5rem"
+                  placeholderComponent={
+                    <Typography variant="body2">Sin imagen</Typography>
+                  }
                 />
               </Button>
             </Tooltip>
