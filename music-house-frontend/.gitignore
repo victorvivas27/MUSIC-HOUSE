@@ -24,4 +24,4 @@ dist-ssr
 *.sw?
 # ignorar todos los .env excepto producción
 .env*
-!.env.production
+.env.production
