@@ -25,8 +25,11 @@ public class ThemeValidator {
     /**
      * Valida que no exista una temática con el mismo nombre (ignorando mayúsculas/minúsculas).
      *
-     * @param dto Objeto que implementa la interfaz {@link HasName}, del cual se obtiene el nombre a validar.
-     * @throws DuplicateNameException si ya existe una temática con el mismo nombre.
+     * @param dto
+     *         Objeto que implementa la interfaz {@link HasName}, del cual se obtiene el nombre a validar.
+     *
+     * @throws DuplicateNameException
+     *         si ya existe una temática con el mismo nombre.
      */
     public void validateUniqueName(HasName dto) {
         themeRepository.findByThemeNameIgnoreCase(dto.getName())
@@ -40,9 +43,13 @@ public class ThemeValidator {
      * Valida que no exista otra temática con el mismo nombre, excluyendo el ID actual.
      * Usado durante la modificación.
      *
-     * @param dto       Objeto que contiene el nombre de la temática.
-     * @param currentId ID de la temática que se está modificando.
-     * @throws DuplicateNameException si el nombre ya está en uso por otra temática.
+     * @param dto
+     *         Objeto que contiene el nombre de la temática.
+     * @param currentId
+     *         ID de la temática que se está modificando.
+     *
+     * @throws DuplicateNameException
+     *         si el nombre ya está en uso por otra temática.
      */
     public void validateUniqueName(HasName dto, UUID currentId) {
         themeRepository.findByThemeNameIgnoreCase(dto.getName())
@@ -57,9 +64,13 @@ public class ThemeValidator {
     /**
      * Valida que una temática con el ID proporcionado exista en la base de datos.
      *
-     * @param idTheme ID de la temática a validar.
+     * @param idTheme
+     *         ID de la temática a validar.
+     *
      * @return La entidad {@link Theme} correspondiente al ID.
-     * @throws ResourceNotFoundException si no se encuentra ninguna temática con ese ID.
+     *
+     * @throws ResourceNotFoundException
+     *         si no se encuentra ninguna temática con ese ID.
      */
     public Theme validateThemeId(UUID idTheme)
             throws ResourceNotFoundException {
@@ -72,9 +83,13 @@ public class ThemeValidator {
      * Valida que la temática con el ID proporcionado no esté asociada a ningún instrumento.
      * Esto se utiliza, por ejemplo, antes de eliminar una temática para evitar borrar registros en uso.
      *
-     * @param idTheme ID de la temática a validar.
-     * @throws ResourceNotFoundException   si la temática no existe.
-     * @throws CategoryAssociatedException si existen instrumentos asociados a la temática.
+     * @param idTheme
+     *         ID de la temática a validar.
+     *
+     * @throws ResourceNotFoundException
+     *         si la temática no existe.
+     * @throws CategoryAssociatedException
+     *         si existen instrumentos asociados a la temática.
      */
     public void validateInstrumentAssociation(UUID idTheme)
             throws ResourceNotFoundException {
@@ -103,9 +118,12 @@ public class ThemeValidator {
      * Este método extrae el nombre original del archivo (por ejemplo, "foto.jpg")
      * desde la URL y lo compara contra el nombre recibido.
      *
-     * @param filename El nombre original del archivo (por ejemplo, file.getOriginalFilename()).
-     * @throws DuplicateNameException si se encuentra una coincidencia exacta del nombre de archivo
-     *                                en una temática ya existente.
+     * @param filename
+     *         El nombre original del archivo (por ejemplo, file.getOriginalFilename()).
+     *
+     * @throws DuplicateNameException
+     *         si se encuentra una coincidencia exacta del nombre de archivo
+     *         en una temática ya existente.
      */
 
     public void validateDuplicateImageByFilename(String filename) {

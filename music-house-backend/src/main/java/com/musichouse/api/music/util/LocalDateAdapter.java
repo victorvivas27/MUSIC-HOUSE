@@ -21,9 +21,13 @@ public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserial
     /**
      * Convierte un LocalDate en un JsonPrimitive (cadena de texto) con el formato "yyyy-MM-dd".
      *
-     * @param localDate Fecha local a convertir.
-     * @param srcType   Tipo del objeto fuente (usualmente LocalDate).
-     * @param context   Contexto de serialización de Gson.
+     * @param localDate
+     *         Fecha local a convertir.
+     * @param srcType
+     *         Tipo del objeto fuente (usualmente LocalDate).
+     * @param context
+     *         Contexto de serialización de Gson.
+     *
      * @return JsonElement que representa la fecha como cadena.
      */
     @Override
@@ -34,11 +38,17 @@ public class LocalDateAdapter implements JsonSerializer<LocalDate>, JsonDeserial
     /**
      * Convierte una cadena en formato "yyyy-MM-dd" a un objeto LocalDate.
      *
-     * @param json    Elemento JSON que contiene la fecha como string.
-     * @param typeOfT Tipo esperado (LocalDate).
-     * @param context Contexto de deserialización de Gson.
+     * @param json
+     *         Elemento JSON que contiene la fecha como string.
+     * @param typeOfT
+     *         Tipo esperado (LocalDate).
+     * @param context
+     *         Contexto de deserialización de Gson.
+     *
      * @return Objeto LocalDate.
-     * @throws JsonParseException Si el string no tiene el formato esperado.
+     *
+     * @throws JsonParseException
+     *         Si el string no tiene el formato esperado.
      */
     @Override
     public LocalDate deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)

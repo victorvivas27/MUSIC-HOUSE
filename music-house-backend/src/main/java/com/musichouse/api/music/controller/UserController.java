@@ -52,11 +52,17 @@ public class UserController {
     /**
      * Crea un nuevo usuario a partir de un JSON y una imagen opcional.
      *
-     * @param userJson JSON como String con los datos del usuario (UserDtoEntrance).
-     * @param file     Imagen opcional (MultipartFile) asociada al usuario.
+     * @param userJson
+     *         JSON como String con los datos del usuario (UserDtoEntrance).
+     * @param file
+     *         Imagen opcional (MultipartFile) asociada al usuario.
+     *
      * @return ResponseEntity con estado HTTP 201 y el usuario creado, o errores de validación.
-     * @throws JsonProcessingException si el JSON es inválido.
-     * @throws MessagingException      si ocurre un error al enviar el correo de verificación.
+     *
+     * @throws JsonProcessingException
+     *         si el JSON es inválido.
+     * @throws MessagingException
+     *         si ocurre un error al enviar el correo de verificación.
      */
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public HttpEntity<ApiResponse<TokenDtoExit>> createUser(
@@ -97,13 +103,21 @@ public class UserController {
      * Actualiza el perfil del usuario autenticado usando su token JWT.
      * Los datos vienen como JSON string + imagen opcional.
      *
-     * @param userJson JSON como String con los campos modificables del usuario.
-     * @param file     Imagen nueva opcional del perfil.
-     * @param request  HttpServletRequest usado para extraer el JWT de la cookie.
+     * @param userJson
+     *         JSON como String con los campos modificables del usuario.
+     * @param file
+     *         Imagen nueva opcional del perfil.
+     * @param request
+     *         HttpServletRequest usado para extraer el JWT de la cookie.
+     *
      * @return ResponseEntity con estado HTTP 200 y los datos actualizados del usuario.
-     * @throws JsonProcessingException   si el JSON no puede deserializarse.
-     * @throws MessagingException        si ocurre un error en el proceso de email.
-     * @throws ResourceNotFoundException si el usuario no es encontrado en base al token.
+     *
+     * @throws JsonProcessingException
+     *         si el JSON no puede deserializarse.
+     * @throws MessagingException
+     *         si ocurre un error en el proceso de email.
+     * @throws ResourceNotFoundException
+     *         si el usuario no es encontrado en base al token.
      */
     @PutMapping("/me")
     public HttpEntity<ApiResponse<UserDtoExit>> updateUser(
@@ -145,9 +159,13 @@ public class UserController {
     /**
      * Devuelve los datos del usuario autenticado según su JWT.
      *
-     * @param request HttpServletRequest que contiene la cookie con el token JWT.
+     * @param request
+     *         HttpServletRequest que contiene la cookie con el token JWT.
+     *
      * @return ResponseEntity con los datos del usuario autenticado.
-     * @throws ResourceNotFoundException si no se encuentra el usuario.
+     *
+     * @throws ResourceNotFoundException
+     *         si no se encuentra el usuario.
      */
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserDtoExit>> getCurrentUser(HttpServletRequest request)

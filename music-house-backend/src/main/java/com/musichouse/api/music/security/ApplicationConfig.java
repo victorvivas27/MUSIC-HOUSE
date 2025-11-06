@@ -25,9 +25,13 @@ public class ApplicationConfig {
     /**
      * Bean para obtener el AuthenticationManager configurado.
      *
-     * @param configuration Configuración de autenticación
+     * @param configuration
+     *         Configuración de autenticación
+     *
      * @return AuthenticationManager configurado
-     * @throws Exception Si hay algún error al obtener el AuthenticationManager
+     *
+     * @throws Exception
+     *         Si hay algún error al obtener el AuthenticationManager
      */
     @Bean // Define un bean de AuthenticationManager
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {

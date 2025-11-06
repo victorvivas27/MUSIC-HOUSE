@@ -60,7 +60,9 @@ public class JwtService {
     /**
      * Genera un token JWT para el usuario autenticado.
      *
-     * @param userDetails Detalles del usuario autenticado.
+     * @param userDetails
+     *         Detalles del usuario autenticado.
+     *
      * @return Token JWT generado.
      */
     public String generateToken(UserDetails userDetails) {
@@ -82,8 +84,11 @@ public class JwtService {
     /**
      * Genera un token JWT con los claims y sujeto proporcionados.
      *
-     * @param extraClaims Claims adicionales que se incluirán en el payload del token.
-     * @param subject     Identificador principal del token (generalmente el ID del usuario).
+     * @param extraClaims
+     *         Claims adicionales que se incluirán en el payload del token.
+     * @param subject
+     *         Identificador principal del token (generalmente el ID del usuario).
+     *
      * @return Token JWT generado.
      */
     private String generateToken(Map<String, Object> extraClaims, String subject) {
@@ -102,7 +107,9 @@ public class JwtService {
     /**
      * Extrae todos los claims (reclamos) del token JWT.
      *
-     * @param token Token JWT del cual extraer la información.
+     * @param token
+     *         Token JWT del cual extraer la información.
+     *
      * @return Claims extraídos del token.
      */
     public Claims extractClaims(String token) {
@@ -122,7 +129,9 @@ public class JwtService {
     /**
      * Obtiene el identificador (subject) del token, que normalmente representa el ID del usuario.
      *
-     * @param token Token JWT.
+     * @param token
+     *         Token JWT.
+     *
      * @return El subject del token.
      */
     public String getUsernameFromToken(String token) {
@@ -132,8 +141,11 @@ public class JwtService {
     /**
      * Valida si un token JWT es válido para el usuario proporcionado.
      *
-     * @param token       Token JWT.
-     * @param userDetails Detalles del usuario autenticado.
+     * @param token
+     *         Token JWT.
+     * @param userDetails
+     *         Detalles del usuario autenticado.
+     *
      * @return true si el token es válido; false si es inválido o expirado.
      */
     public boolean isTokenValid(String token, UserDetails userDetails) {
@@ -144,7 +156,9 @@ public class JwtService {
     /**
      * Extrae todos los claims de un token.
      *
-     * @param token Token JWT.
+     * @param token
+     *         Token JWT.
+     *
      * @return Claims del token.
      */
     private Claims getAllClaims(String token) {
@@ -158,9 +172,13 @@ public class JwtService {
     /**
      * Obtiene un claim específico del token, utilizando una función lambda para definir qué claim extraer.
      *
-     * @param token          Token JWT.
-     * @param claimsResolver Función que indica qué claim obtener.
-     * @param <T>            Tipo del dato a extraer.
+     * @param token
+     *         Token JWT.
+     * @param claimsResolver
+     *         Función que indica qué claim obtener.
+     * @param <T>
+     *         Tipo del dato a extraer.
+     *
      * @return Valor del claim.
      */
     public <T> T getClaim(String token, Function<Claims, T> claimsResolver) {
@@ -171,7 +189,9 @@ public class JwtService {
     /**
      * Obtiene la fecha de expiración del token.
      *
-     * @param token Token JWT.
+     * @param token
+     *         Token JWT.
+     *
      * @return Fecha de expiración.
      */
     private Date getExpiration(String token) {
@@ -181,7 +201,9 @@ public class JwtService {
     /**
      * Verifica si el token ha expirado.
      *
-     * @param token Token JWT.
+     * @param token
+     *         Token JWT.
+     *
      * @return true si el token ya no es válido por expiración; false si aún es válido.
      */
     private boolean isTokenExpired(String token) {
@@ -204,7 +226,9 @@ public class JwtService {
     /**
      * Valida si un token es válido (estructura correcta y no expirado).
      *
-     * @param token el token JWT a validar
+     * @param token
+     *         el token JWT a validar
+     *
      * @return true si el token es válido, false si está mal formado o expirado
      */
     public boolean validateToken(String token) {

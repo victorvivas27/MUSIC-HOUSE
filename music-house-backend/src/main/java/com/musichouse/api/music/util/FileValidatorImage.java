@@ -24,7 +24,9 @@ public class FileValidatorImage {
      * - Deben ser de tipo imagen permitido (JPEG, PNG, JPG, WEBP).
      * - No deben superar el tamaño máximo.
      *
-     * @param files Lista de archivos subidos.
+     * @param files
+     *         Lista de archivos subidos.
+     *
      * @return Lista de mensajes de error encontrados. Vacía si todo está OK.
      */
     public static List<String> validateImages(List<MultipartFile> files) {
@@ -58,7 +60,9 @@ public class FileValidatorImage {
     /**
      * Valida un solo archivo MultipartFile.
      *
-     * @param file Archivo individual a validar.
+     * @param file
+     *         Archivo individual a validar.
+     *
      * @return Lista de errores. Vacía si está todo OK.
      */
     public static List<String> validateImage(MultipartFile file) {

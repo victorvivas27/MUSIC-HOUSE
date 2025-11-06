@@ -84,8 +84,6 @@ public class UserServiceAdmin {
     }
 
 
-
-
     @Cacheable(value = "users", key = "#idUser")
     public UserDtoExit getUserById(UUID idUser) throws ResourceNotFoundException {
         User user = userValidator.validateUserId(idUser);

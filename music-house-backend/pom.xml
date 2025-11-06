@@ -14,7 +14,7 @@
     <name>Music House</name>
     <description>Proyecto Integrador: App de Alquiler de Instrumentos Musicales</description>
     <properties>
-        <java.version>17</java.version>
+        <java.version>21</java.version>
 
     </properties>
     <dependencies>
@@ -222,6 +222,16 @@
                 <version>3.0.0</version>
                 <configuration>
                     <encoding>UTF-8</encoding>
+                </configuration>
+            </plugin>
+            <!-- Ensure compilation with Java 21 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.11.0</version>
+                <configuration>
+                    <!-- Use release to ensure correct bootclasspath and compatibility -->
+                    <release>21</release>
                 </configuration>
             </plugin>
         </plugins>

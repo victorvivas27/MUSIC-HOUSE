@@ -18,7 +18,8 @@ public class ImageCleaner {
     /**
      * Elimina una imagen de S3 a partir de su URL completa.
      *
-     * @param imageUrl URL pública de la imagen en S3.
+     * @param imageUrl
+     *         URL pública de la imagen en S3.
      */
     public void deleteImageFromS3(String imageUrl) {
         if (imageUrl != null && !imageUrl.isEmpty()) {
@@ -31,7 +32,8 @@ public class ImageCleaner {
     /**
      * Elimina múltiples imágenes de S3 a partir de sus URLs.
      *
-     * @param imageUrls Lista de URLs públicas de las imágenes en S3.
+     * @param imageUrls
+     *         Lista de URLs públicas de las imágenes en S3.
      */
     public void deleteAllImagesFromS3(List<String> imageUrls) {
         if (imageUrls != null) {
@@ -42,7 +44,9 @@ public class ImageCleaner {
     /**
      * Extrae las URLs de imágenes de una lista de ImageUrlsInstrument.
      *
-     * @param images Lista de ImageUrlsInstrument.
+     * @param images
+     *         Lista de ImageUrlsInstrument.
+     *
      * @return Lista de URLs de imágenes.
      */
     public List<String> extractImageUrls(List<ImageUrlsInstrument> images) {

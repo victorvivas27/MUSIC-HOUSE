@@ -18,7 +18,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 
 /**
  * hasAnyAuthority:
- * Este método se utiliza para verificar si el usuario actual tiene al menos uno de los permisos especificados en la lista proporcionada.
+ * Este método se utiliza para verificar si el usuario actual tiene al menos uno de los permisos especificados en la
+ * lista proporcionada.
  * El argumento que recibe es una lista de cadenas que representan los nombres de los permisos.
  * Por ejemplo, hasAnyAuthority('ADMIN', 'USER') verificará si el usuario tiene el permiso ADMIN o USER.
  */

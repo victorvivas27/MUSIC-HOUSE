@@ -63,9 +63,13 @@ public class UserAdminController {
      *
      * <p>Valida credenciales y devuelve un JWT embebido en una cookie HttpOnly.</p>
      *
-     * @param loginDtoEntrance Credenciales de acceso (email y contraseña).
+     * @param loginDtoEntrance
+     *         Credenciales de acceso (email y contraseña).
+     *
      * @return Token encapsulado en la respuesta junto con la cookie, o error de autenticación.
-     * @throws ResourceNotFoundException si el usuario no existe o no verificó su email.
+     *
+     * @throws ResourceNotFoundException
+     *         si el usuario no existe o no verificó su email.
      */
     @PostMapping("/login")
     public ResponseEntity<ApiResponse<TokenDtoExit>> loginUser(@Valid @RequestBody LoginDtoEntrance loginDtoEntrance)
@@ -98,7 +102,9 @@ public class UserAdminController {
     /**
      * Obtiene una lista paginada de todos los usuarios registrados.
      *
-     * @param pageable Información de paginación y orden.
+     * @param pageable
+     *         Información de paginación y orden.
+     *
      * @return Página con usuarios y metainformación de la respuesta.
      */
     @GetMapping()
@@ -118,9 +124,13 @@ public class UserAdminController {
     /**
      * Obtiene los datos de un usuario a partir de su UUID.
      *
-     * @param idUser UUID del usuario a buscar.
+     * @param idUser
+     *         UUID del usuario a buscar.
+     *
      * @return Datos del usuario si es encontrado.
-     * @throws ResourceNotFoundException si el usuario no existe.
+     *
+     * @throws ResourceNotFoundException
+     *         si el usuario no existe.
      */
     @GetMapping("{idUser}")
     public ResponseEntity<ApiResponse<UserDtoExit>> getUserById(@PathVariable UUID idUser)
@@ -141,12 +151,19 @@ public class UserAdminController {
      *
      * <p>Se espera un JSON como string en el parámetro `user`, y una imagen opcional.</p>
      *
-     * @param userJson JSON serializado con los campos a modificar (UserDtoModify).
-     * @param file     Imagen de perfil opcional.
+     * @param userJson
+     *         JSON serializado con los campos a modificar (UserDtoModify).
+     * @param file
+     *         Imagen de perfil opcional.
+     *
      * @return Usuario actualizado o errores de validación.
-     * @throws JsonProcessingException   si falla el parseo del JSON.
-     * @throws MessagingException        si ocurre un error de envío de email.
-     * @throws ResourceNotFoundException si el usuario no se encuentra.
+     *
+     * @throws JsonProcessingException
+     *         si falla el parseo del JSON.
+     * @throws MessagingException
+     *         si ocurre un error de envío de email.
+     * @throws ResourceNotFoundException
+     *         si el usuario no se encuentra.
      */
     @PutMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public HttpEntity<ApiResponse<UserDtoExit>> updateUser(
@@ -188,9 +205,13 @@ public class UserAdminController {
     /**
      * Elimina un usuario según su ID.
      *
-     * @param idUser UUID del usuario a eliminar.
+     * @param idUser
+     *         UUID del usuario a eliminar.
+     *
      * @return Confirmación de eliminación.
-     * @throws ResourceNotFoundException si el usuario no existe.
+     *
+     * @throws ResourceNotFoundException
+     *         si el usuario no existe.
      */
     @DeleteMapping("{idUser}")
     public ResponseEntity<ApiResponse<?>> deleteUser(@PathVariable UUID idUser)
@@ -210,8 +231,11 @@ public class UserAdminController {
     /**
      * Busca usuarios por nombre de forma paginada.
      *
-     * @param name     Nombre o fragmento de nombre a buscar.
-     * @param pageable Información de paginación.
+     * @param name
+     *         Nombre o fragmento de nombre a buscar.
+     * @param pageable
+     *         Información de paginación.
+     *
      * @return Lista de usuarios cuyo nombre coincida parcial o totalmente.
      */
     @GetMapping("/search")

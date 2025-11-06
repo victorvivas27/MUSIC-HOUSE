@@ -7,9 +7,13 @@ public class StringValidator {
     /**
      * Valida que un string no sea nulo, vacío ni contenga caracteres inválidos.
      *
-     * @param input     El texto a validar.
-     * @param fieldName El nombre del campo (para el mensaje de error).
-     * @throws IllegalArgumentException si el texto es inválido.
+     * @param input
+     *         El texto a validar.
+     * @param fieldName
+     *         El nombre del campo (para el mensaje de error).
+     *
+     * @throws IllegalArgumentException
+     *         si el texto es inválido.
      */
     public static void validateBasicText(String input, String fieldName) {
         if (input == null || input.trim().isEmpty() || input.matches(VALID_CHARACTERS_REGEX)) {

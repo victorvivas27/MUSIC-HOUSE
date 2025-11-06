@@ -25,7 +25,8 @@ public interface AvailableDateRepository extends JpaRepository<AvailableDate, UU
     List<AvailableDate> findByDateAvailableAndAvailableIsTrue(LocalDate dateAvailable);
 
     /**
-     * @Query("SELECT a FROM AvailableDate a WHERE a.instrument.idInstrument = :instrumentId AND a.dateAvailable = :dateAvailable")
+     * @Query("SELECT a FROM AvailableDate a WHERE a.instrument.idInstrument = :instrumentId AND a.dateAvailable
+     *         = :dateAvailable")
      */
     Optional<AvailableDate> findByInstrumentIdInstrumentAndDateAvailable(UUID instrumentId, LocalDate dateAvailable);
 
@@ -35,7 +36,8 @@ public interface AvailableDateRepository extends JpaRepository<AvailableDate, UU
     List<AvailableDate> findByDateAvailableBetween(LocalDate startDate, LocalDate endDate);
 
     /**
-     * @Query("SELECT a FROM AvailableDate a WHERE a.instrument.idInstrument = :idInstrument AND a.dateAvailable BETWEEN :startDate AND :endDate")
+     * @Query("SELECT a FROM AvailableDate a WHERE a.instrument.idInstrument = :idInstrument AND a.dateAvailable
+     *         BETWEEN :startDate AND :endDate")
      */
     List<AvailableDate> findByInstrumentIdInstrumentAndDateAvailableBetween(UUID idInstrument, LocalDate startDate, LocalDate endDate);
 
@@ -51,8 +53,9 @@ public interface AvailableDateRepository extends JpaRepository<AvailableDate, UU
      * una operación de modificación dentro de un contexto transaccional. La anotación {@link Query} especifica
      * la consulta JPQL (Java Persistence Query Language) a ejecutar.</p>
      *
-     * @param today la fecha con la cual se comparará el campo fechaAvailable.
-     *              Se eliminarán todos los registros con una fechaAvailable anterior a esta fecha.
+     * @param today
+     *         la fecha con la cual se comparará el campo fechaAvailable.
+     *         Se eliminarán todos los registros con una fechaAvailable anterior a esta fecha.
      */
     @Modifying
     @Transactional

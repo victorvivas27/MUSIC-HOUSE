@@ -45,10 +45,12 @@ public class Phone {
      * El usuario al que pertenece este teléfono.
      *
      * @ManyToOne: Indica una relación muchos a uno entre la clase Phone y User.
-     * Esto significa que múltiples teléfonos pueden pertenecer a un solo usuario.
-     * @JoinColumn(name = "user_id"): Especifica la columna en la tabla PHONES que actúa como clave externa para
-     * la relación con la tabla USERS (donde se almacenan los usuarios). En este caso, la columna user_id se utiliza
-     * para almacenar el identificador único del usuario al que pertenece el teléfono.
+     *         Esto significa que múltiples teléfonos pueden pertenecer a un solo usuario.
+     * @JoinColumn(name = "user_id"): Especifica la columna en la tabla PHONES que actúa como clave externa
+     *         para
+     *         la relación con la tabla USERS (donde se almacenan los usuarios). En este caso, la columna user_id se
+     *         utiliza
+     *         para almacenar el identificador único del usuario al que pertenece el teléfono.
      */
     @ManyToOne
     @JoinColumn(name = "user_id")

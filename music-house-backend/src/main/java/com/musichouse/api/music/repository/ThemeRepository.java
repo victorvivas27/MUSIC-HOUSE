@@ -25,8 +25,11 @@ public interface ThemeRepository extends JpaRepository<Theme, UUID> {
     /**
      * Busca una página de tematicas cuyo nombre contenga el texto especificado (ignorando mayúsculas/minúsculas).
      *
-     * @param themeName Parte del nombre de la thematica a buscar.
-     * @param pageable  Objeto que define la paginación y ordenamiento.
+     * @param themeName
+     *         Parte del nombre de la thematica a buscar.
+     * @param pageable
+     *         Objeto que define la paginación y ordenamiento.
+     *
      * @return Una página de tematicas que coincidan con el criterio de búsqueda.
      */
 
@@ -35,7 +38,9 @@ public interface ThemeRepository extends JpaRepository<Theme, UUID> {
     /**
      * Busca una tematica por su nombre exacto, ignorando mayúsculas/minúsculas.
      *
-     * @param themeName El nombre exacto de la tematica.
+     * @param themeName
+     *         El nombre exacto de la tematica.
+     *
      * @return Un Optional que contiene la tematica encontrada si existe.
      */
 

@@ -57,9 +57,13 @@ public class AuthController {
     /**
      * Retorna información del usuario actualmente autenticado a partir del JWT en la cookie.
      *
-     * @param request HttpServletRequest desde donde se extrae el token JWT.
+     * @param request
+     *         HttpServletRequest desde donde se extrae el token JWT.
+     *
      * @return ResponseEntity con los datos básicos del usuario autenticado o error si el token es inválido.
-     * @throws ResourceNotFoundException si el usuario no se encuentra en la base de datos.
+     *
+     * @throws ResourceNotFoundException
+     *         si el usuario no se encuentra en la base de datos.
      */
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<TokenDtoExit>> getCurrentUser(HttpServletRequest request)
@@ -96,7 +100,9 @@ public class AuthController {
      * <p>Este método genera una cookie con duración 0 (maxAge = 0),
      * lo que en práctica elimina la cookie `jwt` del navegador.</p>
      *
-     * @param response HttpServletResponse donde se añade la cabecera para eliminar la cookie.
+     * @param response
+     *         HttpServletResponse donde se añade la cabecera para eliminar la cookie.
+     *
      * @return Confirmación de que la sesión fue cerrada exitosamente.
      */
     @GetMapping("/logout")
@@ -119,9 +125,13 @@ public class AuthController {
      *
      * <p>Una vez verificado, genera un JWT y lo devuelve embebido en una cookie HttpOnly.</p>
      *
-     * @param request Objeto que contiene el email y el código de verificación.
+     * @param request
+     *         Objeto que contiene el email y el código de verificación.
+     *
      * @return TokenDtoExit con datos del usuario autenticado y cookie JWT seteada.
-     * @throws ResourceNotFoundException si el usuario no se encuentra o el código es inválido.
+     *
+     * @throws ResourceNotFoundException
+     *         si el usuario no se encuentra o el código es inválido.
      */
     @PostMapping("/verify")
     public ResponseEntity<ApiResponse<TokenDtoExit>> verifyUser(@Valid @RequestBody VerifyRequest request) throws ResourceNotFoundException {

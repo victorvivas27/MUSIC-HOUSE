@@ -24,9 +24,13 @@ public class AuthService {
     /**
      * Método para realizar el inicio de sesión.
      *
-     * @param loginDtoEntrada Objeto DTO que contiene las credenciales de inicio de sesión (email y contraseña).
+     * @param loginDtoEntrada
+     *         Objeto DTO que contiene las credenciales de inicio de sesión (email y contraseña).
+     *
      * @return Objeto DTO que contiene el token generado en caso de inicio de sesión exitoso.
-     * @throws AccessDeniedException Si el usuario no tiene los permisos requeridos para iniciar sesión.
+     *
+     * @throws AccessDeniedException
+     *         Si el usuario no tiene los permisos requeridos para iniciar sesión.
      */
     public TokenDtoExit login(LoginDtoEntrance loginDtoEntrance) throws UnauthorizedException {
         // Autenticar las credenciales del usuario

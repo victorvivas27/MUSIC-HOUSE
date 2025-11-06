@@ -52,7 +52,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * Extrae el token JWT del encabezado de autorización de la solicitud.
      *
-     * @param request La solicitud HTTP.
+     * @param request
+     *         La solicitud HTTP.
+     *
      * @return El token JWT si está presente en el encabezado de autorización, de lo contrario, null.
      */
     private String extractTokenFromRequest(HttpServletRequest request) {
@@ -77,8 +79,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     /**
      * Autentica al usuario en el contexto de seguridad de Spring.
      *
-     * @param userDetails Los detalles del usuario obtenidos del servicio de detalles de usuario.
-     * @param request     La solicitud HTTP actual.
+     * @param userDetails
+     *         Los detalles del usuario obtenidos del servicio de detalles de usuario.
+     * @param request
+     *         La solicitud HTTP actual.
      */
     private void authenticateUser(UserDetails userDetails, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken authenticationToken =

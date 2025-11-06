@@ -25,8 +25,11 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
     /**
      * Busca una página de categorías cuyo nombre contenga el texto especificado (ignorando mayúsculas/minúsculas).
      *
-     * @param categoryName Parte del nombre de la categoría a buscar.
-     * @param pageable     Objeto que define la paginación y ordenamiento.
+     * @param categoryName
+     *         Parte del nombre de la categoría a buscar.
+     * @param pageable
+     *         Objeto que define la paginación y ordenamiento.
+     *
      * @return Una página de categorías que coincidan con el criterio de búsqueda.
      */
     Page<Category> findByCategoryNameContainingIgnoreCase(String categoryName, Pageable pageable);
@@ -34,7 +37,9 @@ public interface CategoryRepository extends JpaRepository<Category, UUID> {
     /**
      * Busca una categoría por su nombre exacto, ignorando mayúsculas/minúsculas.
      *
-     * @param categoryName El nombre exacto de la categoría.
+     * @param categoryName
+     *         El nombre exacto de la categoría.
+     *
      * @return Un Optional que contiene la categoría encontrada si existe.
      */
     Optional<Category> findByCategoryNameIgnoreCase(String categoryName);
