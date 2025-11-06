@@ -71,4 +71,4 @@ jobs:
             --image ${{ env.REPO_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/frontend:${{ github.sha }} \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --set-env-vars API_URL=${{ secrets.API_URL }}
+            --set-env-vars VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL}}
