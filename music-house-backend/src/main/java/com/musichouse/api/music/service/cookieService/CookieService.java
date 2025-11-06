@@ -14,7 +14,7 @@ public class CookieService {
     @Value("${cookie.secure}")
     private Boolean cookieSecure;
 
-    @Value("${cookie.same-site}")
+    @Value("${cookie.sameSite:None}")
     private String cookieSameSite;
 
     public ResponseCookie generateCookie(String token) {
