@@ -69,7 +69,8 @@ public class UserService {
         if (file != null && !file.isEmpty()) {
             imageUrl = awss3Service.uploadFileToS3User(file, id);
         } else {
-            imageUrl = "https://music-house-local.s3.us-east-1.amazonaws.com/usuario-default.png";
+            imageUrl =
+                    "https://music-house-local.s3.us-east-1.amazonaws.com/usuario-default.png";
         }
         User user = userBuilder.buildUserWithImage(userDtoEntrance, id, imageUrl);
         String code = String.valueOf((int) (Math.random() * 900000) + 100000);

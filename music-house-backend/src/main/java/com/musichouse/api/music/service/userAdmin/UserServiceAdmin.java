@@ -127,8 +127,13 @@ public class UserServiceAdmin {
         userRepository.save(user);
         userRepository.delete(user);
         if (imageUrl != null && !imageUrl.isEmpty()) {
-            String key = S3UrlParser.extractKeyFromS3Url(imageUrl);
-            s3FileDeleter.deleteFileFromS3(key);
+            String defaultImageUrl =
+                    "https://music-house-local.s3.us-east-1.amazonaws.com/usuario-default.png";
+
+            if (!imageUrl.equals(defaultImageUrl)) {
+                String key = S3UrlParser.extractKeyFromS3Url(imageUrl);
+                s3FileDeleter.deleteFileFromS3(key);
+            }
         }
 
     }
