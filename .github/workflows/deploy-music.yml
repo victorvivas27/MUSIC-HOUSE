@@ -1,0 +1,74 @@
+name: 🚀 Deploy Music-House (Frontend + Backend) to Google Cloud Run
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  PROJECT_ID: musichouse-project            # tu ID de proyecto GCP
+  REGION: us-central1                       # región de Cloud Run
+  REPO_REGION: southamerica-west1           # región del Artifact Registry
+  REPO: music-house                         # nombre del repo de imágenes
+
+  BACK_SERVICE: music-house-backend
+  FRONT_SERVICE: music-house-frontend
+
+  BACK_DIR: music-house-backend
+  FRONT_DIR: music-house-frontend
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧩 Checkout del código
+        uses: actions/checkout@v4
+
+      # ---------- AUTENTICACIÓN ----------
+      - name: 🔐 Autenticar con Google Cloud
+        uses: google-github-actions/auth@v2
+        with:
+          credentials_json: ${{ secrets.GCP_SA_KEY }}
+
+      - name: ☁️ Configurar gcloud CLI
+        uses: google-github-actions/setup-gcloud@v2
+        with:
+          project_id: ${{ env.PROJECT_ID }}
+
+      - name: 🔑 Autenticación Docker con Artifact Registry
+        run: gcloud auth configure-docker ${{ env.REPO_REGION }}-docker.pkg.dev --quiet
+
+      # ---------- BACKEND ----------
+      - name: 🧱 Construir imagen Docker del backend
+        run: |
+          docker build -t ${{ env.REPO_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/backend:${{ github.sha }} ${{ env.BACK_DIR }}
+
+      - name: 📦 Push imagen del backend
+        run: |
+          docker push ${{ env.REPO_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/backend:${{ github.sha }}
+
+      - name: 🚀 Desplegar Backend en Cloud Run
+        run: |
+          gcloud run deploy ${{ env.BACK_SERVICE }} \
+            --image ${{ env.REPO_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/backend:${{ github.sha }} \
+            --region ${{ env.REGION }} \
+            --allow-unauthenticated \
+            --set-env-vars DB_HOST=${{ secrets.DB_HOST }},DB_PORT=${{ secrets.DB_PORT }},DB_NAME=${{ secrets.DB_NAME }},DB_USER=${{ secrets.DB_USER }},DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+
+      # ---------- FRONTEND ----------
+      - name: 🧱 Construir imagen Docker del frontend
+        run: |
+          docker build -t ${{ env.REPO_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/frontend:${{ github.sha }} ${{ env.FRONT_DIR }}
+
+      - name: 📦 Push imagen del frontend
+        run: |
+          docker push ${{ env.REPO_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/frontend:${{ github.sha }}
+
+      - name: 🚀 Desplegar Frontend en Cloud Run
+        run: |
+          gcloud run deploy ${{ env.FRONT_SERVICE }} \
+            --image ${{ env.REPO_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/frontend:${{ github.sha }} \
+            --region ${{ env.REGION }} \
+            --allow-unauthenticated \
+            --set-env-vars API_URL=${{ secrets.API_URL }}
