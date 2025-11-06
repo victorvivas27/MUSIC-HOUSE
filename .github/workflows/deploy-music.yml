@@ -6,7 +6,7 @@ on:
       - main
 
 env:
-  PROJECT_ID: musichouse-project # tu ID de proyecto GCP
+  PROJECT_ID: music-house-project # tu ID de proyecto GCP
   REGION: us-central1 # región de Cloud Run
   REPO_REGION: southamerica-west1 # región del Artifact Registry
   REPO: music-house # nombre del repo de imágenes
