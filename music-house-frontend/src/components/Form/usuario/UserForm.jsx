@@ -97,7 +97,9 @@ export const UserForm = ({
   return (
     <Box
       sx={{
-        marginBottom: 10
+        marginBottom: 10,
+        backgroundColor: isUserAdmin ? 'var( --background-vidrio-soft)' : 'none',
+        borderRadius: '16px'
       }}
     >
       <Formik
@@ -246,10 +248,8 @@ export const UserForm = ({
                       />
                     )}
 
-
                     <OAuthLoginButton provider="google" />
                     <OAuthLoginButton provider="github" />
-
 
                     {!initialFormData.idUser && !isUserAdmin && (
                       <Link

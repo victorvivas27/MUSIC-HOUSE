@@ -7,7 +7,6 @@ import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.infra.MailManager;
-import com.musichouse.api.music.interfaces.UserInterface;
 import com.musichouse.api.music.repository.AddressRepository;
 import com.musichouse.api.music.repository.FavoriteRepository;
 import com.musichouse.api.music.repository.PhoneRepository;
@@ -42,7 +41,7 @@ import java.util.UUID;
 
 @Service
 @AllArgsConstructor
-public class UserServiceAdmin implements UserInterface {
+public class UserServiceAdmin {
     private final static Logger LOGGER = LoggerFactory.getLogger(UserServiceAdmin.class);
     private final UserRepository userRepository;
     private final JwtService jwtService;
@@ -64,80 +63,54 @@ public class UserServiceAdmin implements UserInterface {
     private final MailManager mailManager;
 
 
-    @Override
     public TokenDtoExit loginUserAndCheckEmail(LoginDtoEntrance loginDtoEntrance)
             throws ResourceNotFoundException, AuthenticationException {
-
         User user = userValidator.validateUserExistsByEmail(loginDtoEntrance.getEmail());
-
         Authentication authentication = authHelper.authenticate(
                 loginDtoEntrance.getEmail(),
                 loginDtoEntrance.getPassword()
         );
-
         UserDetails userDetails = (UserDetails) authentication.getPrincipal();
-
         String token = jwtService.generateToken(userDetails);
-
-
         TokenDtoExit tokenDtoExit = userBuilder.fromUserExit(user, token);
-
         return tokenDtoExit;
     }
 
-    @Cacheable(
-            value = "users",
-            key = "'all-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()"
-    )
+
+    @Cacheable(value = "users")
     public Page<UserDtoExit> getAllUser(Pageable pageable) {
-
         Page<User> usersPage = userRepository.findAll(pageable);
-
         return usersPage.map(user -> modelMapper.map(user, UserDtoExit.class));
     }
 
 
-    @Override
+
+
     @Cacheable(value = "users", key = "#idUser")
     public UserDtoExit getUserById(UUID idUser) throws ResourceNotFoundException {
-
         User user = userValidator.validateUserId(idUser);
-
         return modelMapper.map(user, UserDtoExit.class);
     }
 
 
-    @Override
     @CachePut(value = "users", key = "#userDtoModify.idUser")
     public UserDtoExit updateUser(UserDtoModify userDtoModify, MultipartFile file)
             throws ResourceNotFoundException {
-
         User userToUpdate = userValidator.validateUserId(userDtoModify.getIdUser());
-
         userValidator.validateEmailNotTakenOnUpdate(userToUpdate, userDtoModify.getEmail());
-
         modelMapper.map(userDtoModify, userToUpdate);
-
         userToUpdate.normalizeData();
-
         if (userDtoModify.getRoles() != null) {
-
             userToUpdate.getRoles().clear();
-
             userToUpdate.getRoles().addAll(userDtoModify.getRoles());
         }
-
         userValidator.validateUserHasAtLeastOneRole(userToUpdate);
-
         userBuilder.updateUserImageIfPresent(userToUpdate, file);
-
         userRepository.save(userToUpdate);
-
         return modelMapper.map(userToUpdate, UserDtoExit.class);
     }
 
 
-    @Override
     @Caching(evict = {
             @CacheEvict(value = "users", key = "#idUser"),
             @CacheEvict(value = "favorites", key = "#idUser"),
@@ -147,46 +120,26 @@ public class UserServiceAdmin implements UserInterface {
 
     })
     public void deleteUser(UUID idUser) throws ResourceNotFoundException {
-
         User user = userValidator.validateUserId(idUser);
-
         String imageUrl = user.getPicture();
-
-
         favoriteRepository.deleteByIdUser(idUser);
-
-
         user.getRoles().clear();
-
         userRepository.save(user);
-
-
         userRepository.delete(user);
-
         if (imageUrl != null && !imageUrl.isEmpty()) {
-
             String key = S3UrlParser.extractKeyFromS3Url(imageUrl);
-
             s3FileDeleter.deleteFileFromS3(key);
-
         }
 
     }
 
 
-    @Cacheable(
-            value = "users",
-            key = "#name + '-' + #pageable.pageNumber + '-' + #pageable.pageSize + '-' + #pageable.sort.toString()"
-    )
+    @Cacheable(value = "users")
     public Page<UserDtoExit> searchUserName(String name, Pageable pageable)
             throws IllegalArgumentException {
-
         StringValidator.validateBasicText(name, name);
-
         Page<User> users = userRepository.findByNameContainingIgnoreCase(name.trim(), pageable);
-
         return users.map(user -> modelMapper.map(user, UserDtoExit.class));
-
     }
 
 }

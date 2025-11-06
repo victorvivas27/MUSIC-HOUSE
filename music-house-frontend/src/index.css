@@ -27,12 +27,12 @@
   --texto-inverso: #ffffff;
 
   /* 🧱 Fondos */
-  --background-claro: #ffffffa7;
+  --background-claro: #ffffffd5;
   --background-oscuro: #1E1E1E;
-  --background-transparente: rgba(92, 92, 92, 0.49);
+  --background-transparente: rgba(92, 92, 92, 0.572);
   --background-disabled: rgba(134, 118, 46, 0.48);
   --background-vidrio: rgba(251, 193, 45, 0.19);
-  --background-vidrio-soft: rgba(251, 193, 45, 0.07);
+  --background-vidrio-soft: rgba(251, 193, 45, 0.334);
   --color-hover-card: #fef7e0;
   --color-select: #f2e592e9;
 

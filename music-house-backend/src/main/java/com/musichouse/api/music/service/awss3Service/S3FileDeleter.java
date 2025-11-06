@@ -36,9 +36,6 @@ public class S3FileDeleter {
         try {
             if (doesObjectExist(key)) {
                 amazonS3.deleteObject(new DeleteObjectRequest(bucketName, key));
-            } else {
-                // ✅ Si no existe, simplemente no hacemos nada
-                System.out.println("El archivo con clave " + key + " no existe en S3. Se omite la eliminación.");
             }
         } catch (AmazonS3Exception e) {
             throw new RuntimeException("No se pudo eliminar el archivo de S3", e);

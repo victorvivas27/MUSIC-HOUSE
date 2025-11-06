@@ -63,72 +63,47 @@ public class UserService {
     public TokenDtoExit createUser(UserDtoEntrance userDtoEntrance, MultipartFile file)
             throws DataIntegrityViolationException, MessagingException {
 
-
         userValidator.validateUniqueEmail(userDtoEntrance);
-
-
         UUID id = UUID.randomUUID();
         String imageUrl;
-
         if (file != null && !file.isEmpty()) {
             imageUrl = awss3Service.uploadFileToS3User(file, id);
         } else {
-            imageUrl = awss3Service.copyDefaultUserImage(id);
+            imageUrl = "https://music-house-local.s3.us-east-1.amazonaws.com/usuario-default.png";
         }
-
         User user = userBuilder.buildUserWithImage(userDtoEntrance, id, imageUrl);
-
         String code = String.valueOf((int) (Math.random() * 900000) + 100000);
-
         LocalDateTime expiry = LocalDateTime.now().plusMinutes(15);
-
         user.setVerified(false);
-
         user.setVerificationCode(code);
-
         user.setVerificationExpiry(expiry);
-
         User userSaved = userRepository.save(user);
-
-        //String token = jwtService.generateToken(userSaved);
-
-
         try {
-
             emailService.sendVerificationEmail(user, code);
         } catch (MessagingException e) {
             throw new MessagingException(
                     "No se pudo enviar el correo de bienvenida a " + userSaved.getEmail(), e);
         }
-
-
-        TokenDtoExit tokenDtoExit = userBuilder.fromUserExit(user);
-
-        return tokenDtoExit;
+        return userBuilder.fromUserExit(user);
     }
 
 
     @CachePut(value = "users", key = "#email")
     public UserDtoExit updateOwnProfile(String email, UserDtoModify dto, MultipartFile file)
             throws ResourceNotFoundException {
-
         User userToUpdate = userValidator.validateUserExistsByEmail(email);
-
         if (dto.getName() != null) {
             userToUpdate.setName(dto.getName());
         }
         if (dto.getLastName() != null) {
             userToUpdate.setLastName(dto.getLastName());
         }
-
         userToUpdate.normalizeData();
-
         userBuilder.updateUserImageIfPresent(userToUpdate, file);
-
         userRepository.save(userToUpdate);
-
         return modelMapper.map(userToUpdate, UserDtoExit.class);
     }
+
 
     @Cacheable(value = "users", key = "#email")
     public UserDtoExit getUserByEmail(String email) throws ResourceNotFoundException {

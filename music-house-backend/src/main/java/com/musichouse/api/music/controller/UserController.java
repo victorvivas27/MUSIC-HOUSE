@@ -63,18 +63,15 @@ public class UserController {
             @RequestParam("user") String userJson,
             @RequestPart(value = "file", required = false) MultipartFile file
     ) throws JsonProcessingException, MessagingException {
-
         UserDtoEntrance userDtoEntrance = objectMapper.readValue(userJson, UserDtoEntrance.class);
         List<String> fileErrors = FileValidatorImage.validateImage(file);
         Set<ConstraintViolation<UserDtoEntrance>> violations = validator.validate(userDtoEntrance);
         List<String> dtoErrors = violations.stream()
                 .map(v -> v.getPropertyPath() + ": " + v.getMessage())
                 .toList();
-
         List<String> allErrors = new ArrayList<>();
         allErrors.addAll(fileErrors);
         allErrors.addAll(dtoErrors);
-
         if (!allErrors.isEmpty()) {
             return ResponseEntity.badRequest().body(ApiResponse.<TokenDtoExit>builder()
                     .status(HttpStatus.BAD_REQUEST)
@@ -84,9 +81,7 @@ public class UserController {
                     .result(null)
                     .build());
         }
-
         TokenDtoExit tokenDtoExit = userService.createUser(userDtoEntrance, file);
-
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.<TokenDtoExit>builder()
                         .status(HttpStatus.CREATED)
@@ -116,21 +111,15 @@ public class UserController {
             @RequestPart(value = "file", required = false) MultipartFile file,
             HttpServletRequest request
     ) throws JsonProcessingException, MessagingException, ResourceNotFoundException {
-
         UserDtoModify userDtoModify = objectMapper.readValue(userJson, UserDtoModify.class);
-
         List<String> fileErrors = FileValidatorImage.validateImage(file);
-
         Set<ConstraintViolation<UserDtoModify>> violations = validator.validate(userDtoModify);
-
         List<String> dtoErrors = violations.stream()
                 .map(v -> v.getPropertyPath() + ": " + v.getMessage())
                 .toList();
-
         List<String> allErrors = new ArrayList<>();
         allErrors.addAll(fileErrors);
         allErrors.addAll(dtoErrors);
-
         if (!allErrors.isEmpty()) {
             return ResponseEntity.badRequest().body(ApiResponse.<UserDtoExit>builder()
                     .status(HttpStatus.BAD_REQUEST)
@@ -140,14 +129,9 @@ public class UserController {
                     .result(null)
                     .build());
         }
-
         String token = jwtService.extractJwtFromRequest(request);
-
         String email = jwtService.extractUsername(token);
-
-
         UserDtoExit userDtoExit = userService.updateOwnProfile(email, userDtoModify, file);
-
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.<UserDtoExit>builder()
                         .status(HttpStatus.OK)
@@ -168,12 +152,9 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserDtoExit>> getCurrentUser(HttpServletRequest request)
             throws ResourceNotFoundException {
-
         String token = jwtService.extractJwtFromRequest(request);
         String email = jwtService.extractUsername(token);
-
         UserDtoExit userDtoExit = userService.getUserByEmail(email);
-
         return ResponseEntity.ok(ApiResponse.<UserDtoExit>builder()
                 .status(HttpStatus.OK)
                 .statusCode(HttpStatus.OK.value())

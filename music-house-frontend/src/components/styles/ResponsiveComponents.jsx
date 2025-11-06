@@ -196,6 +196,7 @@ export const BoxFormUnder = styled(Grid)(({ theme }) => ({
   justifyContent: 'center',
   margin: 'auto',
 
+
   [theme.breakpoints.down('sm')]: {
     width: '99%',
     height: 'auto'

@@ -10,7 +10,6 @@ import org.springframework.cache.annotation.EnableCaching;
 @SpringBootApplication
 @EnableCaching
 public class MusicHouseApplication {
-    // carga las variables .env
     private static final Logger LOGGER = LoggerFactory.getLogger(MusicHouseApplication.class);
 
 
@@ -18,8 +17,6 @@ public class MusicHouseApplication {
         DotenvInitializer.load();
         SpringApplication.run(MusicHouseApplication.class, args);
         LOGGER.info("🎹 Let's hit the keys and start the musical journey with MusicHouseApplication! 🎵🌟");
-
-
     }
 
 }

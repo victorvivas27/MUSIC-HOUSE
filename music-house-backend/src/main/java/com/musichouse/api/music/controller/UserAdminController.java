@@ -72,9 +72,7 @@ public class UserAdminController {
             throws ResourceNotFoundException {
         try {
             TokenDtoExit tokenDtoExit = userService.loginUserAndCheckEmail(loginDtoEntrance);
-
             ResponseCookie cookie = cookieService.generateCookie(tokenDtoExit.getToken());
-
             return ResponseEntity.ok()
                     .header(HttpHeaders.SET_COOKIE, cookie.toString())
                     .body(ApiResponse.<TokenDtoExit>builder()
@@ -105,7 +103,6 @@ public class UserAdminController {
      */
     @GetMapping()
     public ResponseEntity<ApiResponse<Page<UserDtoExit>>> getAllUsers(Pageable pageable) {
-
         Page<UserDtoExit> userDtoExits = userService.getAllUser(pageable);
         return ResponseEntity.ok(ApiResponse.<Page<UserDtoExit>>builder()
                 .status(HttpStatus.OK)
@@ -128,9 +125,7 @@ public class UserAdminController {
     @GetMapping("{idUser}")
     public ResponseEntity<ApiResponse<UserDtoExit>> getUserById(@PathVariable UUID idUser)
             throws ResourceNotFoundException {
-
         UserDtoExit foundUser = userService.getUserById(idUser);
-
         return ResponseEntity.ok(ApiResponse.<UserDtoExit>builder()
                 .status(HttpStatus.OK)
                 .statusCode(HttpStatus.OK.value())
@@ -158,26 +153,16 @@ public class UserAdminController {
             @RequestParam("user") String userJson,
             @RequestPart(value = "file", required = false) MultipartFile file
     ) throws JsonProcessingException, MessagingException, ResourceNotFoundException {
-
-
         UserDtoModify userDtoModify = objectMapper.readValue(userJson, UserDtoModify.class);
-
-
         List<String> fileErrors = FileValidatorImage.validateImage(file);
-
-
         Set<ConstraintViolation<UserDtoModify>> violations = validator.validate(userDtoModify);
-
         List<String> dtoErrors = violations.stream()
                 .map(v ->
                         v.getPropertyPath() + ": " + v.getMessage())
                 .toList();
-
-
         List<String> allErrors = new ArrayList<>();
         allErrors.addAll(fileErrors);
         allErrors.addAll(dtoErrors);
-
         if (!allErrors.isEmpty()) {
             return ResponseEntity.badRequest().body(ApiResponse.<UserDtoExit>builder()
                     .status(HttpStatus.BAD_REQUEST)
@@ -187,11 +172,7 @@ public class UserAdminController {
                     .result(null)
                     .build());
         }
-
-
         UserDtoExit userDtoExit = userService.updateUser(userDtoModify, file);
-
-
         return ResponseEntity.status(HttpStatus.OK)
                 .body(ApiResponse.<UserDtoExit>builder()
                         .status(HttpStatus.OK)
@@ -214,9 +195,7 @@ public class UserAdminController {
     @DeleteMapping("{idUser}")
     public ResponseEntity<ApiResponse<?>> deleteUser(@PathVariable UUID idUser)
             throws ResourceNotFoundException {
-
         userService.deleteUser(idUser);
-
         return ResponseEntity.ok(ApiResponse.<Void>builder()
                 .status(HttpStatus.OK)
                 .statusCode(HttpStatus.OK.value())
@@ -239,10 +218,7 @@ public class UserAdminController {
     public ResponseEntity<ApiResponse<Page<UserDtoExit>>> searchUserByName(
             @RequestParam String name,
             Pageable pageable) {
-
-
         Page<UserDtoExit> userDtoExits = userService.searchUserName(name, pageable);
-
         return ResponseEntity.ok(ApiResponse.<Page<UserDtoExit>>builder()
                 .status(HttpStatus.OK)
                 .statusCode(HttpStatus.OK.value())

@@ -9,6 +9,10 @@ export default defineConfig(() => {
   return {
     base: './', 
     plugins: [react()],
+     server: {
+    port: 5176, 
+    strictPort: true, 
+  },
     resolve: {
       alias: {
         '@': path.resolve(__dirname, 'src')
