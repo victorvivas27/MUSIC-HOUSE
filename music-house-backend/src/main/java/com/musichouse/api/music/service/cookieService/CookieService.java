@@ -11,18 +11,14 @@ import java.time.Duration;
 @RequiredArgsConstructor
 public class CookieService {
 
-    @Value("${cookie.secure}")
-    private Boolean cookieSecure;
 
-    @Value("${cookie.sameSite:None}")
-    private String cookieSameSite;
 
     public ResponseCookie generateCookie(String token) {
 
         return ResponseCookie.from("jwt", token)
                 .httpOnly(true)
-                .secure(cookieSecure)
-                .sameSite(cookieSameSite)
+                .secure(true)
+                .sameSite("None")
                 .path("/")
                 .maxAge(Duration.ofHours(1))
                 .build();
@@ -32,8 +28,8 @@ public class CookieService {
 
         return ResponseCookie.from("jwt", "")
                 .httpOnly(true)
-                .secure(cookieSecure)
-                .sameSite(cookieSameSite)
+                .secure(true)
+                .sameSite("None")
                 .path("/")
                 .maxAge(0)
                 .build();
@@ -42,8 +38,8 @@ public class CookieService {
     public ResponseCookie deleteSessionCookie() {
         return ResponseCookie.from("JSESSIONID", "")
                 .httpOnly(true)
-                .secure(cookieSecure)
-                .sameSite(cookieSameSite)
+                .secure(true)
+                .sameSite("None")
                 .path("/")
                 .maxAge(0)
                 .build();
