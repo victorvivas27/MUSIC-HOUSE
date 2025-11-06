@@ -54,21 +54,7 @@ jobs:
             --image ${{ env.REPO_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/backend:${{ github.sha }} \
             --region ${{ env.REGION }} \
             --allow-unauthenticated \
-            --set-env-vars \
-            DB_HOST=${{ secrets.DB_HOST }},\
-            DB_PORT=${{ secrets.DB_PORT }},\
-            DB_NAME=${{ secrets.DB_NAME }},\
-            DB_USER=${{ secrets.DB_USER }},\
-            DB_PASSWORD=${{ secrets.DB_PASSWORD }},\
-            BUCKET_NAME=${{ secrets.BUCKET_NAME }},\
-            ACCESS_KEY=${{ secrets.ACCESS_KEY }},\
-            SECRET_KEY=${{ secrets.SECRET_KEY }},\
-            REGION=${{ secrets.REGION }},\
-            EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }},\
-            EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }},\
-            GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }},\
-            GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }},\
-            SECRET_KEY_JWT=${{ secrets.SECRET_KEY_JWT }}
+            --set-env-vars --set-env-vars DB_HOST=${{ secrets.DB_HOST }},DB_PORT=${{ secrets.DB_PORT }},DB_NAME=${{ secrets.DB_NAME }},DB_USER=${{ secrets.DB_USER }},DB_PASSWORD=${{ secrets.DB_PASSWORD }},BUCKET_NAME=${{ secrets.BUCKET_NAME }},ACCESS_KEY=${{ secrets.ACCESS_KEY }},SECRET_KEY=${{ secrets.SECRET_KEY }},REGION=${{ secrets.REGION }},EMAIL_USERNAME=${{ secrets.EMAIL_USERNAME }},EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }},GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }},GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }},SECRET_KEY_JWT=${{ secrets.SECRET_KEY_JWT }}
 
       # ---------- FRONTEND ----------
       - name: 🧱 Construir imagen Docker del frontend
