@@ -1,7 +1,6 @@
 package com.musichouse.api.music.service.cookieService;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseCookie;
 import org.springframework.stereotype.Service;
 
@@ -10,7 +9,6 @@ import java.time.Duration;
 @Service
 @RequiredArgsConstructor
 public class CookieService {
-
 
 
     public ResponseCookie generateCookie(String token) {

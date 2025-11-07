@@ -17,6 +17,7 @@ import com.musichouse.api.music.service.StringValidator;
 import com.musichouse.api.music.service.awss3Service.AWSS3Service;
 import com.musichouse.api.music.service.awss3Service.S3FileDeleter;
 import com.musichouse.api.music.telegramchat.TelegramService;
+import com.musichouse.api.music.util.Constans;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.slf4j.Logger;
@@ -125,10 +126,8 @@ public class UserServiceAdmin {
         userRepository.save(user);
         userRepository.delete(user);
         if (imageUrl != null && !imageUrl.isEmpty()) {
-            String defaultImageUrl =
-                    "https://music-house-local.s3.us-east-1.amazonaws.com/usuario-default.png";
 
-            if (!imageUrl.equals(defaultImageUrl)) {
+            if (!imageUrl.equals(Constans.IMAGEN_DEFAULT)) {
                 String key = S3UrlParser.extractKeyFromS3Url(imageUrl);
                 s3FileDeleter.deleteFileFromS3(key);
             }

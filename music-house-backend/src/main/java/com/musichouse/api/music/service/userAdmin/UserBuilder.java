@@ -6,6 +6,7 @@ import com.musichouse.api.music.entity.Roles;
 import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.service.ImageCleaner;
 import com.musichouse.api.music.service.awss3Service.AWSS3Service;
+import com.musichouse.api.music.util.Constans;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -26,42 +27,31 @@ public class UserBuilder {
 
 
     public User buildUserWithImage(UserDtoEntrance userDtoEntrance, UUID id, String imageUrl) {
-
         User user = modelMapper.map(userDtoEntrance, User.class);
-
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-
-
         user.setIdUser(id);
-
         user.setPicture(imageUrl);
-
         Set<Roles> roles = userDtoEntrance.getRoles() != null && !userDtoEntrance.getRoles().isEmpty()
                 ? new HashSet<>(userDtoEntrance.getRoles())
                 : Set.of(Roles.USER);
-
         user.setRoles(roles);
-
         //user.setTelegramChatId(userDtoEntrance.getTelegramChatId());
-
         user.getAddresses().forEach(address -> address.setUser(user));
-
         user.getPhones().forEach(phone -> phone.setUser(user));
-
-
         return user;
     }
 
     public User updateUserImageIfPresent(User userToUpdate, MultipartFile file) {
         if (file != null && !file.isEmpty()) {
+            String currentImage = userToUpdate.getPicture();
 
-            imageCleaner.deleteImageFromS3(userToUpdate.getPicture());
+            // Solo eliminar si NO es la imagen por defecto
+            if (currentImage != null && !currentImage.equals(Constans.IMAGEN_DEFAULT)) {
+                imageCleaner.deleteImageFromS3(currentImage);
+            }
 
-
-            String picture = awss3Service.uploadSingleFile(file, "usuarios/" + userToUpdate.getIdUser());
-
-
-            userToUpdate.setPicture(picture);
+            String newPicture = awss3Service.uploadSingleFile(file, "usuarios/" + userToUpdate.getIdUser());
+            userToUpdate.setPicture(newPicture);
         }
 
         return userToUpdate;
@@ -88,13 +78,9 @@ public class UserBuilder {
 
 
     public User buildOAuthUser(String email, String fullName, String pictureUrl, String provider) {
-
         String[] parts = fullName != null ? fullName.trim().split(" ", 2) : new String[0];
-
         String name = parts.length > 0 ? parts[0] : "Usuario";
-
         String lastName = parts.length > 1 ? parts[1] : provider;
-
         return User.builder()
                 .idUser(UUID.randomUUID())
                 .email(email)
