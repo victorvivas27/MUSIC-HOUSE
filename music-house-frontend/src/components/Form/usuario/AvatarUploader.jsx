@@ -41,6 +41,7 @@ export const AvatarUploader = ({ preview, setPreview, setFieldValue }) => {
             },
             border: '2px solid #1976d2',
             transition: 'transform 0.3s ease',
+            color: 'var(--texto-primario)',
             '&:hover': {
               transform: 'scale(1.05)'
             }
@@ -60,7 +61,7 @@ export const AvatarUploader = ({ preview, setPreview, setFieldValue }) => {
 
       <ParagraphResponsive
         variant="body2"
-        color="var(--texto-inverso)"
+        color="var(--texto-primario)"
         sx={{ textAlign: 'center' }}
       >
         Haz clic en la imagen para subir una nueva (máx 5MB)

@@ -28,7 +28,7 @@ export const inputStyles = (theme) => ({
   '& .MuiInputBase-input': {
     fontSize: '0.9rem',
     height: 10,
-    color: 'var(--texto-inverso)',
+    color: 'var(--texto-primario)',
 
     [theme.breakpoints.up('sm')]: {
       height: 15,
@@ -62,7 +62,7 @@ export const inputStyles = (theme) => ({
 
   // 🏷️ Label por defecto (sin foco)
   '& .MuiInputLabel-root': {
-    color: 'var(--texto-inverso)',
+    color: 'var(--texto-primario)',
     fontSize: '0.9rem',
 
     [theme.breakpoints.up('sm')]: {
@@ -78,14 +78,14 @@ export const inputStyles = (theme) => ({
 
   // 🟢 Color del label cuando el input está enfocado
   '& .MuiInputLabel-root.Mui-focused': {
-    color: 'var(--texto-inverso)'
+    color: 'var(--texto-primario)'
   },
 
   // 🔽 Estilos para selects (opcional, si usás el mismo estilo para Select)
   '& .MuiSelect-select': {
     padding: '10px',
     fontSize: '15px',
-    color: 'var(--texto-inverso)',
+    color: 'var(--texto-primario)',
   },
 });
 

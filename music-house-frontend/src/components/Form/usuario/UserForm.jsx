@@ -98,7 +98,7 @@ export const UserForm = ({
     <Box
       sx={{
         marginBottom: 10,
-        backgroundColor: isUserAdmin ? 'var( --background-vidrio-soft)' : 'none',
+        backgroundColor: isUserAdmin ? 'var(--background-claro)' : 'none',
         borderRadius: '16px'
       }}
     >

@@ -110,7 +110,7 @@ const SelectInfinete = ({
             sx: {
                height: 120, 
                overflowY: 'auto',
-               backgroundColor: 'red'
+               backgroundColor: 'var(--background-claro)'
                },
             onScroll: handleScroll
           }

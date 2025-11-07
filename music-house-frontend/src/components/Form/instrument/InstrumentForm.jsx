@@ -63,7 +63,9 @@ const InstrumentForm = ({
               display: 'flex',
               flexDirection: 'column',
               marginBottom: 10,
-              backgroundColor: 'var(--background-claro)'
+              backgroundColor: 'var(--background-claro)',
+              border: '12px solid var(--color-primario)'
+      
             }}
           >
             <Grid container spacing={4}>
@@ -205,7 +207,7 @@ const InstrumentForm = ({
               sx={{
                 border: '2px dashed var(--color-primario)',
                 borderRadius: 2,
-                padding: 2
+                padding: 2,
               }}
             >
               <ImageUploadMultiple
