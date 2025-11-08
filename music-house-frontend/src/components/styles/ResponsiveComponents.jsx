@@ -225,7 +225,7 @@ export const BoxLogoSuperior = styled(Grid)(() => ({
 }))
 
 const background =
-  'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround.avif'
+  'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround_04.avif'
 
 export const MainCrearUsuario = styled(Grid, {
   shouldForwardProp: (prop) => prop !== 'bgLoaded'
@@ -236,7 +236,6 @@ export const MainCrearUsuario = styled(Grid, {
   backgroundSize: 'cover',
   backgroundRepeat: 'no-repeat',
   backgroundPosition: 'left bottom',
-  height: '100%',
   minHeight: '100vh',
   transition: 'background-image 1s ease-in-out',
   backgroundAttachment: 'fixed',

@@ -17,7 +17,7 @@ import useBackgroundLoader from '@/hook/useBackgroundLoader'
 import FullScreenLoader from '@/components/common/fullScreenLoader/FullScreenLoader'
 import { Box } from '@mui/material'
 const background =
-  'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround.avif'
+  'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround_04.avif'
 
 const AuthPage = () => {
   const navigate = useNavigate()

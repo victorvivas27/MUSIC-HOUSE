@@ -23,7 +23,7 @@ import useBackgroundLoader from '@/hook/useBackgroundLoader'
 import FullScreenLoader from '@/components/common/fullScreenLoader/FullScreenLoader'
 
 const background =
-  'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround.avif'
+  'https://music-house-78.s3.us-east-1.amazonaws.com/CrearUsuarioBackGround_04.avif'
 const EditUser = ({ onSwitch }) => {
   const { id } = useParams()
   const [user, setUser] = useState()
