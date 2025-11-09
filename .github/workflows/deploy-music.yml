@@ -69,7 +69,8 @@ jobs:
             EMAIL_PASSWORD=${{ secrets.EMAIL_PASSWORD }},
             GOOGLE_CLIENT_ID=${{ secrets.GOOGLE_CLIENT_ID }},
             GOOGLE_CLIENT_SECRET=${{ secrets.GOOGLE_CLIENT_SECRET }},
-            SECRET_KEY_JWT=${{ secrets.SECRET_KEY_JWT }}"
+            SECRET_KEY_JWT=${{ secrets.SECRET_KEY_JWT }},
+            SPRING_PROFILES_ACTIVE=${{ secrets.SPRING_PROFILES_ACTIVE }}"
 
       # ---------- FRONTEND ----------
       - name: 🧱 Construir imagen Docker del frontend
