@@ -13,7 +13,5 @@ export const getErrorMessage = (error) => {
       .join('\n')
   }
 
-  return [message, errorText, resultText]
-    .filter(Boolean)
-    .join('\n')
+  return [message, errorText, resultText].filter(Boolean).join('\n')
 }
