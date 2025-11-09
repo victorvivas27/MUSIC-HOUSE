@@ -134,7 +134,8 @@ public class AuthController {
      *         si el usuario no se encuentra o el código es inválido.
      */
     @PostMapping("/verify")
-    public ResponseEntity<ApiResponse<TokenDtoExit>> verifyUser(@Valid @RequestBody VerifyRequest request) throws ResourceNotFoundException {
+    public ResponseEntity<ApiResponse<TokenDtoExit>> verifyUser(@Valid @RequestBody VerifyRequest request)
+            throws ResourceNotFoundException {
 
         TokenDtoExit tokenDtoExit = authService.verifyUser(request.getEmail(), request.getCode());
 
