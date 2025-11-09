@@ -87,5 +87,5 @@ jobs:
           gcloud run deploy ${{ env.FRONT_SERVICE }} \
             --image ${{ env.REPO_REGION }}-docker.pkg.dev/${{ env.PROJECT_ID }}/${{ env.REPO }}/frontend:${{ github.sha }} \
             --region ${{ env.REGION }} \
-            --allow-unauthenticated
+            --allow-unauthenticated \
             --service-account music-house-deployer@music-house-project.iam.gserviceaccount.com
