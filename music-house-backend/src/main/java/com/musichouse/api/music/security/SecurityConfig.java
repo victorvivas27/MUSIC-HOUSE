@@ -183,8 +183,8 @@ public class SecurityConfig {
                 .oauth2Login(oauth -> oauth
                         .successHandler(customOAuth2SuccessHandler)
                 )
-                .sessionManagement(sessionManager -> sessionManager
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED))
                 .logout(logout -> logout.disable())
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
