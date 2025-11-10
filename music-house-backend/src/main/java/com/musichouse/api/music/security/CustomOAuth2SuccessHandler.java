@@ -73,7 +73,7 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
                 .httpOnly(false)   // ⚠️ false porque el front debe leerlo
                 .secure(false)     // true si usás HTTPS
                 .maxAge(300)       // 5 minutos
-                .sameSite("Lax")
+                .sameSite("None")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
         response.sendRedirect(redirectUrl + "/oauth-success");
