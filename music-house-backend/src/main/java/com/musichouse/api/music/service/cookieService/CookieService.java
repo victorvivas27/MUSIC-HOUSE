@@ -15,7 +15,7 @@ public class CookieService {
     @Value("${cookie.secure:true}")
     private boolean cookieSecure;
 
-    @Value("${cookie.same-site:Strict}")
+    @Value("${cookie.same-site:None}")
     private String sameSite;
 
     // Duración estándar (puedes parametrizarla también si querés)
