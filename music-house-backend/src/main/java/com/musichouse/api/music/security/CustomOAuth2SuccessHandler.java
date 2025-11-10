@@ -71,8 +71,8 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         ResponseCookie cookie = ResponseCookie.from("oauth_token", token)
                 .path("/")
                 .httpOnly(false)   // ⚠️ false porque el front debe leerlo
-                .secure(false)     // true si usás HTTPS
-                .maxAge(300)       // 5 minutos
+                .secure(true)     // true si usás HTTPS
+                .maxAge(300)
                 .sameSite("None")
                 .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
