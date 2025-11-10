@@ -8,7 +8,6 @@ import com.musichouse.api.music.dto.dto_exit.UserDtoExit;
 import com.musichouse.api.music.dto.dto_modify.UserDtoModify;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.security.JwtService;
-import com.musichouse.api.music.service.cookieService.CookieService;
 import com.musichouse.api.music.service.userAdmin.UserServiceAdmin;
 import com.musichouse.api.music.util.ApiResponse;
 import com.musichouse.api.music.util.FileValidatorImage;
@@ -56,7 +55,6 @@ public class UserAdminController {
     private final ObjectMapper objectMapper;
     private final Validator validator;
     private final JwtService jwtService;
-    private final CookieService cookieService;
 
     /**
      * Endpoint de inicio de sesión para usuarios.
@@ -76,10 +74,10 @@ public class UserAdminController {
             throws ResourceNotFoundException {
         try {
             TokenDtoExit tokenDtoExit = userService.loginUserAndCheckEmail(loginDtoEntrance);
-            ResponseCookie cookie = cookieService.generateCookie(tokenDtoExit.getToken());
-            return ResponseEntity.ok()
-                    .header(HttpHeaders.SET_COOKIE, cookie.toString())
-                    .body(ApiResponse.<TokenDtoExit>builder()
+
+            return ResponseEntity.ok(
+
+                    ApiResponse.<TokenDtoExit>builder()
                             .status(HttpStatus.OK)
                             .statusCode(HttpStatus.OK.value())
                             .message("Inicio de sesión exitoso.")

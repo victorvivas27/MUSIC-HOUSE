@@ -34,6 +34,7 @@ import EditarFaq from "./components/common/faq/EditarFaq"
 import Faqs from "./Pages/Faqs"
 import VerifyForm from "./components/Form/usuario/VerifyForm"
 import FormularioPagoReserva from "./components/Form/formularioPagoReserva/FormularioPagoReserva"
+import OAuthCallback from "./Pages/OAuthCallback"
 
 
 
@@ -49,6 +50,7 @@ export const App = () => {
               <Route path="/autentificacion" element={<AuthPage />} />
               <Route path="/noDisponible" element={<ServerError />} />
               <Route path="/verify" element={<VerifyForm />} />
+              <Route path="/oauth-success" element={<OAuthCallback />} />
               <Route path="*" element={<NotFoundPage />} />
 
               {/* 🔐 RUTAS USUARIO LOGUEADO SIN HEADER/FOOTER */}

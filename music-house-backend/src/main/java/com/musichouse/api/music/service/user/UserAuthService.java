@@ -5,7 +5,6 @@ import com.musichouse.api.music.entity.User;
 import com.musichouse.api.music.exception.ResourceNotFoundException;
 import com.musichouse.api.music.repository.UserRepository;
 import com.musichouse.api.music.security.JwtService;
-import com.musichouse.api.music.service.cookieService.CookieService;
 import com.musichouse.api.music.service.userAdmin.UserBuilder;
 import com.musichouse.api.music.service.userAdmin.UserValidator;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ public class UserAuthService {
 
     private final UserRepository userRepository;
     private final JwtService jwtService;
-    private final CookieService cookieService;
     private final UserValidator userValidator;
     private final UserBuilder userBuilder;
 

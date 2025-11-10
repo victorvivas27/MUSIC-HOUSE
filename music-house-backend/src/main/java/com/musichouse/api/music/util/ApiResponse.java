@@ -1,5 +1,6 @@
 package com.musichouse.api.music.util;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 import org.springframework.http.HttpStatus;
 
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class ApiResponse<T> {
 
     private HttpStatus status;  // Código de estado HTTP completo (ej. HttpStatus.BAD_REQUEST)

@@ -87,14 +87,12 @@ public class UserController {
                     .result(null)
                     .build());
         }
-        TokenDtoExit tokenDtoExit = userService.createUser(userDtoEntrance, file);
+        userService.createUser(userDtoEntrance, file);
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(ApiResponse.<TokenDtoExit>builder()
                         .status(HttpStatus.CREATED)
                         .statusCode(HttpStatus.CREATED.value())
                         .message("Usuario creado con éxito.Verifica tu correo electrónico.")
-                        .error(null)
-                        .result(tokenDtoExit)
                         .build());
     }
 
@@ -143,7 +141,7 @@ public class UserController {
                     .result(null)
                     .build());
         }
-        String token = jwtService.extractJwtFromRequest(request);
+        String token = jwtService.extractJwtFromHeader(request);
         String email = jwtService.extractUsername(token);
         UserDtoExit userDtoExit = userService.updateOwnProfile(email, userDtoModify, file);
         return ResponseEntity.status(HttpStatus.OK)
@@ -170,7 +168,7 @@ public class UserController {
     @GetMapping("/me")
     public ResponseEntity<ApiResponse<UserDtoExit>> getCurrentUser(HttpServletRequest request)
             throws ResourceNotFoundException {
-        String token = jwtService.extractJwtFromRequest(request);
+        String token = jwtService.extractJwtFromHeader(request);
         String email = jwtService.extractUsername(token);
         UserDtoExit userDtoExit = userService.getUserByEmail(email);
         return ResponseEntity.ok(ApiResponse.<UserDtoExit>builder()

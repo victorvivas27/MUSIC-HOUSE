@@ -1,7 +1,6 @@
 package com.musichouse.api.music.security;
 
 import com.musichouse.api.music.entity.User;
-import com.musichouse.api.music.service.cookieService.CookieService;
 import com.musichouse.api.music.service.user.UserService;
 import com.musichouse.api.music.strategy.OAuth2UserInfoStrategyFactory;
 import jakarta.servlet.ServletException;
@@ -18,13 +17,14 @@ import org.springframework.security.web.authentication.AuthenticationSuccessHand
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 
 @Component
 public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
 
     private final JwtService jwtService;
     private final UserService userService;
-    private final CookieService cookieService;
     private final OAuth2UserInfoStrategyFactory strategyFactory;
 
     @Value("${frontend.redirect.url}")
@@ -33,12 +33,10 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
     public CustomOAuth2SuccessHandler(
             JwtService jwtService,
             @Lazy UserService userService,
-            CookieService cookieService,
             OAuth2UserInfoStrategyFactory strategyFactory
     ) {
         this.jwtService = jwtService;
         this.userService = userService;
-        this.cookieService = cookieService;
         this.strategyFactory = strategyFactory;
     }
 
@@ -67,11 +65,17 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
         };
         userService.evictAllUsersCache();
 
+        // ✅ Generar token JWT
         String token = jwtService.generateToken(user);
-        ResponseCookie cookie = cookieService.generateCookie(token);
 
+        ResponseCookie cookie = ResponseCookie.from("oauth_token", token)
+                .path("/")
+                .httpOnly(false)   // ⚠️ false porque el front debe leerlo
+                .secure(false)     // true si usás HTTPS
+                .maxAge(300)       // 5 minutos
+                .sameSite("Lax")
+                .build();
         response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-        response.addHeader(HttpHeaders.SET_COOKIE, cookieService.deleteSessionCookie().toString());
-        response.sendRedirect(redirectUrl);
+        response.sendRedirect(redirectUrl + "/oauth-success");
     }
 }

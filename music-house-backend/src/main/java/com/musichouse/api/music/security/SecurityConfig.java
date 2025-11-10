@@ -1,6 +1,6 @@
 package com.musichouse.api.music.security;
 
-import com.musichouse.api.music.service.cookieService.CookieService;
+
 import com.musichouse.api.music.service.user.UserService;
 import com.musichouse.api.music.service.userAdmin.UserBuilder;
 import com.musichouse.api.music.util.RoleConstants;
@@ -40,7 +40,6 @@ public class SecurityConfig {
             HttpSecurity http,
             JwtService jwtService,
             UserService userService,
-            CookieService cookieService,
             UserBuilder userBuilder
     ) throws Exception {
         http.exceptionHandling(ex ->

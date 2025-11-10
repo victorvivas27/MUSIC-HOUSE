@@ -21,68 +21,54 @@ import java.io.IOException;
 
 /**
  * Filtro para la autenticación JWT que intercepta todas las solicitudes una vez.
+ * Ahora solo usa el header Authorization: Bearer <token>, sin cookies.
  */
 @RequiredArgsConstructor
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
-    private final static Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(JwtAuthenticationFilter.class);
     private static final String AUTHORIZATION_HEADER = HttpHeaders.AUTHORIZATION;
     private static final String BEARER_PREFIX = "Bearer ";
+
     private final JwtService jwtService;
     private final UserDetailsService userDetailsService;
 
     @Override
-    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        // Extraer el token JWT de la solicitud
+    protected void doFilterInternal(HttpServletRequest request,
+                                    HttpServletResponse response,
+                                    FilterChain filterChain) throws ServletException, IOException {
+
         String token = extractTokenFromRequest(request);
+
         if (token != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            // Obtener el nombre de usuario del token
             String username = jwtService.getUsernameFromToken(token);
-            // Cargar los detalles del usuario desde el servicio de detalles de usuario
-            UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-            // Verificar si el token es válido para el usuario
-            if (jwtService.isTokenValid(token, userDetails)) {
-                // Autenticar al usuario en Spring Security
-                authenticateUser(userDetails, request);
-            }
-        }
-        filterChain.doFilter(request, response);
-    }
 
-    /**
-     * Extrae el token JWT del encabezado de autorización de la solicitud.
-     *
-     * @param request
-     *         La solicitud HTTP.
-     *
-     * @return El token JWT si está presente en el encabezado de autorización, de lo contrario, null.
-     */
-    private String extractTokenFromRequest(HttpServletRequest request) {
-        // 1️⃣ Buscar en Header Authorization: Bearer ...
-        String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
-        if (StringUtils.hasText(authHeader) && authHeader.startsWith("Bearer ")) {
-            return authHeader.substring(7); // Quita "Bearer "
-        }
+            if (username != null) {
+                UserDetails userDetails = userDetailsService.loadUserByUsername(username);
 
-        // 2️⃣ Buscar en cookie 'jwt'
-        if (request.getCookies() != null) {
-            for (var cookie : request.getCookies()) {
-                if ("jwt".equals(cookie.getName())) {
-                    return cookie.getValue();
+                if (jwtService.isTokenValid(token, userDetails)) {
+                    authenticateUser(userDetails, request);
                 }
             }
         }
 
+        filterChain.doFilter(request, response);
+    }
+
+    /**
+     * Extrae el token JWT exclusivamente desde el header Authorization.
+     */
+    private String extractTokenFromRequest(HttpServletRequest request) {
+        String authHeader = request.getHeader(AUTHORIZATION_HEADER);
+        if (StringUtils.hasText(authHeader) && authHeader.startsWith(BEARER_PREFIX)) {
+            return authHeader.substring(BEARER_PREFIX.length());
+        }
         return null;
     }
 
     /**
-     * Autentica al usuario en el contexto de seguridad de Spring.
-     *
-     * @param userDetails
-     *         Los detalles del usuario obtenidos del servicio de detalles de usuario.
-     * @param request
-     *         La solicitud HTTP actual.
+     * Establece la autenticación en el contexto de Spring Security.
      */
     private void authenticateUser(UserDetails userDetails, HttpServletRequest request) {
         UsernamePasswordAuthenticationToken authenticationToken =
