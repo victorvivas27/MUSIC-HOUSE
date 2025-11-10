@@ -25,7 +25,7 @@ import java.nio.charset.StandardCharsets;
 
 @Component
 public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler {
-    private static final Logger LOGGER = LoggerFactory.getLogger(CustomOAuth2SuccessHandler.class);
+
     private final JwtService jwtService;
     private final UserService userService;
     private final OAuth2UserInfoStrategyFactory strategyFactory;
@@ -46,16 +46,16 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication)
             throws IOException, ServletException {
-        LOGGER.info("✅ Inicio de autenticación OAuth2 exitosa.");
+
         OAuth2AuthenticationToken authToken = (OAuth2AuthenticationToken) authentication;
         OAuth2User oAuth2User = (OAuth2User) authentication.getPrincipal();
         String provider = authToken.getAuthorizedClientRegistrationId();
-        LOGGER.info("Proveedor OAuth detectado: {}", provider);
+
         var strategy = strategyFactory.getStrategy(provider);
         String email = strategy.getEmail(oAuth2User, authToken);
         String name = strategy.getName(oAuth2User);
         String picture = strategy.getPicture(oAuth2User);
-        LOGGER.info("Datos del usuario obtenidos: email={}, name={}", email, name);
+
         if (email == null) {
             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "No se pudo obtener el email del proveedor.");
             return;
@@ -67,32 +67,16 @@ public class CustomOAuth2SuccessHandler implements AuthenticationSuccessHandler 
             default -> throw new IllegalStateException("Proveedor no soportado: " + provider);
         };
 
-        LOGGER.info("Usuario registrado o existente: {}", user.getEmail());
         userService.evictAllUsersCache();
 
         // ✅ Generar token JWT
         String token = jwtService.generateToken(user);
-        LOGGER.info("JWT generado con éxito. Longitud: {} caracteres", token.length());
 
+        // ✅ Codificar token para la URL
+        String encodedToken = URLEncoder.encode(token, StandardCharsets.UTF_8);
 
-        ResponseCookie cookie = ResponseCookie.from("oauth_token", token)
-                .path("/")
-                .httpOnly(false)   // ⚠️ false porque el front debe leerlo
-                .secure(true)     // true si usás HTTPS
-                .maxAge(300)       // 5 minutos
-                .sameSite("None")
-                .build();
-        response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
-
-        LOGGER.info("Cookie temporal 'oauth_token' añadida: {}", cookie);
-
-        // ✅ Redirigir al frontend
-        String finalRedirect = redirectUrl + "/oauth-success";
-        LOGGER.info("Redirigiendo al frontend: {}", finalRedirect);
-
+        // ✅ Redirigir al frontend con el token en la query string
+        String finalRedirect = redirectUrl + "/oauth-success?token=" + encodedToken;
         response.sendRedirect(finalRedirect);
-
-        LOGGER.info("✅ Proceso OAuth2 finalizado correctamente.");
-        response.getHeaderNames().forEach(h -> LOGGER.info("Header: {} = {}", h, response.getHeader(h)));
     }
 }
