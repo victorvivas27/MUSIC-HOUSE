@@ -24,7 +24,7 @@ const AuthPage = () => {
   const [showLogin, setShowLogin] = useState(true)
   const contentRef = useRef(null)
   const [contentHeight, setContentHeight] = useState(0)
-  const bgLoaded = useBackgroundLoader(background, 300)
+  const bgLoaded = useBackgroundLoader(background, 500)
 
   const handleSwitch = (e) => {
     e.preventDefault()

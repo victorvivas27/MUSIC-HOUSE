@@ -79,7 +79,7 @@ const Login = ({ onSwitch }) => {
         >
           <ContainerForm>
             <Grid>
-              <TitleResponsive>Iniciar Sesión</TitleResponsive>
+              <TitleResponsive sx={{ color: 'var(--color-secundario)' }}>Iniciar Sesión</TitleResponsive>
               <Grid>
                 <FormControl fullWidth margin="normal" sx={inputStyles(theme)}>
                   <TextField
@@ -164,7 +164,7 @@ const Login = ({ onSwitch }) => {
                   <ParagraphResponsive
                     sx={{
                       fontWeight: '700',
-                      color: 'white',
+                      color: 'var(--texto-primario)',
                       position: 'relative',
                       zIndex: 2,
                       background:

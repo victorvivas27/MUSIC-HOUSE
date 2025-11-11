@@ -8,7 +8,7 @@ export const CustomButton = styled(Button, {
   width: '80%',
   display: 'flex',
   justifyContent: 'space-evenly',
-  height: '30px',
+  height: '40px',
   color: 'var(--color-secundario)',
   backgroundColor: 'var(--color-primario)',
   fontFamily: 'Roboto',
@@ -17,32 +17,23 @@ export const CustomButton = styled(Button, {
   transition: '0.3s',
   margin: 3,
   boxShadow: 'var(--box-shadow)',
+  
   '&:hover': {
-    backgroundColor: 'var(--color-primario)',
-    color: 'var(--color-info)'
+    backgroundColor: 'var(--color-primario)', // mantiene tu color
+    opacity: 0.8 // efecto sutil opcional
   },
+
   '&:active': {
     backgroundColor: 'var(--color-exito)'
   },
-  '&:disabled': {
-    cursor: 'not-allowed'
-  },
 
-  [theme.breakpoints.up('sm')]: {
-    width: '58%'
-  },
-  [theme.breakpoints.up('md')]: {
-    width: '57%'
-  },
-  [theme.breakpoints.up('lg')]: {
-    width: '56%'
-  },
-  [theme.breakpoints.up('xl')]: {
-    width: '55%'
-  },
+  [theme.breakpoints.up('sm')]: { width: '58%' },
+  [theme.breakpoints.up('md')]: { width: '57%' },
+  [theme.breakpoints.up('lg')]: { width: '56%' },
+  [theme.breakpoints.up('xl')]: { width: '55%' },
 
   ...sx
-}))
+}));
 
 export const ContainerBottom = styled(Grid, {
   shouldForwardProp: (prop) => prop !== 'sx'
@@ -99,9 +90,9 @@ export const ContainerForm = styled(Grid, {
 }))
 
 export const TitleResponsive = styled(Typography)(({ theme }) => ({
+  shouldForwardProp: (prop) => prop !== 'sx',
   color: 'var(--color-primario)',
-  textShadow: '0 4px 4px var(--texto-primario)',
-  fontWeight: 350,
+  fontWeight: 450,
   fontSize: '1.3rem',
   position: 'relative',
   zIndex: 2,

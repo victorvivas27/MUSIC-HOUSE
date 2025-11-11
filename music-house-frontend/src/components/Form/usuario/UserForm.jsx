@@ -124,7 +124,10 @@ export const UserForm = ({
               disabled={loading}
               style={{ border: 'none', padding: 0, margin: 0 }}
             >
-              <TitleResponsive sx={{ mb: 4 }}>{title}</TitleResponsive>
+              <TitleResponsive sx={{ 
+                
+                color: 'var(--color-secundario)'  
+                }}>{title}</TitleResponsive>
 
               <Grid container>
                 <Grid item xs={12}>

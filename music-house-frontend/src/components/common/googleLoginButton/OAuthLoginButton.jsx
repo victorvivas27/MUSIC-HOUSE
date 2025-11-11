@@ -13,8 +13,8 @@ const OAuthLoginButton = ({ provider = "google" }) => {
   };
 
   const icons = {
-    google: <FcGoogle size={25} />,
-    github: <FaGithub size={25} />,
+    google: <FcGoogle size={35} />,
+    github: <FaGithub size={35} />,
   };
 
   const labels = {
@@ -27,19 +27,6 @@ const OAuthLoginButton = ({ provider = "google" }) => {
       <CustomButton
         onClick={handleOAuthLogin}
         startIcon={icons[provider]}
-        sx={{
-          transition: "all 0.3s ease",
-          "&:hover": {
-            backgroundColor: "rgba(66, 133, 244, 0.08)",
-            borderColor: "rgba(66, 133, 244, 0.5)",
-            boxShadow: "0 4px 8px rgba(0,0,0,0.1)",
-            transform: "translateY(-1px)",
-          },
-          "&:active": {
-            transform: "translateY(0)",
-            boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
-          },
-        }}
       >
         Continuar con {labels[provider]}
       </CustomButton>
