@@ -101,16 +101,11 @@
 </head>
 
 <body>
-  <!-- ⏳ Loader visual al iniciar -->
   <div id="global-loader">
     <div class="loader-overlay"></div>
     <div class="spinner"></div>
   </div>
-
-  <!-- Contenedor React -->
   <div id="root"></div>
-
-  <!-- Script para ocultar loader al cargar -->
   <script>
     window.addEventListener('DOMContentLoaded', () => {
       const loader = document.getElementById('global-loader')
@@ -119,14 +114,11 @@
           loader.classList.add('fade-out-soft')
           setTimeout(() => {
             loader.style.display = 'none'
-          }, 200) // coincide con duración de fade-out
-        }, 100)
+          }, 300) 
+        }, 200)
       }
     })
   </script>
-
-  <!-- React app -->
   <script type="module" src="/src/main.jsx"></script>
 </body>
-
 </html>
