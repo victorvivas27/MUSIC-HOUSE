@@ -1,7 +1,7 @@
-import axios from 'axios';
-import { handleApiError } from './handleApiError';
+import axios from 'axios'
+import { handleApiError } from './handleApiError'
 
-const BASE_URL = import.meta.env.VITE_API_BASE_URL;
+const BASE_URL = import.meta.env.VITE_API_BASE_URL
 
 export const getOpenMeteo = async (latitude = 52.52, longitude = 13.41) => {
   try {
@@ -10,10 +10,10 @@ export const getOpenMeteo = async (latitude = 52.52, longitude = 13.41) => {
         latitude,
         longitude
       }
-    });
-   
-    return response.data;
+    })
+
+    return response.data
   } catch (error) {
-    handleApiError(error);
+    handleApiError(error)
   }
-};
+}
